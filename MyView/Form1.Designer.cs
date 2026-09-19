@@ -114,6 +114,8 @@
             listViewThumbnails.Size = new Size(121, 97);
             listViewThumbnails.TabIndex = 3;
             listViewThumbnails.UseCompatibleStateImageBehavior = false;
+            listViewThumbnails.DragDrop += listViewThumbnails_DragDrop;
+            listViewThumbnails.DragEnter += listViewThumbnails_DragEnter;
             listViewThumbnails.DoubleClick += ListViewThumbnails_DoubleClick;
             listViewThumbnails.KeyDown += ListViewThumbnails_KeyDown;
             listViewThumbnails.MouseDown += ListViewThumbnails_MouseDown;

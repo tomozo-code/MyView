@@ -1,16 +1,17 @@
+using PhotoSauce.MagicScaler;
 using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PhotoSauce.MagicScaler;
-using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 // --------------------------------------------------------
 // メインフォーム
@@ -287,9 +288,9 @@ namespace MyView
             foreach (var drive in DriveInfo.GetDrives().Where(d => d.IsReady))
             {
                 var node = new TreeNode(drive.Name)
-                    {
-                        Tag = drive.RootDirectory.FullName
-                    };
+                {
+                    Tag = drive.RootDirectory.FullName
+                };
 
                 node.Nodes.Add("...");
                 treeViewFolders.Nodes.Add(node);
@@ -311,9 +312,9 @@ namespace MyView
                 return;
 
             var node = new TreeNode(displayName)
-                {
-                    Tag = path
-                };
+            {
+                Tag = path
+            };
 
             node.Nodes.Add("...");
 
@@ -336,9 +337,9 @@ namespace MyView
                 return;
 
             var node = new TreeNode(displayName)
-                {
-                    Tag = path
-                };
+            {
+                Tag = path
+            };
 
             node.Nodes.Add("...");
             treeViewFolders.Nodes.Add(node);
@@ -378,9 +379,9 @@ namespace MyView
                     }
 
                     var childNode = new TreeNode(dir.Name)
-                        {
-                            Tag = dir.FullName
-                        };
+                    {
+                        Tag = dir.FullName
+                    };
 
                     childNode.Nodes.Add("...");
 
@@ -571,10 +572,10 @@ namespace MyView
                         () =>
                         {
                             Parallel.For(0, batchCount, new ParallelOptions
-                                {
-                                    MaxDegreeOfParallelism = GetMaxParallel(),
-                                    CancellationToken = token
-                                },
+                            {
+                                MaxDegreeOfParallelism = GetMaxParallel(),
+                                CancellationToken = token
+                            },
                                 i =>
                                 {
                                     int imageIndex = batchStart + i;
@@ -777,7 +778,7 @@ namespace MyView
 
             if (_thumbnailIndexMap.TryGetValue(index, out int mappedImageIndex))
             {
-                if (mappedImageIndex >= 0 && mappedImageIndex <  _imageList.Images.Count)
+                if (mappedImageIndex >= 0 && mappedImageIndex < _imageList.Images.Count)
                 {
                     imageIndex = mappedImageIndex;
                 }
@@ -904,11 +905,11 @@ namespace MyView
                 using var outputStream = new MemoryStream();
 
                 var settings = new ProcessImageSettings
-                    {
-                        Width = width,
-                        Height = height,
-                        ResizeMode = CropScaleMode.Max
-                    };
+                {
+                    Width = width,
+                    Height = height,
+                    ResizeMode = CropScaleMode.Max
+                };
 
                 MagicImageProcessor.ProcessImage(inputStream, outputStream, settings);
 
@@ -975,10 +976,10 @@ namespace MyView
 
                 // 新しいImageList
                 _imageList = new ImageList
-                    {
-                        ImageSize = imageSize,
-                        ColorDepth = colorDepth
-                    };
+                {
+                    ImageSize = imageSize,
+                    ColorDepth = colorDepth
+                };
 
                 // プレースホルダー
                 _placeholderImage = CreatePlaceholder(imageSize.Width, imageSize.Height);
@@ -1162,18 +1163,18 @@ namespace MyView
         private void ListViewThumbnails_KeyDown(object sender, KeyEventArgs e)
         {
             int number = e.KeyCode switch
-                {
-                    Keys.D1 or Keys.NumPad1 => 1,
-                    Keys.D2 or Keys.NumPad2 => 2,
-                    Keys.D3 or Keys.NumPad3 => 3,
-                    Keys.D4 or Keys.NumPad4 => 4,
-                    Keys.D5 or Keys.NumPad5 => 5,
-                    Keys.D6 or Keys.NumPad6 => 6,
-                    Keys.D7 or Keys.NumPad7 => 7,
-                    Keys.D8 or Keys.NumPad8 => 8,
-                    Keys.D9 or Keys.NumPad9 => 9,
-                    _ => 0
-                };
+            {
+                Keys.D1 or Keys.NumPad1 => 1,
+                Keys.D2 or Keys.NumPad2 => 2,
+                Keys.D3 or Keys.NumPad3 => 3,
+                Keys.D4 or Keys.NumPad4 => 4,
+                Keys.D5 or Keys.NumPad5 => 5,
+                Keys.D6 or Keys.NumPad6 => 6,
+                Keys.D7 or Keys.NumPad7 => 7,
+                Keys.D8 or Keys.NumPad8 => 8,
+                Keys.D9 or Keys.NumPad9 => 9,
+                _ => 0
+            };
 
             if (number == 0)
                 return;
@@ -1284,7 +1285,7 @@ namespace MyView
 
                     case 7: // 画像サイズ
                         {
-                            using (Image image =Image.FromFile(fullPath))
+                            using (Image image = Image.FromFile(fullPath))
                             {
                                 string imageSize = $"{image.Width} × {image.Height}";
                                 Clipboard.SetText(imageSize);
@@ -1680,11 +1681,11 @@ namespace MyView
                     Directory.CreateDirectory(folderPath);
 
                     Process.Start(new ProcessStartInfo
-                        {
-                            FileName = "explorer.exe",
-                            Arguments = $"\"{folderPath}\"",
-                            UseShellExecute =true
-                        });
+                    {
+                        FileName = "explorer.exe",
+                        Arguments = $"\"{folderPath}\"",
+                        UseShellExecute = true
+                    });
                 }
             }
             catch (Exception ex)
@@ -1780,9 +1781,10 @@ namespace MyView
             try
             {
                 Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "使い方.pdf", UseShellExecute = true
-                    });
+                {
+                    FileName = "使い方.pdf",
+                    UseShellExecute = true
+                });
             }
             catch (Exception ex)
             {
@@ -1792,6 +1794,67 @@ namespace MyView
                 MessageBox.Show("外部アプリで開けませんでした。", "外部アプリオープン失敗", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Debug.WriteLine(ex.ToString());
 #endif
+            }
+        }
+
+        // ============================================================
+        // listViewThumbnailsへファイルをドロップした時にパスを取得して
+        // そのフォルダのサムネイルを表示する
+        // ============================================================
+        private void listViewThumbnails_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                 // ドロップされたファイル・フォルダのパス一覧を取得
+                if (e.Data?.GetData(DataFormats.FileDrop) is string[] paths)
+                {
+                    foreach (string droppedPath in paths)
+                    {
+                        string targetFolderPath = "";
+
+                        // ディレクトリ（フォルダ）かどうかを判定
+                        if (Directory.Exists(droppedPath))
+                        {
+                            // フォルダがドロップされた場合は、そのフォルダのパスをそのまま使う
+                            targetFolderPath = droppedPath;
+                        }
+                        else if (File.Exists(droppedPath))
+                        {
+                            // ファイルがドロップされた場合は、親フォルダのパスを取得する
+                            targetFolderPath = Path.GetDirectoryName(droppedPath) ?? "";
+                        }
+                        else
+                        {
+                            continue; // どちらでもなければスキップ
+                        }
+
+                        //logTxt.Text = "ファイルがドロップされました(パス取得):" + Environment.NewLine + targetFolderPath;
+                        pathTxt.Text = targetFolderPath;
+
+                        // KeyDown イベントを Enter キーが押された前提で手動実行する
+                        PathTxt_KeyDown(pathTxt, new KeyEventArgs(Keys.Enter));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"エラー: {ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ============================================================
+        // listViewThumbnailsへドロップを許可するカーソル表示にする
+        // ============================================================
+        private void listViewThumbnails_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data?.GetDataPresent(DataFormats.FileDrop) == true)
+            {
+                e.Effect = DragDropEffects.Copy; // ドロップを許可するカーソル表示にする
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
             }
         }
     }
