@@ -34,6 +34,19 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // PhotoSauce.MagicScaler
 // 高性能画像処理
 
+// --------------------------------------------------------
+// フォーム
+// --------------------------------------------------------
+// Form1:メインフォーム
+// Form2:バージョン情報フォーム
+// Form3:画像ビューフォーム
+// Form4:インデックス印刷フォーム
+
+// --------------------------------------------------------
+// クラス
+// --------------------------------------------------------
+// NaturalStringComparer.cs:ファイル名ソート用クラス
+
 namespace MyView
 {
     public partial class Form1 : Form
@@ -140,6 +153,8 @@ namespace MyView
             listViewThumbnails.Dock = DockStyle.Fill;
 
             splitContainer1.SplitterDistance = 200;
+            splitContainer1.Panel1MinSize = 100;
+
 
             numThumbnailSize.Value = 256;
 
@@ -206,8 +221,10 @@ namespace MyView
             // 起動時に前回のフォルダを復元
             await RestoreLastFolderAsync();
 
-            // F5でフォルダー更新
+            // F5でフォルダー更新(ショートカットキー)
             folderUpdate.ShortcutKeys = Keys.F5;
+            // インデクス印刷(ショートカットキー)
+            printMenu.ShortcutKeys = Keys.Control | Keys.P;
         }
 
         // ============================================================
@@ -438,6 +455,7 @@ namespace MyView
             if (!Directory.Exists(folderPath))
             {
                 StatusLabel1.Text = "フォルダが存在しません。";
+                printMenu.Enabled = false;
                 return;
             }
 
@@ -509,11 +527,13 @@ namespace MyView
             if (_imageFiles.Count == 0)
             {
                 StatusLabel1.Text = "画像ファイルはありません。";
+                printMenu.Enabled = false;
                 return;
             }
 
             // サムネイル作成開始
             StatusLabel1.Text = $"{_imageFiles.Count:N0} 枚の画像を読み込み中...";
+            printMenu.Enabled = true;
 
             // ListViewのレイアウトが終わってから開始
             try
@@ -1805,7 +1825,7 @@ namespace MyView
         {
             try
             {
-                 // ドロップされたファイル・フォルダのパス一覧を取得
+                // ドロップされたファイル・フォルダのパス一覧を取得
                 if (e.Data?.GetData(DataFormats.FileDrop) is string[] paths)
                 {
                     foreach (string droppedPath in paths)
@@ -1855,6 +1875,25 @@ namespace MyView
             else
             {
                 e.Effect = DragDropEffects.None;
+            }
+        }
+
+        // ============================================================
+        // インデックス印刷フォームを開く
+        // ============================================================
+        private void printMenu_Click(object sender, EventArgs e)
+        {
+            // 画像が読み込まれていない場合は処理しない
+            if (_imageFiles == null || _imageFiles.Count == 0)
+            {
+                MessageBox.Show("印刷対象の画像がありません。", "案内", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Form4 に現在保持している画像ファイルリスト (_imageFiles) を渡して表示
+            using (var form4 = new Form4(_imageFiles))
+            {
+                form4.ShowDialog(this);
             }
         }
     }

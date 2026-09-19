@@ -51,6 +51,7 @@
             logTxt = new TextBox();
             menuStrip1 = new MenuStrip();
             fileMenu = new ToolStripMenuItem();
+            printMenu = new ToolStripMenuItem();
             exitMenu = new ToolStripMenuItem();
             viewMenu = new ToolStripMenuItem();
             folderUpdate = new ToolStripMenuItem();
@@ -263,15 +264,23 @@
             // 
             // fileMenu
             // 
-            fileMenu.DropDownItems.AddRange(new ToolStripItem[] { exitMenu });
+            fileMenu.DropDownItems.AddRange(new ToolStripItem[] { printMenu, exitMenu });
             fileMenu.Name = "fileMenu";
             fileMenu.Size = new Size(85, 32);
             fileMenu.Text = "ファイル(&F)";
             // 
+            // printMenu
+            // 
+            printMenu.Name = "printMenu";
+            printMenu.Size = new Size(211, 26);
+            printMenu.Text = "インデックス印刷(&P)...";
+            printMenu.ToolTipText = "インデックス印刷します。";
+            printMenu.Click += printMenu_Click;
+            // 
             // exitMenu
             // 
             exitMenu.Name = "exitMenu";
-            exitMenu.Size = new Size(131, 26);
+            exitMenu.Size = new Size(211, 26);
             exitMenu.Text = "終了(&X)";
             exitMenu.ToolTipText = "一覧帖を終了します";
             exitMenu.Click += exitMenu_Click;
@@ -399,5 +408,6 @@
         private ToolStripMenuItem viewMenu;
         private ToolStripMenuItem folderUpdate;
         private ToolStripMenuItem useMenu;
+        private ToolStripMenuItem printMenu;
     }
 }
