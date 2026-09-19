@@ -106,6 +106,7 @@
             // 
             // listViewThumbnails
             // 
+            listViewThumbnails.AllowDrop = true;
             listViewThumbnails.BackColor = SystemColors.Control;
             listViewThumbnails.ContextMenuStrip = conMenu1;
             listViewThumbnails.Location = new Point(72, 44);

@@ -302,14 +302,9 @@ namespace MyView
             if (viewWidth <= 0 || viewHeight <= 0)
                 return;
 
-            // --------------------------------------------------------
             // 横方向・縦方向、それぞれの倍率を計算
-            // --------------------------------------------------------
-            float zoomX =
-                viewWidth / (float)_image.Width;
-
-            float zoomY =
-                viewHeight / (float)_image.Height;
+            float zoomX = viewWidth / (float)_image.Width;
+            float zoomY = viewHeight / (float)_image.Height;
 
             // 小さいほうの倍率を採用
             // → 画像全体が画面内に収まる
@@ -338,10 +333,7 @@ namespace MyView
             if (_image == null)
                 return;
 
-            // --------------------------------------------------------
             // Ctrl + ホイール
-            // → 今まで通りズーム
-            // --------------------------------------------------------
             if ((ModifierKeys & Keys.Control) != 0)
             {
                 // マウス位置
@@ -375,34 +367,18 @@ namespace MyView
                 if (Math.Abs(newZoom - oldZoom) < 0.0001f)
                     return;
 
-                // ----------------------------------------------------
                 // マウスカーソル位置を基準にズーム
-                // ----------------------------------------------------
-
-                float imageX =
-                    (mousePosition.X - _imageOffset.X) / oldZoom;
-
-                float imageY =
-                    (mousePosition.Y - _imageOffset.Y) / oldZoom;
-
+                float imageX = (mousePosition.X - _imageOffset.X) / oldZoom;
+                float imageY = (mousePosition.Y - _imageOffset.Y) / oldZoom;
                 _zoom = newZoom;
-
-                _imageOffset.X =
-                    mousePosition.X - imageX * newZoom;
-
-                _imageOffset.Y =
-                    mousePosition.Y - imageY * newZoom;
-
+                _imageOffset.X = mousePosition.X - imageX * newZoom;
+                _imageOffset.Y = mousePosition.Y - imageY * newZoom;
                 pictureBox1.Invalidate();
-
                 return;
             }
 
-            // --------------------------------------------------------
             // 通常のホイール
             // → 前後の画像へ移動
-            // --------------------------------------------------------
-
             if (e.Delta > 0)
             {
                 // 上スクロール → 前の画像
@@ -452,7 +428,6 @@ namespace MyView
         // ============================================================
         // PictureBoxの描画
         // ============================================================
-
         private void PictureBox1_Paint(object? sender, PaintEventArgs e)
         {
             if (_image == null)
@@ -486,15 +461,11 @@ namespace MyView
             // 画像を描画
             g.DrawImage(_image, destRect);
 
-            // --------------------------------------------------------
             // 左ドラッグの選択範囲を描画
-            // --------------------------------------------------------
             if (!_selectionRectangle.IsEmpty)
             {
                 using Pen pen = new Pen(Color.White, 2);
-
                 pen.DashStyle = DashStyle.Dash;
-
                 g.DrawRectangle(pen,  _selectionRectangle);
             }
         }
@@ -510,7 +481,6 @@ namespace MyView
 
             // --------------------------------------------------------
             // ズーム倍率は変更しない。
-            //
             // 現在の表示サイズをそのまま維持して、
             // 新しいPictureBoxの中央へ画像を移動する。
             // --------------------------------------------------------
@@ -556,9 +526,7 @@ namespace MyView
         // ============================================================
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            // --------------------------------------------------------
             // 右ボタン → 画像移動
-            // --------------------------------------------------------
             if (e.Button == MouseButtons.Right)
             {
                 _isPanning = true;
@@ -575,15 +543,10 @@ namespace MyView
                 return;
             }
 
-            // --------------------------------------------------------
             // 左ボタン
-            // --------------------------------------------------------
             if (e.Button == MouseButtons.Left)
             {
-                // ----------------------------------------------------
-                // すでに選択範囲があり、
-                // その中をクリックした場合
-                // ----------------------------------------------------
+                // すでに選択範囲があり、その中をクリックした場合
                 if (!_selectionRectangle.IsEmpty &&
                     _selectionRectangle.Contains(e.Location))
                 {
@@ -593,17 +556,11 @@ namespace MyView
                     return;
                 }
 
-                // ----------------------------------------------------
                 // 新しい範囲選択を開始
-                // ----------------------------------------------------
                 _isSelecting = true;
-
                 _selectionStart = e.Location;
-
                 _selectionRectangle = Rectangle.Empty;
-
                 pictureBox1.Cursor = Cursors.Cross;
-
                 pictureBox1.Invalidate();
             }
 
@@ -614,9 +571,7 @@ namespace MyView
         // ============================================================
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            // --------------------------------------------------------
             // 右ドラッグ → 画像移動
-            // --------------------------------------------------------
             if (_isPanning)
             {
                 // ドラッグ開始位置からの移動量
@@ -625,9 +580,7 @@ namespace MyView
 
                 // 画像位置を移動
                 _imageOffset = new PointF(_panStartOffset.X + dx, _panStartOffset.Y + dy);
-
                 pictureBox1.Invalidate();
-
                 return;
             }
 
@@ -645,20 +598,14 @@ namespace MyView
                 if (dx > 3 || dy > 3)
                 {
                     _selectionClickCandidate = false;
-
                     _isSelecting = true;
-
                     _selectionStart = _selectionClickStart;
-
                     _selectionRectangle = Rectangle.Empty;
-
                     pictureBox1.Cursor = Cursors.Cross;
                 }
             }
 
-            // --------------------------------------------------------
             // 左ドラッグ → 範囲選択
-            // --------------------------------------------------------
             if (_isSelecting)
             {
                 int x = Math.Min(_selectionStart.X, e.X);
@@ -678,26 +625,18 @@ namespace MyView
         // ============================================================
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            // --------------------------------------------------------
             // 右ボタン → 画像移動終了
-            // --------------------------------------------------------
             if (e.Button == MouseButtons.Right)
             {
                 _isPanning = false;
-
                 pictureBox1.Cursor = Cursors.Default;
-
                 return;
             }
 
-            // --------------------------------------------------------
             // 左ボタン
-            // --------------------------------------------------------
             if (e.Button == MouseButtons.Left)
             {
-                // ----------------------------------------------------
                 // 選択範囲内をクリックした
-                // ----------------------------------------------------
                 if (_selectionClickCandidate)
                 {
                     _selectionClickCandidate = false;
@@ -710,15 +649,11 @@ namespace MyView
                     return;
                 }
 
-                // ----------------------------------------------------
                 // 範囲選択終了
-                // ----------------------------------------------------
                 if (_isSelecting)
                 {
                     _isSelecting = false;
-
                     pictureBox1.Cursor = Cursors.Default;
-
                     pictureBox1.Invalidate();
                 }
             }
@@ -738,57 +673,36 @@ namespace MyView
                 return;
             }
 
-            // --------------------------------------------------------
             // 選択範囲の中心座標（画面上）
-            // --------------------------------------------------------
             float selectionCenterX = _selectionRectangle.X + _selectionRectangle.Width / 2.0f;
-
             float selectionCenterY = _selectionRectangle.Y + _selectionRectangle.Height / 2.0f;
 
-            // --------------------------------------------------------
             // 選択範囲のサイズから新しいズーム倍率を計算
-            // --------------------------------------------------------
             float zoomX = pictureBox1.ClientSize.Width / (float)_selectionRectangle.Width;
-
             float zoomY = pictureBox1.ClientSize.Height / (float)_selectionRectangle.Height;
-
             float newZoom = Math.Min(zoomX, zoomY);
 
             // ズーム倍率を制限
             newZoom = Math.Clamp(newZoom, MinZoom, MaxZoom);
 
-            // --------------------------------------------------------
             // 選択範囲の中心が指している
             // 「元画像上の座標」を求める
-            // --------------------------------------------------------
             float imageCenterX = (selectionCenterX - _imageOffset.X) / _zoom;
-
             float imageCenterY = (selectionCenterY - _imageOffset.Y) / _zoom;
 
-            // --------------------------------------------------------
             // 新しい画像サイズ
-            // --------------------------------------------------------
             float newImageWidth = _image.Width * newZoom;
-
             float newImageHeight = _image.Height * newZoom;
 
-            // --------------------------------------------------------
             // 元画像上の「選択範囲の中心」が
             // 画面の中心に来るように画像位置を計算
-            // --------------------------------------------------------
             float screenCenterX = pictureBox1.ClientSize.Width / 2.0f;
-
             float screenCenterY = pictureBox1.ClientSize.Height / 2.0f;
-
             float newOffsetX = screenCenterX - imageCenterX * newZoom;
-
             float newOffsetY = screenCenterY - imageCenterY * newZoom;
 
-            // --------------------------------------------------------
             // 新しい表示状態を設定
-            // --------------------------------------------------------
             _zoom = newZoom;
-
             _imageOffset = new PointF(newOffsetX, newOffsetY);
 
             // 選択範囲を消す
