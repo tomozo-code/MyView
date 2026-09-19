@@ -113,9 +113,6 @@
             listViewThumbnails.Size = new Size(121, 97);
             listViewThumbnails.TabIndex = 3;
             listViewThumbnails.UseCompatibleStateImageBehavior = false;
-            listViewThumbnails.VirtualMode = true;
-            listViewThumbnails.CacheVirtualItems += ListViewThumbnails_CacheVirtualItems;
-            listViewThumbnails.RetrieveVirtualItem += ListViewThumbnails_RetrieveVirtualItem;
             listViewThumbnails.DoubleClick += ListViewThumbnails_DoubleClick;
             listViewThumbnails.KeyDown += ListViewThumbnails_KeyDown;
             listViewThumbnails.MouseDown += ListViewThumbnails_MouseDown;
@@ -125,69 +122,69 @@
             // 
             conMenu1.Items.AddRange(new ToolStripItem[] { conTxtMenu1, conTxtMenu2, conTxtMenu3, conTxtMenu4, conTxtMenu5, conTxtMenu6, conTxtMenu7, conTxtMenu8, conTxtMenu9 });
             conMenu1.Name = "conMenu1";
-            conMenu1.Size = new Size(181, 242);
+            conMenu1.Size = new Size(169, 220);
             conMenu1.Opening += ConMenu1_Opening;
             // 
             // conTxtMenu1
             // 
             conTxtMenu1.Name = "conTxtMenu1";
-            conTxtMenu1.Size = new Size(180, 24);
+            conTxtMenu1.Size = new Size(168, 24);
             conTxtMenu1.Text = "フルパス(&1)";
             conTxtMenu1.Click += ConTxtMenu1_Click;
             // 
             // conTxtMenu2
             // 
             conTxtMenu2.Name = "conTxtMenu2";
-            conTxtMenu2.Size = new Size(180, 24);
+            conTxtMenu2.Size = new Size(168, 24);
             conTxtMenu2.Text = "ファイル名(&2)";
             conTxtMenu2.Click += ConTxtMenu2_Click;
             // 
             // conTxtMenu3
             // 
             conTxtMenu3.Name = "conTxtMenu3";
-            conTxtMenu3.Size = new Size(180, 24);
+            conTxtMenu3.Size = new Size(168, 24);
             conTxtMenu3.Text = "フォルダーパス(&3)";
             conTxtMenu3.Click += ConTxtMenu3_Click;
             // 
             // conTxtMenu4
             // 
             conTxtMenu4.Name = "conTxtMenu4";
-            conTxtMenu4.Size = new Size(180, 24);
+            conTxtMenu4.Size = new Size(168, 24);
             conTxtMenu4.Text = "画像(&4)";
             conTxtMenu4.Click += ConTxtMenu4_Click;
             // 
             // conTxtMenu5
             // 
             conTxtMenu5.Name = "conTxtMenu5";
-            conTxtMenu5.Size = new Size(180, 24);
+            conTxtMenu5.Size = new Size(168, 24);
             conTxtMenu5.Text = "拡張子(&5)";
             conTxtMenu5.Click += ConTxtMenu5_Click;
             // 
             // conTxtMenu6
             // 
             conTxtMenu6.Name = "conTxtMenu6";
-            conTxtMenu6.Size = new Size(180, 24);
+            conTxtMenu6.Size = new Size(168, 24);
             conTxtMenu6.Text = "ファイルサイズ(&6)";
             conTxtMenu6.Click += ConTxtMenu6_Click;
             // 
             // conTxtMenu7
             // 
             conTxtMenu7.Name = "conTxtMenu7";
-            conTxtMenu7.Size = new Size(180, 24);
+            conTxtMenu7.Size = new Size(168, 24);
             conTxtMenu7.Text = "画像サイズ(&7)";
             conTxtMenu7.Click += ConTxtMenu7_Click;
             // 
             // conTxtMenu8
             // 
             conTxtMenu8.Name = "conTxtMenu8";
-            conTxtMenu8.Size = new Size(180, 24);
+            conTxtMenu8.Size = new Size(168, 24);
             conTxtMenu8.Text = "更新日時(&8)";
             conTxtMenu8.Click += ConTxtMenu8_Click;
             // 
             // conTxtMenu9
             // 
             conTxtMenu9.Name = "conTxtMenu9";
-            conTxtMenu9.Size = new Size(180, 24);
+            conTxtMenu9.Size = new Size(168, 24);
             conTxtMenu9.Text = "作成日時(&9)";
             conTxtMenu9.Click += ConTxtMenu9_Click;
             // 
