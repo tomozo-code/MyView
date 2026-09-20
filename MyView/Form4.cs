@@ -583,14 +583,14 @@ namespace MyView
             try
             {
                 using (PrintDialog pd = new PrintDialog())
-            {
-                pd.Document = _printDocument;
-                if (pd.ShowDialog() == DialogResult.OK)
                 {
-                    _currentPageIndex = 0;
-                    _printDocument.Print();
+                    pd.Document = _printDocument;
+                    if (pd.ShowDialog() == DialogResult.OK)
+                    {
+                        _currentPageIndex = 0;
+                        _printDocument.Print();
+                    }
                 }
-            }
             }
             catch (Exception ex)
             {
