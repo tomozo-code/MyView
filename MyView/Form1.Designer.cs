@@ -88,8 +88,8 @@
             splitContainer1.Panel2.Controls.Add(listViewThumbnails);
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Cursor = Cursors.Default;
-            splitContainer1.Size = new Size(584, 173);
-            splitContainer1.SplitterDistance = 207;
+            splitContainer1.Size = new Size(673, 173);
+            splitContainer1.SplitterDistance = 238;
             splitContainer1.SplitterWidth = 8;
             splitContainer1.TabIndex = 0;
             // 
@@ -199,13 +199,13 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(369, 38);
+            panel1.Size = new Size(427, 38);
             panel1.TabIndex = 2;
             // 
             // numThumbnailSize
             // 
             numThumbnailSize.Increment = new decimal(new int[] { 32, 0, 0, 0 });
-            numThumbnailSize.Location = new Point(96, 3);
+            numThumbnailSize.Location = new Point(202, 3);
             numThumbnailSize.Maximum = new decimal(new int[] { 256, 0, 0, 0 });
             numThumbnailSize.Minimum = new decimal(new int[] { 64, 0, 0, 0 });
             numThumbnailSize.Name = "numThumbnailSize";
@@ -221,9 +221,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(9, 5);
             label1.Name = "label1";
-            label1.Size = new Size(94, 21);
+            label1.Size = new Size(187, 21);
             label1.TabIndex = 2;
-            label1.Text = "表示サイズ：";
+            label1.Text = "表示サイズ（64～256）：";
             // 
             // statusStrip1
             // 
@@ -232,7 +232,7 @@
             statusStrip1.Location = new Point(0, 343);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 16, 0);
-            statusStrip1.Size = new Size(638, 26);
+            statusStrip1.Size = new Size(886, 26);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -258,7 +258,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, viewMenu, helpMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(638, 36);
+            menuStrip1.Size = new Size(886, 36);
             menuStrip1.TabIndex = 4;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -346,7 +346,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(638, 369);
+            ClientSize = new Size(886, 369);
             Controls.Add(splitContainer1);
             Controls.Add(pathTxt);
             Controls.Add(logTxt);

@@ -9,6 +9,8 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
 
 // --------------------------------------------------------
 // インデックス印刷フォーム
@@ -56,6 +58,11 @@ namespace MyView
             panel2.BackColor = Color.DimGray;
             panel2.Dock = DockStyle.Fill;
 
+            setDpi.Items.AddRange(new string[] { "100", "200", "300", "400", "500", "600" });
+            setDpi.SelectedIndex = 2;
+
+            toolStripStatusLabel1.Text = "インデックス印刷を行います。";
+
             // NumericUpDown の初期値・範囲ガード設定
             tate.Minimum = 1;
             tate.Maximum = 10;
@@ -88,6 +95,12 @@ namespace MyView
                     margin,
                     margin);
 
+            // NumericUpDown などのコントロールにイベントを一括紐付け
+            tate.MouseEnter += Menu_MouseEnter;
+            tate.MouseLeave += Menu_MouseLeave;
+
+            yoko.MouseEnter += Menu_MouseEnter;
+            yoko.MouseLeave += Menu_MouseLeave;
 
             // 印刷ページ描画イベントを登録
             _printDocument.PrintPage += PrintDocument_PrintPage;
@@ -97,6 +110,55 @@ namespace MyView
             previewControl.Focus();
         }
 
+        // ==============================
+        // マウスONで説明 
+        // ==============================
+        private void Menu_MouseEnter(object? sender, EventArgs e)
+        {
+            string? message = null;
+
+            // 通常のコントロール（Button, NumericUpDown, TextBox など）
+            if (sender is Control control)
+            {
+                if (control.Tag != null)
+                {
+                    message = control.Tag.ToString();
+                }
+
+                // Tagが設定されていればToolTipをセット
+                if (!string.IsNullOrEmpty(message))
+                {
+                    toolTip1.SetToolTip(control, message);
+                }
+            }
+            // メニュー項目やツールバー項目（ToolStripMenuItem, ToolStripButton など）
+            else if (sender is ToolStripItem item)
+            {
+                if (item.Tag != null)
+                {
+                    message = item.Tag.ToString();
+                }
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    item.ToolTipText = message;
+                }
+            }
+
+            // ステータスバーへの表示更新
+            if (!string.IsNullOrEmpty(message))
+            {
+                toolStripStatusLabel1.Text = message;
+            }
+        }
+
+        // ==============================
+        // マウス離脱 
+        // ==============================
+        private void Menu_MouseLeave(object? sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = "インデックス印刷を行います。";
+        }
 
         // ============================================================
         // 閉じるを押したとき
@@ -216,15 +278,18 @@ namespace MyView
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             Graphics? g = e.Graphics;
-            if (g == null) return;
+            if (g == null)
+                return;
 
             int rows = (int)tate.Value;
             int cols = (int)yoko.Value;
+
             int itemsPerPage = rows * cols;
 
             Rectangle marginBounds = e.MarginBounds;
 
             float cellWidth = (float)marginBounds.Width / cols;
+
             float cellHeight = (float)marginBounds.Height / rows;
 
             int startIndex = _currentPageIndex * itemsPerPage;
@@ -232,309 +297,255 @@ namespace MyView
             using Font fileNameFont = new Font("Yu Gothic UI", 8);
 
             using StringFormat stringFormat = new StringFormat
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Near
-            };
-
-            for (int localIndex = 0; localIndex < itemsPerPage; localIndex++)
-            {
-                int row = localIndex / cols;
-                int col = localIndex % cols;
-
-                float x = marginBounds.Left + (col * cellWidth);
-                float y = marginBounds.Top + (row * cellHeight);
-
-                RectangleF cellRect =
-                    new RectangleF(
-                        x,
-                        y,
-                        cellWidth,
-                        cellHeight);
-
-                // セルの枠線
-                g.DrawRectangle(
-                    Pens.LightGray,
-                    cellRect.X,
-                    cellRect.Y,
-                    cellRect.Width,
-                    cellRect.Height);
-
-                int imageIndex = startIndex + localIndex;
-
-                if (imageIndex >= _imageFiles.Count)
                 {
-                    continue;
-                }
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Near
+                };
 
-                float fileNameHeight = 20;
+            // このページで使用する画像を取得
+            int imageCount =
+                Math.Min(
+                    itemsPerPage,
+                    _imageFiles.Count - startIndex);
 
-                RectangleF imageRect =
-                    new RectangleF(
-                        cellRect.X + 5,
-                        cellRect.Y + 5,
-                        cellRect.Width - 10,
-                        cellRect.Height - fileNameHeight - 10);
+            string[] pageFilePaths = new string[imageCount];
 
-                string filePath = _imageFiles[imageIndex];
-
-                if (File.Exists(filePath))
-                {
-                    try
-                    {
-                        int targetWidth = Math.Max(1, (int)Math.Ceiling(imageRect.Width));
-                        int targetHeight = Math.Max(1, (int)Math.Ceiling(imageRect.Height));
-
-                        using Image img = CreatePrintImage(
-                            filePath,
-                            targetWidth,
-                            targetHeight);
-
-                        DrawImageKeepAspectRatio(
-                            g,
-                            img,
-                            imageRect);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(
-                            $"画像処理エラー\n\n" +
-                            $"ファイル：{filePath}\n\n" +
-                            $"エラー：{ex.Message}",
-                            "デバッグ",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                    }
-                }
-
-                // ファイル名
-                string fileName = Path.GetFileName(filePath);
-
-                RectangleF fileNameRect =
-                    new RectangleF(
-                        cellRect.X + 5,
-                        cellRect.Bottom - fileNameHeight - 5,
-                        cellRect.Width - 10,
-                        fileNameHeight);
-
-                g.DrawString(
-                    fileName,
-                    fileNameFont,
-                    Brushes.Black,
-                    fileNameRect,
-                    stringFormat);
+            for (int i = 0; i < imageCount; i++)
+            {
+                pageFilePaths[i] = _imageFiles[startIndex + i];
             }
 
-            _currentPageIndex++;
+            // 画像をバックグラウンドで並列生成
+            float printDpi = float.Parse(setDpi.Text);
 
-            e.HasMorePages =
-                (_currentPageIndex * itemsPerPage < _imageFiles.Count);
+            int targetWidth =
+                Math.Max(
+                    1,
+                    (int)Math.Ceiling(
+                        (cellWidth - 10) / 100f * printDpi));
 
-            if (!e.HasMorePages)
+            int targetHeight =
+                Math.Max(
+                    1,
+                    (int)Math.Ceiling(
+                        (cellHeight - 30) / 100f * printDpi));
+
+            Image?[] pageImages =
+                CreatePageImagesAsync(
+                    pageFilePaths,
+                    targetWidth,
+                    targetHeight)
+                .GetAwaiter()
+                .GetResult();
+
+            try
             {
-                _currentPageIndex = 0;
-            }
-
-            /*
-            Graphics? g = e.Graphics;
-            if (g == null) return;
-
-            int rows = (int)tate.Value;
-            int cols = (int)yoko.Value;
-            int itemsPerPage = rows * cols;
-
-            // ページ設定で指定された余白を反映
-            Rectangle marginBounds = e.MarginBounds;
-
-            // 1コマあたりの幅・高さ
-            float cellWidth = (float)marginBounds.Width / cols;
-            float cellHeight = (float)marginBounds.Height / rows;
-
-            int startIndex = _currentPageIndex * itemsPerPage;
-            int endIndex = Math.Min(startIndex + itemsPerPage, _imageFiles.Count);
-
-            using Font fileNameFont = new Font("Yu Gothic UI", 8);
-            using StringFormat stringFormat = new StringFormat
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Near
-            };
-
-            for (int localIndex = 0; localIndex < itemsPerPage; localIndex++)
-            {
-                int row = localIndex / cols;
-                int col = localIndex % cols;
-
-                // 各コマの領域
-                float x = marginBounds.Left + (col * cellWidth);
-                float y = marginBounds.Top + (row * cellHeight);
-
-                RectangleF cellRect = new RectangleF(x, y, cellWidth, cellHeight);
-
-                // --------------------------------------------------------
-                // コマの枠
-                // --------------------------------------------------------
-                g.DrawRectangle(
-                    Pens.LightGray,
-                    cellRect.X,
-                    cellRect.Y,
-                    cellRect.Width,
-                    cellRect.Height);
-
-                // このマスに画像が存在するか
-                int imageIndex = startIndex + localIndex;
-
-                if (imageIndex >= _imageFiles.Count)
+                // ページ描画
+                for (
+                    int localIndex = 0;
+                    localIndex < itemsPerPage;
+                    localIndex++)
                 {
-                    // 画像がないマスは空欄のまま
-                    continue;
-                }
+                    int row = localIndex / cols;
 
-                // --------------------------------------------------------
-                // 画像領域
-                // --------------------------------------------------------
+                    int col = localIndex % cols;
 
-                float fileNameHeight = 20;
+                    float x = marginBounds.Left + (col * cellWidth);
 
-                RectangleF imageRect =
-                    new RectangleF(
-                        cellRect.X + 5,
-                        cellRect.Y + 5,
-                        cellRect.Width - 10,
-                        cellRect.Height - fileNameHeight - 10);
+                    float y = marginBounds.Top + (row * cellHeight);
 
-                string filePath = _imageFiles[imageIndex];
+                    RectangleF cellRect =
+                        new RectangleF(
+                            x,
+                            y,
+                            cellWidth,
+                            cellHeight);
 
-                if (File.Exists(filePath))
-                {
-                    try
+                    // セルの枠線
+                    g.DrawRectangle(
+                        Pens.LightGray,
+                        cellRect.X,
+                        cellRect.Y,
+                        cellRect.Width,
+                        cellRect.Height);
+
+                    int imageIndex = startIndex + localIndex;
+
+                    if (imageIndex >= _imageFiles.Count)
                     {
-                        using (Image img = Image.FromFile(filePath))
+                        continue;
+                    }
+
+                    float fileNameHeight = 20;
+
+                    RectangleF imageRect =
+                        new RectangleF(
+                            cellRect.X + 5,
+                            cellRect.Y + 5,
+                            cellRect.Width - 10,
+                            cellRect.Height -
+                                fileNameHeight - 10);
+
+                    // 画像描画
+                    int pageImageIndex = localIndex;
+
+                    if (pageImageIndex < pageImages.Length)
+                    {
+                        Image? img =
+                            pageImages[pageImageIndex];
+
+                        if (img != null)
                         {
                             DrawImageKeepAspectRatio(g, img, imageRect);
                         }
                     }
-                    catch
-                    {
-                        // 読み込みに失敗した場合は画像を描画しない
-                    }
+
+                    // ファイル名
+                    string fileName = Path.GetFileName(_imageFiles[imageIndex]);
+
+                    RectangleF fileNameRect =
+                        new RectangleF(
+                            cellRect.X + 5,
+                            cellRect.Bottom -
+                                fileNameHeight - 5,
+                            cellRect.Width - 10,
+                            fileNameHeight);
+
+                    g.DrawString(
+                        fileName,
+                        fileNameFont,
+                        Brushes.Black,
+                        fileNameRect,
+                        stringFormat);
                 }
+            }
+            finally
+            {
 
-                // --------------------------------------------------------
-                // ファイル名
-                // --------------------------------------------------------
-
-                string fileName = Path.GetFileName(filePath);
-
-                RectangleF fileNameRect =
-                    new RectangleF(
-                        cellRect.X + 5,
-                        cellRect.Bottom - fileNameHeight - 5,
-                        cellRect.Width - 10,
-                        fileNameHeight);
-
-                g.DrawString(
-                    fileName,
-                    fileNameFont,
-                    Brushes.Black,
-                    fileNameRect,
-                    stringFormat);
+                // 今回のページで作ったBitmapを破棄
+                foreach (Image? image in pageImages)
+                {
+                    image?.Dispose();
+                }
             }
 
-            // --------------------------------------------------------
-            // 次ページの判定
-            // --------------------------------------------------------
-
+            // 次のページ
             _currentPageIndex++;
 
             e.HasMorePages = (_currentPageIndex * itemsPerPage < _imageFiles.Count);
 
-            // 最後のページまで描画したらリセット
             if (!e.HasMorePages)
             {
                 _currentPageIndex = 0;
             }
-            */
+
         }
 
-        private Image CreatePrintImage(
-            string filePath,
-            int width,
-            int height)
+        // ============================================================
+        // 1ページ分の画像を最大8枚程度ずつ並列処理
+        // ============================================================
+        private Image CreatePrintImage(string filePath, int width, int height)
         {
-            return Task.Run(() =>
+            using var inputStream =
+                new FileStream(
+                    filePath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.Read);
+
+            using var outputStream = new MemoryStream();
+
+            var settings = new ProcessImageSettings
             {
-                using var inputStream =
-                    new FileStream(
-                        filePath,
-                        FileMode.Open,
-                        FileAccess.Read,
-                        FileShare.Read);
+                Width = width,
+                Height = height,
+                ResizeMode = CropScaleMode.Max
+            };
 
-                using var outputStream =
-                    new MemoryStream();
+            MagicImageProcessor.ProcessImage(inputStream, outputStream, settings);
 
-                var settings = new ProcessImageSettings
+            outputStream.Position = 0;
+
+            using var resizedImage = Image.FromStream(outputStream, false, false);
+
+            var bitmap = new Bitmap(width, height);
+
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.Clear(Color.White);
+
+                float scale =
+                    Math.Min(
+                        (float)width / resizedImage.Width,
+                        (float)height / resizedImage.Height);
+
+                int drawWidth = (int)(resizedImage.Width * scale);
+
+                int drawHeight = (int)(resizedImage.Height * scale);
+
+                int x = (width - drawWidth) / 2;
+
+                int y = (height - drawHeight) / 2;
+
+                g.InterpolationMode = InterpolationMode.HighQualityBilinear;
+
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                g.DrawImage(
+                    resizedImage,
+                    new Rectangle(
+                        x,
+                        y,
+                        drawWidth,
+                        drawHeight));
+            }
+
+            return bitmap;
+        }
+
+        // ============================================================
+        // 1ページ分の画像を最大8枚程度ずつ並列処理
+        // ============================================================
+        private async Task<Image?[]> CreatePageImagesAsync(string[] filePaths, int width, int height)
+        {
+            int maxParallel = Math.Min(Environment.ProcessorCount, 8);
+
+            using var semaphore = new SemaphoreSlim(maxParallel);
+
+            Image?[] images = new Image?[filePaths.Length];
+
+            var tasks = filePaths.Select(async (filePath, index) =>
                 {
-                    Width = width,
-                    Height = height,
-                    ResizeMode = CropScaleMode.Max
-                };
+                    if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                    {
+                        return;
+                    }
 
-                MagicImageProcessor.ProcessImage(
-                    inputStream,
-                    outputStream,
-                    settings);
+                    await semaphore.WaitAsync().ConfigureAwait(false);
 
-                outputStream.Position = 0;
+                    try
+                    {
+                        images[index] =
+                            await Task.Run(() =>
+                                CreatePrintImage(
+                                    filePath,
+                                    width,
+                                    height))
+                            .ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        images[index] = null;
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                });
 
-                using var resizedImage =
-                    Image.FromStream(
-                        outputStream,
-                        false,
-                        false);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var bitmap =
-                    new Bitmap(width, height);
-
-                using (var g = Graphics.FromImage(bitmap))
-                {
-                    g.Clear(Color.White);
-
-                    float scale =
-                        Math.Min(
-                            (float)width / resizedImage.Width,
-                            (float)height / resizedImage.Height);
-
-                    int drawWidth =
-                        (int)(resizedImage.Width * scale);
-
-                    int drawHeight =
-                        (int)(resizedImage.Height * scale);
-
-                    int x =
-                        (width - drawWidth) / 2;
-
-                    int y =
-                        (height - drawHeight) / 2;
-
-                    g.InterpolationMode =
-                        InterpolationMode.HighQualityBilinear;
-
-                    g.PixelOffsetMode =
-                        PixelOffsetMode.HighQuality;
-
-                    g.DrawImage(
-                        resizedImage,
-                        new Rectangle(
-                            x,
-                            y,
-                            drawWidth,
-                            drawHeight));
-                }
-
-                return (Image)bitmap;
-            }).GetAwaiter().GetResult();
+            return images;
         }
 
         // ============================================================
@@ -569,8 +580,9 @@ namespace MyView
         // ============================================================
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            /*
-            using (PrintDialog pd = new PrintDialog())
+            try
+            {
+                using (PrintDialog pd = new PrintDialog())
             {
                 pd.Document = _printDocument;
                 if (pd.ShowDialog() == DialogResult.OK)
@@ -579,8 +591,13 @@ namespace MyView
                     _printDocument.Print();
                 }
             }
-            */
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("印刷エラー\n" + ex.Message);
+            }
 
+            /*
             try
             {
                 _currentPageIndex = 0;
@@ -589,8 +606,8 @@ namespace MyView
             }
             catch (Exception ex)
             {
-                MessageBox.Show("印刷エラー\n" + ex.Message);
-            }
+              
+            */
         }
 
         // ============================================================
