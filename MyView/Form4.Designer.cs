@@ -160,7 +160,7 @@
             yoko.Size = new Size(70, 29);
             yoko.TabIndex = 7;
             yoko.Tag = "横方向の配置数を指定します。(1～10)";
-            yoko.Value = new decimal(new int[] { 4, 0, 0, 0 });
+            yoko.Value = new decimal(new int[] { 2, 0, 0, 0 });
             // 
             // label2
             // 
@@ -338,6 +338,7 @@
             Name = "Form4";
             StartPosition = FormStartPosition.CenterParent;
             Text = "インデックス印刷";
+            FormClosing += Form4_FormClosing;
             Load += Form4_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();

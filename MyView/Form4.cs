@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 // インデックス印刷フォーム
 // --------------------------------------------------------
 
+// 印刷設定値は、「PrintSettings.txt」へ保存
+
 namespace MyView
 {
     public partial class Form4 : Form
@@ -23,6 +25,15 @@ namespace MyView
         private readonly PrintDocument _printDocument = new PrintDocument();
         private readonly List<string> _imageFiles = new List<string>();
         private int _currentPageIndex = 0;
+
+        // 前回終了時(Form4を閉じたとき)の印刷設定保存
+        // C:\Users\ユーザー名\AppData\Local\MyView\LastFolder.txt
+        private string PrintSettingsFilePath =>
+            Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData),
+                "MyView",
+                "PrintSettings.txt");
 
 
         // ============================================================
@@ -70,7 +81,7 @@ namespace MyView
 
             yoko.Minimum = 1;
             yoko.Maximum = 10;
-            if (yoko.Value < 1) yoko.Value = 4;
+            if (yoko.Value < 1) yoko.Value = 2;
 
             if (imageFiles != null)
             {
@@ -87,7 +98,7 @@ namespace MyView
             _printDocument.DefaultPageSettings.Landscape = false;
             // 余白10mm 指定は1/100インチ
             int margin = (int)Math.Round(10 / 25.4 * 100);
-            
+
             _printDocument.DefaultPageSettings.Margins =
                 new Margins(
                     margin,
@@ -161,12 +172,66 @@ namespace MyView
         }
 
         // ============================================================
+        // フォームを閉じるとき
+        // ============================================================
+        private void Form4_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 印刷設定を保存
+            SavePrintSettings();
+        }
+
+        // ============================================================
         // 閉じるを押したとき
         // ============================================================
         private void btnClose_Click(object sender, EventArgs e)
         {
             // 現在のフォームを閉じる
             this.Close();
+        }
+
+        // ============================================================
+        // フォームを閉じるときに印刷設定を保存
+        // ============================================================
+        private void SavePrintSettings()
+        {
+            try
+            {
+                string folder = Path.GetDirectoryName(PrintSettingsFilePath)!;
+
+                Directory.CreateDirectory(folder);
+
+                var pageSettings = _printDocument.DefaultPageSettings;
+
+                var paperSize = pageSettings.PaperSize;
+
+                var lines = new List<string>
+                {
+                    // 縦配置数
+                    $"tate={tate.Value}",
+                    // 横配置数
+                    $"yoko={yoko.Value}", 
+                     // 解像度
+                    $"dpi={setDpi.Text}",
+                    // 用紙
+                    $"paperName={paperSize.PaperName}",
+                    $"paperWidth={paperSize.Width}",
+                    $"paperHeight={paperSize.Height}",
+
+                    // 用紙の方向(縦・横)
+                    $"landscape={_printDocument.DefaultPageSettings.Landscape}",
+                    // 余白
+                    $"marginLeft={_printDocument.DefaultPageSettings.Margins.Left}",
+                    $"marginRight={_printDocument.DefaultPageSettings.Margins.Right}",
+                    $"marginTop={_printDocument.DefaultPageSettings.Margins.Top}",
+                    $"marginBottom={_printDocument.DefaultPageSettings.Margins.Bottom}"
+                };
+
+                File.WriteAllLines(PrintSettingsFilePath, lines, Encoding.UTF8);
+            }
+            catch
+            {
+                // 設定保存失敗はアプリの動作を止めない
+            }
         }
 
         // ============================================================
@@ -221,8 +286,136 @@ namespace MyView
         // ============================================================
         private void Form4_Load(object sender, EventArgs e)
         {
+            // 印刷設定を保存
+            LoadPrintSettings();
+            // プリンタ名ラベルの更新
             UpdatePrinterInfo();
+            // プレビューの再描画更新
             RefreshPreview();
+        }
+
+        // ============================================================
+        // フォームを開いたときに印刷設定を読み込む
+        // ============================================================
+        private void LoadPrintSettings()
+        {
+            try
+            {
+                if (!File.Exists(PrintSettingsFilePath))
+                    return;
+
+                string[] lines = File.ReadAllLines(PrintSettingsFilePath, Encoding.UTF8);
+                // 用紙サイズ
+                string paperName = "A4";
+                int paperWidth = 827;
+                int paperHeight = 1169;
+                // 用紙方向
+                bool landscape = false;
+                // 余白
+                int marginLeft = 39;
+                int marginRight = 39;
+                int marginTop = 39;
+                int marginBottom = 39;
+
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split('=', 2);
+
+                    if (parts.Length != 2)
+                        continue;
+
+                    string key = parts[0];
+                    string value = parts[1];
+
+                    switch (key)
+                    {
+                        // 縦配置数
+                        case "tate":
+                            if (decimal.TryParse(value, out decimal tateValue))
+                            {
+                                tate.Value =
+                                    Math.Max(
+                                        tate.Minimum,
+                                        Math.Min(
+                                            tate.Maximum,
+                                            tateValue));
+                            }
+                            break;
+                        // 横配置数
+                        case "yoko":
+                            if (decimal.TryParse(value, out decimal yokoValue))
+                            {
+                                yoko.Value =
+                                    Math.Max(
+                                        yoko.Minimum,
+                                        Math.Min(
+                                            yoko.Maximum,
+                                            yokoValue));
+                            }
+                            break;
+                        // 解像度
+                        case "dpi":
+                            if (setDpi.Items.Contains(value))
+                            {
+                                setDpi.SelectedItem = value;
+                            }
+                            break;
+                        // 用紙名
+                        case "paperName":
+                            paperName = value;
+                            break;
+                        // 用紙の幅
+                        case "paperWidth":
+                            int.TryParse(value, out paperWidth);
+                            break;
+                        // 用紙の高さ
+                        case "paperHeight":
+                            int.TryParse(value, out paperHeight);
+                            break;
+                        // 用紙方向
+                        case "landscape":
+                            bool.TryParse(value, out landscape);
+                            break;
+                        // 余白
+                        case "marginLeft":
+                            int.TryParse(value, out marginLeft);
+                            break;
+
+                        case "marginRight":
+                            int.TryParse(value, out marginRight);
+                            break;
+
+                        case "marginTop":
+                            int.TryParse(value, out marginTop);
+                            break;
+
+                        case "marginBottom":
+                            int.TryParse(value, out marginBottom);
+                            break;
+                    }
+                }
+
+                // 読み込んだページ設定を PrintDocument に反映
+                // 用紙、用紙サイズ
+                _printDocument.DefaultPageSettings.PaperSize =
+                    new PaperSize(
+                        paperName,
+                        paperWidth,
+                        paperHeight);
+                // 用紙方向(縦、横)
+                _printDocument.DefaultPageSettings.Landscape = landscape;
+                // 余白
+                _printDocument.DefaultPageSettings.Margins =
+                    new Margins(
+                        marginLeft,
+                        marginRight,
+                        marginTop,
+                        marginBottom);
+            }
+            catch
+            {
+                // 読み込み失敗時は初期設定のまま
+            }
         }
 
         // ============================================================
@@ -297,10 +490,10 @@ namespace MyView
             using Font fileNameFont = new Font("Yu Gothic UI", 8);
 
             using StringFormat stringFormat = new StringFormat
-                {
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Near
-                };
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Near
+            };
 
             // このページで使用する画像を取得
             int imageCount =
@@ -825,5 +1018,7 @@ namespace MyView
             previewControl.Cursor = Cursors.Default;
 
         }
+
+
     }
 }
