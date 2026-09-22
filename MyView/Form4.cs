@@ -108,6 +108,17 @@ namespace MyView
 
             paperlabel.Text = "用紙：A4 (210x297mm)・縦";
 
+            // フォント一覧を取得して追加
+            foreach (FontFamily font in FontFamily.Families.OrderBy(f => f.Name))
+            {
+                setFont.Items.Add(font.Name);
+            }
+            setFont.SelectedItem = "Yu Gothic UI";
+
+            setFontSize.Minimum = 1;
+            setFontSize.Maximum = 16;
+            if (setFontSize.Value < 1) setFontSize.Value = 8;
+
             // NumericUpDown などのコントロールにイベントを一括紐付け
             tate.MouseEnter += Menu_MouseEnter;
             tate.MouseLeave += Menu_MouseLeave;
@@ -214,6 +225,10 @@ namespace MyView
                     $"yoko={yoko.Value}", 
                      // 解像度
                     $"dpi={setDpi.Text}",
+                    // フォント
+                    $"font={setFont.Text}",
+                    // フォントサイズ
+                    $"fontSize={setFontSize.Value}",
                     // 用紙
                     $"paperName={paperSize.PaperName}",
                     $"paperWidth={paperSize.Width}",
@@ -318,6 +333,10 @@ namespace MyView
                 int marginRight = 39;
                 int marginTop = 39;
                 int marginBottom = 39;
+                // フォント
+                string fontName = "Yu Gothic UI";
+                //setFont.SelectedItem = fontName;
+                //int fontSize = 8;
 
                 foreach (string line in lines)
                 {
@@ -360,6 +379,26 @@ namespace MyView
                             if (setDpi.Items.Contains(value))
                             {
                                 setDpi.SelectedItem = value;
+                            }
+                            break;
+                        // フォント
+                        case "font":
+                            fontName = value;
+                            if (!string.IsNullOrEmpty(fontName) && setFont.Items.Contains(fontName))
+                            {
+                                setFont.SelectedItem = fontName;
+                            }
+                            break;
+                        // フォントサイズ
+                        case "fontSize":
+                            if (decimal.TryParse(value, out decimal fontSizeValue))
+                            {
+                                setFontSize.Value =
+                                    Math.Max(
+                                        setFontSize.Minimum,
+                                        Math.Min(
+                                            setFontSize.Maximum,
+                                            fontSizeValue));
                             }
                             break;
                         // 用紙名
@@ -516,7 +555,7 @@ namespace MyView
 
             int startIndex = _currentPageIndex * itemsPerPage;
 
-            using Font fileNameFont = new Font("Yu Gothic UI", 8);
+            using Font fileNameFont = new Font(setFont.Text, (float)setFontSize.Value);
 
             using StringFormat stringFormat = new StringFormat
             {
@@ -1048,7 +1087,5 @@ namespace MyView
             previewControl.Cursor = Cursors.Default;
 
         }
-
-
     }
 }

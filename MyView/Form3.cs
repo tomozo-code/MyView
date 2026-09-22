@@ -152,7 +152,7 @@ namespace MyView
             if (string.IsNullOrEmpty(folder))
                 return;
 
-            string[] extensions = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff", ".ico", ".wmf", ".emf" };
+            string[] extensions = { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff", ".ico", ".wmf", ".emf" };
 
             _imageFiles = Directory
                 .GetFiles(folder)
@@ -480,7 +480,7 @@ namespace MyView
             {
                 using Pen pen = new Pen(Color.White, 2);
                 pen.DashStyle = DashStyle.Dash;
-                g.DrawRectangle(pen,  _selectionRectangle);
+                g.DrawRectangle(pen, _selectionRectangle);
             }
         }
 
@@ -724,6 +724,28 @@ namespace MyView
 
             // 再描画
             pictureBox1.Invalidate();
+        }
+
+        // ============================================================
+        // キー操作
+        // ============================================================
+        private void Form3_KeyDown(object sender, KeyEventArgs e)
+        {
+            // ↑←pageUpキー
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp)
+            {
+                // 上スクロール → 前の画像
+                ShowPreviousImage();
+                return;
+            }
+
+            // ↓→pageDownキー
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right || e.KeyCode == Keys.PageDown)
+            {
+                // 下スクロール → 次の画像
+                ShowNextImage();
+                return;
+            }
         }
     }
 }

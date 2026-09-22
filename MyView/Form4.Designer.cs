@@ -33,6 +33,10 @@
             panel2 = new Panel();
             paperlabel = new Label();
             groupBox1 = new GroupBox();
+            setFontSize = new NumericUpDown();
+            label6 = new Label();
+            setFont = new ComboBox();
+            label5 = new Label();
             label4 = new Label();
             label3 = new Label();
             setDpi = new ComboBox();
@@ -56,6 +60,7 @@
             toolTip1 = new ToolTip(components);
             panel2.SuspendLayout();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)setFontSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)yoko).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tate).BeginInit();
             statusStrip1.SuspendLayout();
@@ -80,7 +85,7 @@
             panel2.Controls.Add(btnPrint);
             panel2.Location = new Point(41, 26);
             panel2.Name = "panel2";
-            panel2.Size = new Size(361, 633);
+            panel2.Size = new Size(313, 633);
             panel2.TabIndex = 8;
             // 
             // paperlabel
@@ -95,6 +100,10 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(setFontSize);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Controls.Add(setFont);
+            groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(setDpi);
@@ -105,15 +114,55 @@
             groupBox1.Controls.Add(tate);
             groupBox1.Location = new Point(15, 98);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(331, 147);
+            groupBox1.Size = new Size(283, 222);
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
-            groupBox1.Text = "配置・解像度";
+            groupBox1.Text = "配置・解像度・フォント";
+            // 
+            // setFontSize
+            // 
+            setFontSize.Location = new Point(122, 141);
+            setFontSize.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
+            setFontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            setFontSize.Name = "setFontSize";
+            setFontSize.Size = new Size(70, 29);
+            setFontSize.TabIndex = 10;
+            setFontSize.Tag = "フォントサイズを指定します。(1～16)";
+            setFontSize.Value = new decimal(new int[] { 8, 0, 0, 0 });
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(9, 143);
+            label6.Name = "label6";
+            label6.Size = new Size(107, 21);
+            label6.TabIndex = 14;
+            label6.Text = "フォントサイズ：";
+            // 
+            // setFont
+            // 
+            setFont.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            setFont.DropDownStyle = ComboBoxStyle.DropDownList;
+            setFont.FormattingEnabled = true;
+            setFont.Location = new Point(91, 104);
+            setFont.Name = "setFont";
+            setFont.Size = new Size(178, 29);
+            setFont.TabIndex = 9;
+            setFont.Tag = "フォントを指定します。";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(9, 107);
+            label5.Name = "label5";
+            label5.Size = new Size(71, 21);
+            label5.TabIndex = 12;
+            label5.Text = "フォント：";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 68);
+            label4.Location = new Point(9, 68);
             label4.Name = "label4";
             label4.Size = new Size(74, 21);
             label4.TabIndex = 11;
@@ -142,12 +191,12 @@
             // 
             // btnHaichi
             // 
-            btnHaichi.Location = new Point(9, 99);
+            btnHaichi.Location = new Point(9, 176);
             btnHaichi.Name = "btnHaichi";
-            btnHaichi.Size = new Size(156, 40);
-            btnHaichi.TabIndex = 9;
-            btnHaichi.Tag = "配置・解像度の設定を反映します。";
-            btnHaichi.Text = "配置・解像度反映";
+            btnHaichi.Size = new Size(120, 40);
+            btnHaichi.TabIndex = 11;
+            btnHaichi.Tag = "設定を反映します。";
+            btnHaichi.Text = "設定反映";
             btnHaichi.UseVisualStyleBackColor = true;
             btnHaichi.Click += btnHaichi_Click;
             btnHaichi.MouseEnter += Menu_MouseEnter;
@@ -213,7 +262,7 @@
             // 
             // btnPageSet
             // 
-            btnPageSet.Location = new Point(15, 345);
+            btnPageSet.Location = new Point(15, 418);
             btnPageSet.Name = "btnPageSet";
             btnPageSet.Size = new Size(120, 40);
             btnPageSet.TabIndex = 3;
@@ -226,7 +275,7 @@
             // 
             // btnPrintSet
             // 
-            btnPrintSet.Location = new Point(15, 299);
+            btnPrintSet.Location = new Point(15, 372);
             btnPrintSet.Name = "btnPrintSet";
             btnPrintSet.Size = new Size(120, 40);
             btnPrintSet.TabIndex = 2;
@@ -239,7 +288,7 @@
             // 
             // btnNext
             // 
-            btnNext.Location = new Point(15, 438);
+            btnNext.Location = new Point(15, 511);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(120, 40);
             btnNext.TabIndex = 5;
@@ -252,7 +301,7 @@
             // 
             // btnPrev
             // 
-            btnPrev.Location = new Point(15, 391);
+            btnPrev.Location = new Point(15, 464);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(120, 40);
             btnPrev.TabIndex = 4;
@@ -265,11 +314,11 @@
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(15, 512);
+            btnClose.Location = new Point(15, 585);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(120, 40);
-            btnClose.TabIndex = 10;
-            btnClose.Tag = "インデックス印刷画面を閉じます。";
+            btnClose.TabIndex = 12;
+            btnClose.Tag = "一覧印刷画面を閉じます。";
             btnClose.Text = "閉じる";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
@@ -278,7 +327,7 @@
             // 
             // btnPrint
             // 
-            btnPrint.Location = new Point(15, 253);
+            btnPrint.Location = new Point(15, 326);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(120, 40);
             btnPrint.TabIndex = 1;
@@ -355,6 +404,7 @@
             panel2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)setFontSize).EndInit();
             ((System.ComponentModel.ISupportInitialize)yoko).EndInit();
             ((System.ComponentModel.ISupportInitialize)tate).EndInit();
             statusStrip1.ResumeLayout(false);
@@ -392,5 +442,9 @@
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolTip toolTip1;
         private Label paperlabel;
+        private Label label5;
+        private ComboBox setFont;
+        private NumericUpDown setFontSize;
+        private Label label6;
     }
 }

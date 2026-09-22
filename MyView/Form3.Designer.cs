@@ -80,10 +80,12 @@
             Controls.Add(statusStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             Name = "Form3";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Form3";
             Load += Form3_Load;
+            KeyDown += Form3_KeyDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
