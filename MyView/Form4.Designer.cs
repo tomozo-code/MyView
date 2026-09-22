@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
             panel2 = new Panel();
+            paperlabel = new Label();
             groupBox1 = new GroupBox();
             label4 = new Label();
             label3 = new Label();
@@ -67,6 +68,7 @@
             // panel2
             // 
             panel2.AutoScroll = true;
+            panel2.Controls.Add(paperlabel);
             panel2.Controls.Add(groupBox1);
             panel2.Controls.Add(Pagelabel);
             panel2.Controls.Add(PrinterNamelabel);
@@ -78,8 +80,17 @@
             panel2.Controls.Add(btnPrint);
             panel2.Location = new Point(41, 26);
             panel2.Name = "panel2";
-            panel2.Size = new Size(361, 593);
+            panel2.Size = new Size(361, 633);
             panel2.TabIndex = 8;
+            // 
+            // paperlabel
+            // 
+            paperlabel.AutoSize = true;
+            paperlabel.Location = new Point(14, 64);
+            paperlabel.Name = "paperlabel";
+            paperlabel.Size = new Size(121, 21);
+            paperlabel.TabIndex = 11;
+            paperlabel.Text = "用紙サイズ、方向";
             // 
             // groupBox1
             // 
@@ -92,7 +103,7 @@
             groupBox1.Controls.Add(yoko);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(tate);
-            groupBox1.Location = new Point(15, 63);
+            groupBox1.Location = new Point(15, 98);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(331, 147);
             groupBox1.TabIndex = 7;
@@ -202,7 +213,7 @@
             // 
             // btnPageSet
             // 
-            btnPageSet.Location = new Point(15, 310);
+            btnPageSet.Location = new Point(15, 345);
             btnPageSet.Name = "btnPageSet";
             btnPageSet.Size = new Size(120, 40);
             btnPageSet.TabIndex = 3;
@@ -215,7 +226,7 @@
             // 
             // btnPrintSet
             // 
-            btnPrintSet.Location = new Point(15, 264);
+            btnPrintSet.Location = new Point(15, 299);
             btnPrintSet.Name = "btnPrintSet";
             btnPrintSet.Size = new Size(120, 40);
             btnPrintSet.TabIndex = 2;
@@ -228,7 +239,7 @@
             // 
             // btnNext
             // 
-            btnNext.Location = new Point(15, 403);
+            btnNext.Location = new Point(15, 438);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(120, 40);
             btnNext.TabIndex = 5;
@@ -241,7 +252,7 @@
             // 
             // btnPrev
             // 
-            btnPrev.Location = new Point(15, 356);
+            btnPrev.Location = new Point(15, 391);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(120, 40);
             btnPrev.TabIndex = 4;
@@ -254,7 +265,7 @@
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(15, 477);
+            btnClose.Location = new Point(15, 512);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(120, 40);
             btnClose.TabIndex = 10;
@@ -267,7 +278,7 @@
             // 
             // btnPrint
             // 
-            btnPrint.Location = new Point(15, 218);
+            btnPrint.Location = new Point(15, 253);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(120, 40);
             btnPrint.TabIndex = 1;
@@ -282,7 +293,7 @@
             // 
             statusStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
-            statusStrip1.Location = new Point(0, 685);
+            statusStrip1.Location = new Point(0, 706);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(895, 26);
             statusStrip1.TabIndex = 9;
@@ -321,7 +332,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(previewControl);
             splitContainer1.Panel2.Cursor = Cursors.Default;
-            splitContainer1.Size = new Size(821, 647);
+            splitContainer1.Size = new Size(821, 679);
             splitContainer1.SplitterDistance = 451;
             splitContainer1.SplitterWidth = 8;
             splitContainer1.TabIndex = 11;
@@ -330,14 +341,14 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(895, 711);
+            ClientSize = new Size(895, 732);
             Controls.Add(splitContainer1);
             Controls.Add(statusStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form4";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "インデックス印刷";
+            Text = "一覧印刷";
             FormClosing += Form4_FormClosing;
             Load += Form4_Load;
             panel2.ResumeLayout(false);
@@ -380,5 +391,6 @@
         private Label label4;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolTip toolTip1;
+        private Label paperlabel;
     }
 }

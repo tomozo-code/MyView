@@ -75,6 +75,9 @@ namespace MyView
         // 左クリック開始位置
         private Point _selectionClickStart;
 
+        // 表示画像が変更されたことをForm1へ通知
+        public event Action<string>? ImageChanged;
+
         // ============================================================
         // コンストラクタ
         // ============================================================
@@ -404,7 +407,13 @@ namespace MyView
 
             _currentImageIndex--;
 
-            SetImage(_imageFiles[_currentImageIndex]);
+            string imagePath = _imageFiles[_currentImageIndex];
+
+            SetImage(imagePath);
+
+            // Form1へ通知
+            ImageChanged?.Invoke(imagePath);
+
         }
 
         // ============================================================
@@ -423,7 +432,12 @@ namespace MyView
 
             _currentImageIndex++;
 
-            SetImage(_imageFiles[_currentImageIndex]);
+            string imagePath = _imageFiles[_currentImageIndex];
+
+            SetImage(imagePath);
+
+            // Form1へ通知
+            ImageChanged?.Invoke(imagePath);
         }
         // ============================================================
         // PictureBoxの描画

@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 // --------------------------------------------------------
-// インデックス印刷フォーム
+// 一覧印刷フォーム
 // --------------------------------------------------------
 
 // 印刷設定値は、「PrintSettings.txt」へ保存
@@ -72,7 +72,7 @@ namespace MyView
             setDpi.Items.AddRange(new string[] { "100", "200", "300", "400", "500", "600" });
             setDpi.SelectedIndex = 2;
 
-            toolStripStatusLabel1.Text = "インデックス印刷を行います。";
+            toolStripStatusLabel1.Text = "一覧印刷を行います。";
 
             // NumericUpDown の初期値・範囲ガード設定
             tate.Minimum = 1;
@@ -93,7 +93,7 @@ namespace MyView
 
             // 印刷設定の初期値
             // A4(210mm×297mm)・幅・高さ
-            _printDocument.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+            _printDocument.DefaultPageSettings.PaperSize = new PaperSize("A4 (210x297mm)", 827, 1169);
             // 縦:false、横:ture
             _printDocument.DefaultPageSettings.Landscape = false;
             // 余白10mm 指定は1/100インチ
@@ -105,6 +105,8 @@ namespace MyView
                     margin,
                     margin,
                     margin);
+
+            paperlabel.Text = "用紙：A4 (210x297mm)・縦";
 
             // NumericUpDown などのコントロールにイベントを一括紐付け
             tate.MouseEnter += Menu_MouseEnter;
@@ -168,7 +170,7 @@ namespace MyView
         // ==============================
         private void Menu_MouseLeave(object? sender, EventArgs e)
         {
-            toolStripStatusLabel1.Text = "インデックス印刷を行います。";
+            toolStripStatusLabel1.Text = "一覧印刷を行います。";
         }
 
         // ============================================================
@@ -286,7 +288,7 @@ namespace MyView
         // ============================================================
         private void Form4_Load(object sender, EventArgs e)
         {
-            // 印刷設定を保存
+            // 印刷設定を読み込む
             LoadPrintSettings();
             // プリンタ名ラベルの更新
             UpdatePrinterInfo();
@@ -306,7 +308,7 @@ namespace MyView
 
                 string[] lines = File.ReadAllLines(PrintSettingsFilePath, Encoding.UTF8);
                 // 用紙サイズ
-                string paperName = "A4";
+                string paperName = "A4 (210x297mm)";
                 int paperWidth = 827;
                 int paperHeight = 1169;
                 // 用紙方向
@@ -397,11 +399,29 @@ namespace MyView
 
                 // 読み込んだページ設定を PrintDocument に反映
                 // 用紙、用紙サイズ
-                _printDocument.DefaultPageSettings.PaperSize =
-                    new PaperSize(
-                        paperName,
-                        paperWidth,
-                        paperHeight);
+                PaperSize? foundPaperSize =
+                    _printDocument.PrinterSettings.PaperSizes
+                        .Cast<PaperSize>()
+                        .FirstOrDefault(p =>
+                            string.Equals(
+                                p.PaperName,
+                                paperName,
+                                StringComparison.OrdinalIgnoreCase));
+
+                if (foundPaperSize != null)
+                {
+                    _printDocument.DefaultPageSettings.PaperSize = foundPaperSize;
+                }
+                else
+                {
+                    // プリンターに該当用紙がない場合は保存値を使用
+                    _printDocument.DefaultPageSettings.PaperSize =
+                        new PaperSize(
+                            paperName,
+                            paperWidth,
+                            paperHeight);
+                }
+
                 // 用紙方向(縦、横)
                 _printDocument.DefaultPageSettings.Landscape = landscape;
                 // 余白
@@ -411,6 +431,7 @@ namespace MyView
                         marginRight,
                         marginTop,
                         marginBottom);
+
             }
             catch
             {
@@ -435,6 +456,14 @@ namespace MyView
         private void UpdatePrinterInfo()
         {
             PrinterNamelabel.Text = $"プリンタ名：{_printDocument.PrinterSettings.PrinterName}";
+
+            string landscapelabel = "縦";
+            if (_printDocument.DefaultPageSettings.Landscape)
+            {
+                landscapelabel = "横";
+            }
+            paperlabel.Text = $"用紙：{_printDocument.DefaultPageSettings.PaperSize.PaperName}・{landscapelabel}";
+
         }
 
         // ============================================================
@@ -834,6 +863,7 @@ namespace MyView
 
                 if (psd.ShowDialog() == DialogResult.OK)
                 {
+                    UpdatePrinterInfo();
                     RefreshPreview();
                 }
             }

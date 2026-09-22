@@ -40,7 +40,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // Form1:メインフォーム
 // Form2:バージョン情報フォーム
 // Form3:画像ビューフォーム
-// Form4:インデックス印刷フォーム
+// Form4:一覧印刷フォーム
 
 // --------------------------------------------------------
 // クラス
@@ -1177,11 +1177,38 @@ namespace MyView
         }
 
         // ============================================================
-        // 数字キー取得
+        // キー取得
         // ============================================================
-
         private void ListViewThumbnails_KeyDown(object sender, KeyEventArgs e)
         {
+            // ↑↓←→キー
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+            {
+                // ListView自身に↑↓←→の処理をさせる
+                // その処理が終わったあとでForm3を同期する
+                BeginInvoke(new Action(() =>
+                {
+                    if (listViewThumbnails.SelectedIndices.Count == 0)
+                        return;
+
+                    int index = listViewThumbnails.SelectedIndices[0];
+
+                    if (index < 0 || index >= _imageFiles.Count)
+                    {
+                        return;
+                    }
+
+                    // Form3が開いていれば画像も変更
+                    if (_previewForm != null && !_previewForm.IsDisposed)
+                    {
+                        _previewForm.SetImage(_imageFiles[index]);
+                    }
+                }));
+
+                return;
+            }
+
+            // 数字キー取得
             int number = e.KeyCode switch
             {
                 Keys.D1 or Keys.NumPad1 => 1,
@@ -1208,7 +1235,6 @@ namespace MyView
         // ============================================================
         // 数字キーに対応した処理
         // ============================================================
-
         private void CopyImageInfo(int number)
         {
             if (listViewThumbnails.SelectedIndices.Count == 0)
@@ -1584,14 +1610,12 @@ namespace MyView
             if (!File.Exists(fullPath))
                 return;
 
-            // --------------------------------------------------------
             // Form3がすでに開いているか
-            // --------------------------------------------------------
-
             if (_previewForm == null || _previewForm.IsDisposed)
             {
                 _previewForm = new Form3(fullPath);
                 _previewForm.FormClosed += PreviewForm_FormClosed;
+                _previewForm.ImageChanged += PreviewForm_ImageChanged;
                 _previewForm.Show(this);
             }
             else
@@ -1604,7 +1628,6 @@ namespace MyView
         // ============================================================
         // Form3が閉じられた
         // ============================================================
-
         private void PreviewForm_FormClosed(object? sender, FormClosedEventArgs e)
         {
             _previewForm = null;
@@ -1613,13 +1636,9 @@ namespace MyView
         // ============================================================
         // フォーム終了時
         // ============================================================
-
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            // --------------------------------------------------------
             // 最後に表示していたフォルダを保存
-            // --------------------------------------------------------
-
             try
             {
                 string? selectedPath = treeViewFolders.SelectedNode?.Tag?.ToString();
@@ -1636,22 +1655,16 @@ namespace MyView
                 // 終了時の保存失敗は無視
             }
 
-            // --------------------------------------------------------
             // 終了処理
-            // --------------------------------------------------------
             _isClosing = true;
             Interlocked.Increment(ref _loadGeneration);
             _cts?.Cancel();
             _cts?.Dispose();
 
-            // --------------------------------------------------------
             // ImageListをListViewから外す
-            // --------------------------------------------------------
             listViewThumbnails.LargeImageList = null;
 
-            // --------------------------------------------------------
             // ImageListを破棄
-            // --------------------------------------------------------
             _imageList.Dispose();
             base.OnFormClosed(e);
         }
@@ -1659,7 +1672,6 @@ namespace MyView
         // ============================================================
         // 終了
         // ============================================================
-
         private void exitMenu_Click(object sender, EventArgs e)
         {
             Close();
@@ -1668,7 +1680,6 @@ namespace MyView
         // ============================================================
         // バージョン情報
         // ============================================================
-
         private void verMenu_Click(object sender, EventArgs e)
         {
             using (var aboutform = new Form2())
@@ -1680,7 +1691,6 @@ namespace MyView
         // ============================================================
         // フォルダパスのテキストボックスをクリックすると全選択
         // ============================================================
-
         private void pathTxt_Click(object sender, EventArgs e)
         {
             pathTxt.SelectAll();
@@ -1689,7 +1699,6 @@ namespace MyView
         // ============================================================
         // 設定ファイル保存フォルダを開く
         // ============================================================
-
         private void SettingFolderMenu_Click(object sender, EventArgs e)
         {
             try
@@ -1721,7 +1730,6 @@ namespace MyView
         // ============================================================
         // フォルダーツリーを更新
         // ============================================================
-
         private void RefreshFolderTree()
         {
             // 現在選択しているフォルダーのパスを保存
@@ -1749,11 +1757,8 @@ namespace MyView
                     return;
                 }
 
-                // ----------------------------------------------------
                 // フォルダーが削除・移動されていた場合
                 // 親フォルダーへ移動
-                // ----------------------------------------------------
-
                 try
                 {
                     string? parentPath = Directory.GetParent(currentPath)?.FullName;
@@ -1786,7 +1791,6 @@ namespace MyView
         // ============================================================
         // フォルダー更新
         // ============================================================
-
         private void folderUpdate_Click(object sender, EventArgs e)
         {
             RefreshFolderTree();
@@ -1795,7 +1799,6 @@ namespace MyView
         // ============================================================
         // 使い方
         // ============================================================
-
         private void useMenu_Click(object sender, EventArgs e)
         {
             try
@@ -1879,7 +1882,7 @@ namespace MyView
         }
 
         // ============================================================
-        // インデックス印刷フォームを開く
+        // 一覧印刷フォームを開く
         // ============================================================
         private void printMenu_Click(object sender, EventArgs e)
         {
@@ -1896,5 +1899,35 @@ namespace MyView
                 form4.ShowDialog(this);
             }
         }
+
+        // ============================================================
+        // Form3で表示画像が変更された
+        // ============================================================
+        private void PreviewForm_ImageChanged(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath))
+                return;
+
+            int index =
+                _imageFiles.FindIndex(
+                    file => string.Equals(
+                        file,
+                        imagePath,
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (index < 0)
+                return;
+
+            if (index >= listViewThumbnails.VirtualListSize)
+                return;
+
+            // Form1の選択を変更
+            listViewThumbnails.SelectedIndices.Clear();
+            listViewThumbnails.SelectedIndices.Add(index);
+
+            // 選択画像を画面内に表示
+            listViewThumbnails.EnsureVisible(index);
+        }
+
     }
 }

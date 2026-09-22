@@ -272,15 +272,15 @@
             // printMenu
             // 
             printMenu.Name = "printMenu";
-            printMenu.Size = new Size(211, 26);
-            printMenu.Text = "インデックス印刷(&P)...";
+            printMenu.Size = new Size(180, 26);
+            printMenu.Text = "一覧印刷(&P)...";
             printMenu.ToolTipText = "インデックス印刷します。";
             printMenu.Click += printMenu_Click;
             // 
             // exitMenu
             // 
             exitMenu.Name = "exitMenu";
-            exitMenu.Size = new Size(211, 26);
+            exitMenu.Size = new Size(180, 26);
             exitMenu.Text = "終了(&X)";
             exitMenu.ToolTipText = "一覧帖を終了します";
             exitMenu.Click += exitMenu_Click;
