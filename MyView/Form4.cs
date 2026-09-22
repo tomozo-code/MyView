@@ -126,6 +126,9 @@ namespace MyView
             yoko.MouseEnter += Menu_MouseEnter;
             yoko.MouseLeave += Menu_MouseLeave;
 
+            setFontSize.MouseEnter += Menu_MouseEnter;
+            setFontSize.MouseLeave += Menu_MouseLeave;
+
             // 印刷ページ描画イベントを登録
             _printDocument.PrintPage += PrintDocument_PrintPage;
 

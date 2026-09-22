@@ -149,6 +149,8 @@
             setFont.Size = new Size(178, 29);
             setFont.TabIndex = 9;
             setFont.Tag = "フォントを指定します。";
+            setFont.MouseEnter += Menu_MouseEnter;
+            setFont.MouseLeave += Menu_MouseLeave;
             // 
             // label5
             // 

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             TitleTxt = new Label();
             labelVersion = new Label();
@@ -36,6 +37,9 @@
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             OkBtn = new Button();
+            label2 = new Label();
+            linkLabel1 = new LinkLabel();
+            toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -73,7 +77,7 @@
             UseTxtBox.Location = new Point(12, 126);
             UseTxtBox.Multiline = true;
             UseTxtBox.Name = "UseTxtBox";
-            UseTxtBox.Size = new Size(460, 245);
+            UseTxtBox.Size = new Size(527, 303);
             UseTxtBox.TabIndex = 3;
             // 
             // pictureBox1
@@ -90,9 +94,9 @@
             // 
             panel1.Controls.Add(OkBtn);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 377);
+            panel1.Location = new Point(0, 435);
             panel1.Name = "panel1";
-            panel1.Size = new Size(484, 50);
+            panel1.Size = new Size(551, 50);
             panel1.TabIndex = 5;
             // 
             // OkBtn
@@ -105,11 +109,33 @@
             OkBtn.UseVisualStyleBackColor = true;
             OkBtn.Click += OkBtn_Click;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(149, 99);
+            label2.Name = "label2";
+            label2.Size = new Size(62, 21);
+            label2.TabIndex = 11;
+            label2.Text = "GitHub:";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(217, 99);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(298, 21);
+            linkLabel1.TabIndex = 12;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "https://github.com/tomozo-code/MyView";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 427);
+            ClientSize = new Size(551, 485);
+            Controls.Add(linkLabel1);
+            Controls.Add(label2);
             Controls.Add(panel1);
             Controls.Add(pictureBox1);
             Controls.Add(UseTxtBox);
@@ -139,5 +165,8 @@
         private PictureBox pictureBox1;
         private Panel panel1;
         private Button OkBtn;
+        private Label label2;
+        private LinkLabel linkLabel1;
+        private ToolTip toolTip1;
     }
 }
