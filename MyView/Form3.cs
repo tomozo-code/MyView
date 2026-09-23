@@ -85,6 +85,9 @@ namespace MyView
         {
             InitializeComponent();
 
+            // Form3でKeyDownを拾えるように
+            this.KeyPreview = true;
+
             this.Width = 600;
             this.Height = 600;
             this.MinimumSize = new Size(300, 300);
@@ -731,21 +734,97 @@ namespace MyView
         // ============================================================
         private void Form3_KeyDown(object sender, KeyEventArgs e)
         {
-            // ↑←pageUpキー
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp)
+            // EscキーでForm3を閉じる
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (_image == null)
+                return;
+
+            // ↑・←・pageUp・BackSpaceキー
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
             {
                 // 上スクロール → 前の画像
                 ShowPreviousImage();
                 return;
             }
 
-            // ↓→pageDownキー
-            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right || e.KeyCode == Keys.PageDown)
+            // ↓・→・pageDown・Spaceキー
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Space)
             {
                 // 下スクロール → 次の画像
                 ShowNextImage();
                 return;
             }
+
+            // +キー
+            if (e.KeyCode == Keys.Oemplus || e.KeyCode == Keys.Add)
+            {
+                // 拡大
+                ZoomImage(ZoomStep);
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // -キー
+            if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Subtract)
+            {
+                // 縮小
+                ZoomImage(1.0f / ZoomStep);
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+        }
+
+        // ============================================================
+        // キーボードによるズーム
+        // ============================================================
+        private void ZoomImage(float zoomFactor)
+        {
+            if (_image == null)
+                return;
+
+            float oldZoom = _zoom;
+
+            float newZoom = oldZoom * zoomFactor;
+
+            // ズーム倍率を制限
+            newZoom = Math.Clamp(newZoom, MinZoom, MaxZoom);
+
+            // 変化しなければ何もしない
+            if (Math.Abs(newZoom - oldZoom) < 0.0001f)
+                return;
+
+            // 画面中央を基準にズーム
+            float centerX = pictureBox1.ClientSize.Width / 2.0f;
+
+            float centerY = pictureBox1.ClientSize.Height / 2.0f;
+
+            // 画面中央が指している元画像上の座標
+            float imageX = (centerX - _imageOffset.X) / oldZoom;
+
+            float imageY = (centerY - _imageOffset.Y) / oldZoom;
+
+            // 新しい倍率
+            _zoom = newZoom;
+
+            // 画面中央を基準に画像位置を調整
+            _imageOffset.X = centerX - imageX * newZoom;
+
+            _imageOffset.Y = centerY - imageY * newZoom;
+
+            // 再描画
+            pictureBox1.Invalidate();
         }
     }
 }
