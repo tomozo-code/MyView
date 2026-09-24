@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.DirectoryServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 // --------------------------------------------------------
 // 一覧印刷フォーム
@@ -59,9 +60,11 @@ namespace MyView
             this.MinimumSize = new Size(400, 400);
             this.WindowState = FormWindowState.Maximized;
 
+            toolStripContainer1.Dock = DockStyle.Fill;
+
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.SplitterDistance = 250;
-            splitContainer1.Panel1MinSize = 200;
+            splitContainer1.SplitterDistance = 100;
+            splitContainer1.Panel1MinSize = 150;
 
             previewControl.Dock = DockStyle.Fill;
             previewControl.BackColor = Color.DimGray;
@@ -71,6 +74,9 @@ namespace MyView
 
             setDpi.Items.AddRange(new string[] { "100", "200", "300", "400", "500", "600" });
             setDpi.SelectedIndex = 2;
+
+            setDirection.Items.AddRange(new string[] { "縦", "横" });
+            setDirection.SelectedIndex = 0;
 
             toolStripStatusLabel1.Text = "一覧印刷を行います。";
 
@@ -306,6 +312,8 @@ namespace MyView
         // ============================================================
         private void Form4_Load(object sender, EventArgs e)
         {
+            // 選択しているプリンタの用紙取得
+            LoadPaperSizes();
             // 印刷設定を読み込む
             LoadPrintSettings();
             // プリンタ名ラベルの更新
@@ -482,6 +490,27 @@ namespace MyView
         }
 
         // ============================================================
+        // 選択しているプリンタの用紙取得
+        // ============================================================
+        private void LoadPaperSizes()
+        {
+            setPaper.Items.Clear();
+
+            foreach (PaperSize paperSize in
+                _printDocument.PrinterSettings.PaperSizes)
+            {
+                setPaper.Items.Add(paperSize.PaperName);
+            }
+
+            /*
+            if (setPaper.Items.Count > 0)
+            {
+                setPaper.SelectedIndex = 0;
+            }
+            */
+        }
+
+        // ============================================================
         // プレビューの再描画更新
         // ============================================================
         private void RefreshPreview()
@@ -503,8 +532,22 @@ namespace MyView
             if (_printDocument.DefaultPageSettings.Landscape)
             {
                 landscapelabel = "横";
+                setDirection.SelectedIndex = 1;
             }
             paperlabel.Text = $"用紙：{_printDocument.DefaultPageSettings.PaperSize.PaperName}・{landscapelabel}";
+
+            // setPaper の選択状態を復元
+            int paperIndex = setPaper.Items.IndexOf(_printDocument.DefaultPageSettings.PaperSize.PaperName);
+
+            if (paperIndex >= 0)
+            {
+                setPaper.SelectedIndex = paperIndex;
+            }
+            else if (setPaper.Items.Count > 0)
+            {
+                setPaper.SelectedIndex = 0;
+            }
+
 
         }
 
@@ -884,8 +927,13 @@ namespace MyView
                 pd.Document = _printDocument;
                 if (pd.ShowDialog() == DialogResult.OK)
                 {
+                    // 選択しているプリンタの用紙取得
+                    LoadPaperSizes();
+                    // プリンタ名ラベルの更新
                     UpdatePrinterInfo();
+                    // プレビューの再描画更新
                     RefreshPreview();
+
                 }
             }
         }
@@ -905,7 +953,11 @@ namespace MyView
 
                 if (psd.ShowDialog() == DialogResult.OK)
                 {
+                    // 選択しているプリンタの用紙取得
+                    LoadPaperSizes();
+                    // プリンタ名ラベルの更新
                     UpdatePrinterInfo();
+                    // プレビューの再描画更新
                     RefreshPreview();
                 }
             }
@@ -965,6 +1017,29 @@ namespace MyView
         // ============================================================
         private void btnHaichi_Click(object sender, EventArgs e)
         {
+            // 用紙
+            if (setPaper.SelectedItem == null)
+                return;
+
+            string paperName = setPaper.SelectedItem.ToString()!;
+
+            PaperSize? paperSize =
+                _printDocument.PrinterSettings.PaperSizes
+                    .Cast<PaperSize>()
+                    .FirstOrDefault(p =>
+                        string.Equals(
+                            p.PaperName,
+                            paperName,
+                            StringComparison.OrdinalIgnoreCase));
+
+            if (paperSize != null)
+            {
+                _printDocument.DefaultPageSettings.PaperSize = paperSize;
+            }
+
+            // 用紙の向き
+            _printDocument.DefaultPageSettings.Landscape = setDirection.SelectedIndex != 0;
+
             // 1ページ目からプレビューを再描画
             RefreshPreview();
         }
@@ -1089,6 +1164,20 @@ namespace MyView
 
             previewControl.Cursor = Cursors.Default;
 
+        }
+
+        // ============================================================
+        // 数値入力共通ルーチン(クリックで全選択)
+        // ============================================================
+        private void NumericUpDown_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown nud)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    nud.Select(0, nud.Text.Length);
+                }));
+            }
         }
     }
 }
