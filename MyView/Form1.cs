@@ -223,7 +223,7 @@ namespace MyView
 
             // F5でフォルダー更新(ショートカットキー)
             folderUpdate.ShortcutKeys = Keys.F5;
-            // インデクス印刷(ショートカットキー)
+            // 一覧印刷(ショートカットキー)
             printMenu.ShortcutKeys = Keys.Control | Keys.P;
         }
 
