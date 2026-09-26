@@ -274,7 +274,7 @@
             printMenu.Name = "printMenu";
             printMenu.Size = new Size(180, 26);
             printMenu.Text = "一覧印刷(&P)...";
-            printMenu.ToolTipText = "インデックス印刷します。";
+            printMenu.ToolTipText = "一覧印刷のプレビューを表示します。";
             printMenu.Click += printMenu_Click;
             // 
             // exitMenu
@@ -295,7 +295,7 @@
             // folderUpdate
             // 
             folderUpdate.Name = "folderUpdate";
-            folderUpdate.Size = new Size(133, 26);
+            folderUpdate.Size = new Size(180, 26);
             folderUpdate.Text = "更新(&U)";
             folderUpdate.ToolTipText = "表示を更新(再読み込み)します";
             folderUpdate.Click += folderUpdate_Click;
