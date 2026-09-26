@@ -846,7 +846,7 @@ namespace MyView
                         new RectangleF(
                             cellRect.X + 2,
                             cellRect.Y + 2,
-                            cellRect.Width - 2,
+                            cellRect.Width - 4,
                             cellRect.Height -
                                 fileNameHeight - 6);
 
