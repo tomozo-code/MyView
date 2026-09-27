@@ -1445,20 +1445,91 @@ namespace MyView
         // ============================================================
         private bool ApplyPrinterChange(string oldPrinterName, string? oldPaperName, int oldPaperWidth, int oldPaperHeight, bool oldLandscape, Margins oldMargins)
         {
+            // 変更前の用紙情報を保存
+            PaperSize oldPaperSize = _printDocument.DefaultPageSettings.PaperSize;
+
             // 新しいプリンタの用紙一覧を取得
             _isSyncingPrinterSettings = true;
 
             try
             {
+                // プリンタ変更後は、PrintDocument内部の
+                // DefaultPageSettings.PaperSize が新プリンタの
+                // 既定用紙に変わることがある
                 LoadPaperSizes();
                 UpdatePrinterInfo();
+
+                // まず「同じ用紙種類」を RawKind で探す
+                PaperSize? newPaperSize = null;
+
+                if (oldPaperSize.RawKind != 0)
+                {
+                    newPaperSize =
+                        _printDocument.PrinterSettings.PaperSizes
+                            .Cast<PaperSize>()
+                            .FirstOrDefault(p =>
+                                p.RawKind == oldPaperSize.RawKind);
+                }
+
+                // RawKindで見つからなければ、用紙名で探す
+                if (newPaperSize == null &&
+                    !string.IsNullOrEmpty(oldPaperName))
+                {
+                    newPaperSize =
+                        _printDocument.PrinterSettings.PaperSizes
+                            .Cast<PaperSize>()
+                            .FirstOrDefault(p =>
+                                string.Equals(
+                                    p.PaperName,
+                                    oldPaperName,
+                                    StringComparison.OrdinalIgnoreCase));
+                }
+
+                // 同じ用紙が新プリンタに存在した
+                if (newPaperSize != null)
+                {
+                    // UIを新しいプリンタ側の用紙名に合わせる
+                    int newPaperIndex = setPaper.Items.IndexOf(newPaperSize.PaperName);
+
+                    if (newPaperIndex >= 0)
+                    {
+                        setPaper.SelectedIndex = newPaperIndex;
+                    }
+
+                    // PrintDocument内部にも反映
+                    _printDocument.DefaultPageSettings.PaperSize = newPaperSize;
+                }
+                else
+                {
+                    // 同じ用紙が存在しない場合
+                    // LoadPaperSizes() が選択した
+                    // 新プリンタの先頭用紙をそのまま使用する
+                    if (setPaper.SelectedItem != null)
+                    {
+                        string paperName = setPaper.SelectedItem.ToString()!;
+
+                        PaperSize? firstPaper =
+                            _printDocument.PrinterSettings.PaperSizes
+                                .Cast<PaperSize>()
+                                .FirstOrDefault(p =>
+                                    string.Equals(
+                                        p.PaperName,
+                                        paperName,
+                                        StringComparison.OrdinalIgnoreCase));
+
+                        if (firstPaper != null)
+                        {
+                            _printDocument.DefaultPageSettings.PaperSize = firstPaper;
+                        }
+                    }
+                }
             }
             finally
             {
                 _isSyncingPrinterSettings = false;
             }
 
-            // 新しいプリンタで余白チェック
+            // 新しいプリンタ・用紙で余白チェック
             if (ApplyMargins())
             {
                 return true;
@@ -1486,18 +1557,28 @@ namespace MyView
                 }
 
                 // 元の用紙を内部設定へ戻す
-                PaperSize? oldPaperSize =
+                PaperSize? restoredPaperSize =
                     _printDocument.PrinterSettings.PaperSizes
                         .Cast<PaperSize>()
                         .FirstOrDefault(p =>
-                            string.Equals(
-                                p.PaperName,
-                                oldPaperName,
-                                StringComparison.OrdinalIgnoreCase));
+                            p.RawKind == oldPaperSize.RawKind);
 
-                if (oldPaperSize != null)
+                if (restoredPaperSize == null &&
+                    !string.IsNullOrEmpty(oldPaperName))
                 {
-                    _printDocument.DefaultPageSettings.PaperSize = oldPaperSize;
+                    restoredPaperSize =
+                        _printDocument.PrinterSettings.PaperSizes
+                            .Cast<PaperSize>()
+                            .FirstOrDefault(p =>
+                                string.Equals(
+                                    p.PaperName,
+                                    oldPaperName,
+                                    StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (restoredPaperSize != null)
+                {
+                    _printDocument.DefaultPageSettings.PaperSize = restoredPaperSize;
                 }
                 else
                 {
@@ -1508,22 +1589,22 @@ namespace MyView
                             oldPaperHeight);
                 }
 
-                // 元の向き
+                // 元の向き・余白を復元
                 _printDocument.DefaultPageSettings.Landscape = oldLandscape;
 
-                // 元の余白
                 _printDocument.DefaultPageSettings.Margins = oldMargins;
 
-                // プリンタ名・用紙・向きをUIへ反映
+                // プリンタ名をUIへ反映
                 UpdatePrinterInfo();
 
-                if (!string.IsNullOrEmpty(oldPaperName))
+                // 元の用紙をUIへ反映
+                if (restoredPaperSize != null)
                 {
-                    int oldPaperIndex = setPaper.Items.IndexOf(oldPaperName);
+                    int restoredPaperIndex = setPaper.Items.IndexOf(restoredPaperSize.PaperName);
 
-                    if (oldPaperIndex >= 0)
+                    if (restoredPaperIndex >= 0)
                     {
-                        setPaper.SelectedIndex = oldPaperIndex;
+                        setPaper.SelectedIndex = restoredPaperIndex;
                     }
                 }
             }
@@ -1561,8 +1642,7 @@ namespace MyView
             Margins oldMargins = _printDocument.DefaultPageSettings.Margins;
 
             // 新しいプリンタへ変更
-            string newPrinterName =
-                setPrinterName.SelectedItem.ToString()!;
+            string newPrinterName = setPrinterName.SelectedItem.ToString()!;
 
             _printDocument.PrinterSettings.PrinterName = newPrinterName;
 
