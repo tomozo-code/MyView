@@ -28,6 +28,11 @@ namespace MyView
         private readonly List<string> _imageFiles = new List<string>();
         private int _currentPageIndex = 0;
 
+        private bool _isActualPrinting = false;
+        // 印刷範囲
+        private int _printFromPage = 1;
+        private int _printToPage = 1;
+
         private bool _isLoadingSettings = false;
 
         private bool _isRestoringPrinter = false;
@@ -750,14 +755,48 @@ namespace MyView
 
             int itemsPerPage = rows * cols;
 
+            if (itemsPerPage <= 0)
+            {
+                e.HasMorePages = false;
+                return;
+            }
+
             Rectangle marginBounds = e.MarginBounds;
 
             float cellWidth = (float)marginBounds.Width / cols;
 
             float cellHeight = (float)marginBounds.Height / rows;
 
+            // 現在描画しているページ番号
+            // 1ページ目 = 1
+            int currentPrintPage = _currentPageIndex + 1;
+
+            // 実際の印刷の場合だけ、印刷範囲をチェック
+            // プレビューでは全ページを生成する
+            if (_isActualPrinting)
+            {
+                if (currentPrintPage < _printFromPage)
+                {
+                    _currentPageIndex++;
+
+                    e.HasMorePages =
+                        _currentPageIndex < _printToPage &&
+                        (_currentPageIndex * itemsPerPage < _imageFiles.Count);
+
+                    return;
+                }
+
+                if (currentPrintPage > _printToPage)
+                {
+                    e.HasMorePages = false;
+                    return;
+                }
+            }
+
+            // このページで使用する画像の開始位置
             int startIndex = _currentPageIndex * itemsPerPage;
 
+            // フォント
             using Font fileNameFont = new Font(setFont.Text, (float)setFontSize.Value);
 
             using StringFormat stringFormat = new StringFormat
@@ -772,12 +811,21 @@ namespace MyView
                     itemsPerPage,
                     _imageFiles.Count - startIndex);
 
+            if (imageCount <= 0)
+            {
+                e.HasMorePages = false;
+                _currentPageIndex = 0;
+                return;
+            }
+
             string[] pageFilePaths = new string[imageCount];
 
             for (int i = 0; i < imageCount; i++)
             {
                 pageFilePaths[i] = _imageFiles[startIndex + i];
             }
+
+
 
             // 画像をバックグラウンドで並列生成
             float printDpi = float.Parse(setDpi.Text);
@@ -794,6 +842,7 @@ namespace MyView
                     (int)Math.Ceiling(
                         (cellHeight - 30) / 100f * printDpi));
 
+            // 画像生成
             Image?[] pageImages =
                 CreatePageImagesAsync(
                     pageFilePaths,
@@ -840,6 +889,7 @@ namespace MyView
                         continue;
                     }
 
+                    // ファイル名表示領域
                     float fileNameHeight = setFileName.SelectedIndex == 2 ? 0 : 20;
 
                     RectangleF imageRect =
@@ -916,10 +966,34 @@ namespace MyView
             }
 
             // 次のページ
+            /*
             _currentPageIndex++;
 
             e.HasMorePages = (_currentPageIndex * itemsPerPage < _imageFiles.Count);
 
+            if (!e.HasMorePages)
+            {
+                _currentPageIndex = 0;
+            }
+            */
+
+            // 次のページ
+            _currentPageIndex++;
+
+            if (_isActualPrinting)
+            {
+                // 実際の印刷では指定範囲まで
+                e.HasMorePages =
+                    _currentPageIndex < _printToPage &&
+                    (_currentPageIndex * itemsPerPage < _imageFiles.Count);
+            }
+            else
+            {
+                // 印刷プレビューでは全ページを生成
+                e.HasMorePages = (_currentPageIndex * itemsPerPage < _imageFiles.Count);
+            }
+
+            // 最後まで描画したらページ番号を初期化
             if (!e.HasMorePages)
             {
                 _currentPageIndex = 0;
@@ -1068,37 +1142,60 @@ namespace MyView
         {
             try
             {
-                // ----------------------------------------------------
                 // PrintDialogを開く前の設定を保存
-                // ----------------------------------------------------
-                string oldPrinterName =
-                    _printDocument.PrinterSettings.PrinterName;
+                string oldPrinterName = _printDocument.PrinterSettings.PrinterName;
 
-                PaperSize oldPaperSize =
-                    _printDocument.DefaultPageSettings.PaperSize;
+                PaperSize oldPaperSize = _printDocument.DefaultPageSettings.PaperSize;
 
-                string? oldPaperName =
-                    setPaper.SelectedItem?.ToString();
+                string? oldPaperName = setPaper.SelectedItem?.ToString();
 
                 int oldPaperWidth = oldPaperSize.Width;
                 int oldPaperHeight = oldPaperSize.Height;
 
-                bool oldLandscape =
-                    _printDocument.DefaultPageSettings.Landscape;
+                bool oldLandscape = _printDocument.DefaultPageSettings.Landscape;
 
-                Margins oldMargins =
-                    _printDocument.DefaultPageSettings.Margins;
+                Margins oldMargins = _printDocument.DefaultPageSettings.Margins;
+
+                // 総ページ数を計算
+                int rows = (int)tate.Value;
+                int cols = (int)yoko.Value;
+
+                int itemsPerPage =
+                    rows * cols;
+
+                int totalPages =
+                    itemsPerPage > 0
+                        ? (int)Math.Ceiling(
+                            (double)_imageFiles.Count /
+                            itemsPerPage)
+                        : 0;
 
                 using (PrintDialog pd = new PrintDialog())
                 {
                     pd.Document = _printDocument;
 
+                    // 印刷範囲
+                    // 「すべて」・「ページ指定」を有効にする
+                    pd.AllowSomePages = true;
+                    // 「選択した部分」は無効
+                    pd.AllowSelection = false;
+
+                    int maximumPage = Math.Max(1, totalPages);
+
+                    pd.PrinterSettings.MinimumPage = 1;
+                    pd.PrinterSettings.MaximumPage = (short)maximumPage;
+
+                    // FromPage / ToPage も必ず有効範囲にする
+                    pd.PrinterSettings.FromPage = 1;
+                    pd.PrinterSettings.ToPage = (short)maximumPage;
+
+                    // 初期状態は「すべて」
+                    pd.PrinterSettings.PrintRange = PrintRange.AllPages;
+
                     if (pd.ShowDialog() != DialogResult.OK)
                         return;
 
-                    // ------------------------------------------------
                     // プリンタ変更後の共通処理
-                    // ------------------------------------------------
                     if (!ApplyPrinterChange(
                         oldPrinterName,
                         oldPaperName,
@@ -1110,11 +1207,37 @@ namespace MyView
                         return;
                     }
 
-                    // ------------------------------------------------
+                    // 印刷範囲を保存
+                    if (_printDocument.PrinterSettings.PrintRange == PrintRange.SomePages)
+                    {
+                        _printFromPage = _printDocument.PrinterSettings.FromPage;
+
+                        _printToPage = _printDocument.PrinterSettings.ToPage;
+                    }
+                    else
+                    {
+                        // 「すべて」
+                        _printFromPage = 1;
+                        _printToPage = totalPages;
+                    }
+
                     // 問題なければ印刷
-                    // ------------------------------------------------
-                    _currentPageIndex = 0;
-                    _printDocument.Print();
+                    //_currentPageIndex = 0;
+                    //_printDocument.Print();
+
+                    _isActualPrinting = true;
+                    _currentPageIndex = _printFromPage - 1;
+
+                    try
+                    {
+                        _printDocument.Print();
+                    }
+                    finally
+                    {
+                        _isActualPrinting = false;
+                        _currentPageIndex = 0;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -1129,26 +1252,19 @@ namespace MyView
         // ============================================================
         private void btnPrintSet_Click(object sender, EventArgs e)
         {
-            // --------------------------------------------------------
             // PrintDialogを開く前の設定を保存
-            // --------------------------------------------------------
-            string oldPrinterName =
-                _printDocument.PrinterSettings.PrinterName;
+            string oldPrinterName = _printDocument.PrinterSettings.PrinterName;
 
-            PaperSize oldPaperSize =
-                _printDocument.DefaultPageSettings.PaperSize;
+            PaperSize oldPaperSize = _printDocument.DefaultPageSettings.PaperSize;
 
-            string? oldPaperName =
-                setPaper.SelectedItem?.ToString();
+            string? oldPaperName = setPaper.SelectedItem?.ToString();
 
             int oldPaperWidth = oldPaperSize.Width;
             int oldPaperHeight = oldPaperSize.Height;
 
-            bool oldLandscape =
-                _printDocument.DefaultPageSettings.Landscape;
+            bool oldLandscape = _printDocument.DefaultPageSettings.Landscape;
 
-            Margins oldMargins =
-                _printDocument.DefaultPageSettings.Margins;
+            Margins oldMargins = _printDocument.DefaultPageSettings.Margins;
 
             using (PrintDialog pd = new PrintDialog())
             {
@@ -1157,9 +1273,7 @@ namespace MyView
                 if (pd.ShowDialog() != DialogResult.OK)
                     return;
 
-                // ----------------------------------------------------
                 // PrintDialogで変更されたプリンタを共通処理
-                // ----------------------------------------------------
                 if (!ApplyPrinterChange(
                     oldPrinterName,
                     oldPaperName,
@@ -1171,15 +1285,13 @@ namespace MyView
                     return;
                 }
 
-                // ----------------------------------------------------
                 // 問題なければプレビュー更新
-                // ----------------------------------------------------
                 RefreshPreview();
             }
         }
 
         // ============================================================
-        // ページ設定を押したとき
+        // ページ設定を押したとき(このコードは使ってないがとりあえず残しておく)
         // ============================================================
         private void btnPageSet_Click(object sender, EventArgs e)
         {
@@ -1216,11 +1328,19 @@ namespace MyView
         // ============================================================
         private void GoToPreviousPage()
         {
+            /*
             if (previewControl.StartPage > 0)
             {
                 previewControl.StartPage--;
+                previewControl.InvalidatePreview();
                 UpdatePageLabel();
             }
+            */
+
+            if (previewControl.StartPage <= 0)
+                return;
+            previewControl.StartPage--;
+            UpdatePageLabel();
         }
 
         // ============================================================
@@ -1236,6 +1356,7 @@ namespace MyView
         // ============================================================
         private void GoToNextPage()
         {
+            /*
             int rows = (int)tate.Value;
             int cols = (int)yoko.Value;
             int itemsPerPage = rows * cols;
@@ -1248,8 +1369,31 @@ namespace MyView
             if (previewControl.StartPage < totalPages - 1)
             {
                 previewControl.StartPage++;
+                previewControl.InvalidatePreview();
                 UpdatePageLabel();
             }
+            */
+
+            int rows = (int)tate.Value;
+            int cols = (int)yoko.Value;
+
+            int itemsPerPage = rows * cols;
+
+            if (itemsPerPage <= 0)
+                return;
+
+            int totalPages =
+                (int)Math.Ceiling(
+                    (double)_imageFiles.Count /
+                    itemsPerPage);
+
+            if (previewControl.StartPage >= totalPages - 1)
+                return;
+
+            previewControl.StartPage++;
+
+            UpdatePageLabel();
+
         }
 
         // ============================================================
