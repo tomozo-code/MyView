@@ -31,17 +31,23 @@
 - 🎴 サムネイルを選択し、数字キーに割り当てられた各種コマンド(クリップボードへのコピー)の実行
 - 🖼 画像ファイルの単体表示(画像ビュー)
 - 🎞️ 画像ビューは、拡大縮小、前の画像、次の画像 が可能
+- 🖨️ 画像の一覧印刷
 
 ---
 
 ## 🖼 スクリーンショット
 ### 📖 サムネイル表示
-<img width="986" height="693" alt="image001" src="https://github.com/user-attachments/assets/eb7e4977-d833-451b-8df5-e85c70802262" />
+<img width="1196" height="704" alt="image001" src="https://github.com/user-attachments/assets/c462227b-664e-46d1-9c9f-40be0db5c50b" />
 
 ---
 
 ### 🖼 画像ビュー
-<img width="983" height="692" alt="image002" src="https://github.com/user-attachments/assets/d4c7a355-d9c8-430f-834e-185d20c22c5e" />
+<img width="983" height="692" alt="image002" src="https://github.com/user-attachments/assets/72123737-1673-480f-982d-5358c7957185" />
+
+---
+
+### 🖼 印刷プレビュー
+<img width="986" height="693" alt="image003" src="https://github.com/user-attachments/assets/0bba12ce-c0a0-467e-a53c-5bfdc504a8d6" />
 
 ---
 
@@ -80,9 +86,11 @@
 ---
 
 ## ⚠️ 注意事項
-- 本ソフトウェアは、終了時に開いていたフォルダパスを以下のフォルダに保存します。ファイル名はLastFolder.txtです。
+- 本ソフトウェアは、終了時に開いていたフォルダパス、印刷設定を以下のフォルダに保存します。
 
-　C:\Users\ユーザー名\AppData\Local\MyView\LastFolder.txt
+   C:\Users\ユーザー名\AppData\Local\MyView\
+
+   ファイル名は LastFolder.txt、 PrintSettings.txt です。
 
 - AppDataフォルダは、標準の設定では隠し属性を付与して非表示となっています。
 
