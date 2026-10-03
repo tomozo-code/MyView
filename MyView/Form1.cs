@@ -137,10 +137,9 @@ namespace MyView
             this.Text = "ともさんの画像一覧帖";
 
             // ログ
-            logTxt.Dock = DockStyle.Bottom;
+            logTxt.Dock = DockStyle.Fill;
             logTxt.ReadOnly = true;
             logTxt.BorderStyle = BorderStyle.None;
-            logTxt.BackColor = this.BackColor;
             logTxt.TabStop = false;
             logTxt.Height = 50;
 
@@ -155,13 +154,18 @@ namespace MyView
             splitContainer1.SplitterDistance = 200;
             splitContainer1.Panel1MinSize = 100;
 
+            splitContainer2.Dock = DockStyle.Fill;
+
+            splitContainer2.SplitterDistance = splitContainer2.Height - 150;
+            splitContainer2.Panel1MinSize = 50;
 
             numThumbnailSize.Value = 256;
 
             // 背景色
-            treeViewFolders.BackColor = Color.DimGray;
-            listViewThumbnails.BackColor = Color.DimGray;
-            pathTxt.BackColor = Color.DimGray;
+            treeViewFolders.BackColor = Color.Gray;
+            listViewThumbnails.BackColor = Color.Gray;
+            logTxt.BackColor = Color.Gray;
+            pathTxt.BackColor = Color.Gray;
 
             // ステータス
             StatusLabel1.Text = "画像ファイルはありません。";
@@ -1197,6 +1201,10 @@ namespace MyView
                     {
                         return;
                     }
+ 
+                    // 画像情報をlogTxtに表示
+                    string fullPath = _imageFiles[index];
+                    ShowImageInfo(fullPath);
 
                     // Form3が開いていれば画像も変更
                     if (_previewForm != null && !_previewForm.IsDisposed)
@@ -1436,6 +1444,13 @@ namespace MyView
             _dragStartPoint = e.Location;
             ListViewItem? dragitem = listViewThumbnails.GetItemAt(e.X, e.Y);
             _dragIndex = dragitem?.Index ?? -1;
+
+            // 画像情報をlogTxtに表示
+            if (dragitem != null)
+            {
+                string fullPath = _imageFiles[_dragIndex];
+                ShowImageInfo(fullPath);
+            }
         }
 
         // ============================================================
@@ -1497,6 +1512,43 @@ namespace MyView
             {
                 _dragIndex = -1;
             }
+        }
+
+        // ============================================================
+        // サムネイル画像クリックで画像情報をlogTxtに表示
+        // ============================================================
+        private void ShowImageInfo(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                logTxt.Text = "ファイルが見つかりません。";
+                return;
+            }
+
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            string imageSize = "";
+
+            try
+            {
+                using Image image = Image.FromFile(filePath);
+
+                imageSize =
+                    $"{image.Width} × {image.Height}";
+            }
+            catch
+            {
+                imageSize = "取得できません";
+            }
+
+            logTxt.Text =
+                $"【ファイル情報】\r\n" +
+                $"ファイル名：{fileInfo.Name}\r\n" +
+                $"場所：{fileInfo.FullName}\r\n" +
+                $"ファイルサイズ：{FormatFileSize(fileInfo.Length)}\r\n" +
+                $"画像サイズ：{imageSize}\r\n" +
+                $"作成日時：{fileInfo.CreationTime:yyyy/MM/dd HH:mm:ss}\r\n" +
+                $"更新日時：{fileInfo.LastWriteTime:yyyy/MM/dd HH:mm:ss}";
         }
 
         // ============================================================
@@ -1927,6 +1979,10 @@ namespace MyView
 
             // 選択画像を画面内に表示
             listViewThumbnails.EnsureVisible(index);
+
+            // 画像情報をlogTxtに表示
+            string fullPath = _imageFiles[index];
+            ShowImageInfo(fullPath);
         }
 
     }

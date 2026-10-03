@@ -33,6 +33,9 @@ namespace MyView
         // Paintイベントで自分で描画する。
         private Image? _image;
 
+        // クリップボードから貼り付けた画像かどうか
+        private bool _isClipboardImage = false;
+
         // ズーム倍率
         private float _zoom = 1.0f;
 
@@ -237,6 +240,9 @@ namespace MyView
                 Image image = Image.FromFile(imagePath);
 
                 _image = image;
+                //_isClipboardImage = false;
+                _isClipboardImage = true;
+
 
                 // ----------------------------------------------------
                 // GIFアニメーションの場合
@@ -442,6 +448,7 @@ namespace MyView
             // Form1へ通知
             ImageChanged?.Invoke(imagePath);
         }
+
         // ============================================================
         // PictureBoxの描画
         // ============================================================
@@ -481,9 +488,21 @@ namespace MyView
             // 左ドラッグの選択範囲を描画
             if (!_selectionRectangle.IsEmpty)
             {
-                using Pen pen = new Pen(Color.White, 2);
-                pen.DashStyle = DashStyle.Dash;
-                g.DrawRectangle(pen, _selectionRectangle);
+                // 黒線を下に描く
+                // → 白い画像でも見える
+                using (Pen blackPen = new Pen(Color.Black, 6))
+                {
+                    blackPen.DashStyle = DashStyle.Dash;
+                    g.DrawRectangle(blackPen, _selectionRectangle);
+                }
+                
+                // 白線を上に描く
+                // → 黒い画像でも見える
+                using (Pen whitePen = new Pen(Color.White, 2))
+                {
+                    whitePen.DashStyle = DashStyle.Dash;
+                    g.DrawRectangle(whitePen, _selectionRectangle);
+                }
             }
         }
 
@@ -496,11 +515,9 @@ namespace MyView
             if (_image == null)
                 return;
 
-            // --------------------------------------------------------
             // ズーム倍率は変更しない。
             // 現在の表示サイズをそのまま維持して、
             // 新しいPictureBoxの中央へ画像を移動する。
-            // --------------------------------------------------------
             CenterImage();
 
             // 再描画
@@ -746,6 +763,45 @@ namespace MyView
             if (_image == null)
                 return;
 
+            // Ctrl + C → 画像をコピー
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                // 画像をクリップボードへコピー
+                CopyImageToClipboard();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + V → クリップボードの画像を表示
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                // クリップボードから画像を貼り付け
+                PasteImageFromClipboard();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + S → 貼り付け画像を名前を付けて保存
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                // クリップボードから貼り付けた画像のみ名前を付けて保存
+                // ただし、今はフォルダ内のファイルも適用するようにしている
+                if (_isClipboardImage)
+                {
+                    // trueなら
+                    // クリップボード画像を名前を付けて保存
+                    SaveClipboardImage();
+                }
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             // ↑・←・pageUp・BackSpaceキー
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
             {
@@ -825,6 +881,226 @@ namespace MyView
 
             // 再描画
             pictureBox1.Invalidate();
+        }
+
+        // ============================================================
+        // 画像をクリップボードへコピー
+        // ============================================================
+        private void CopyImageToClipboard()
+        {
+            if (_image == null)
+                return;
+
+            try
+            {
+                // 選択範囲がない → 画像全体をコピー
+                if (_selectionRectangle.IsEmpty || _selectionRectangle.Width < 1 || _selectionRectangle.Height < 1)
+                {
+                    Bitmap fullImage = new Bitmap(_image.Width, _image.Height);
+
+                    using (Graphics g = Graphics.FromImage(fullImage))
+                    {
+                        g.DrawImage(
+                            _image,
+                            new Rectangle(
+                                0,
+                                0,
+                                _image.Width,
+                                _image.Height));
+                    }
+
+                    Clipboard.SetImage(fullImage);
+
+                    return;
+                }
+
+                // 選択範囲あり → 画面上の座標を元画像の座標へ変換
+                float imageLeft = (_selectionRectangle.Left - _imageOffset.X) / _zoom;
+
+                float imageTop = (_selectionRectangle.Top - _imageOffset.Y) / _zoom;
+
+                float imageRight = (_selectionRectangle.Right - _imageOffset.X) / _zoom;
+
+                float imageBottom = (_selectionRectangle.Bottom - _imageOffset.Y) / _zoom;
+
+                int left = Math.Max(0, (int)Math.Floor(imageLeft));
+
+                int top = Math.Max(0, (int)Math.Floor(imageTop));
+
+                int right = Math.Min(_image.Width, (int)Math.Ceiling(imageRight));
+
+                int bottom = Math.Min(_image.Height, (int)Math.Ceiling(imageBottom));
+
+                int width = right - left;
+                int height = bottom - top;
+
+                // 画像の外だけを選択している場合
+                if (width <= 0 || height <= 0)
+                    return;
+
+                // 元画像から選択範囲を切り出す
+                Bitmap copiedImage = new Bitmap(width, height);
+
+                using (Graphics g = Graphics.FromImage(copiedImage))
+                {
+                    g.DrawImage(
+                        _image,
+                        new Rectangle(
+                            0,
+                            0,
+                            width,
+                            height),
+                        new Rectangle(
+                            left,
+                            top,
+                            width,
+                            height),
+                        GraphicsUnit.Pixel);
+                }
+
+                // クリップボードへ
+                Clipboard.SetImage(copiedImage);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "画像コピーエラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        // ============================================================
+        // クリップボードから画像を貼り付け
+        // ============================================================
+        private void PasteImageFromClipboard()
+        {
+            if (!Clipboard.ContainsImage())
+                return;
+
+            try
+            {
+                Image? clipboardImage = Clipboard.GetImage();
+
+                if (clipboardImage == null)
+                    return;
+
+                // クリップボードのImageをそのまま使わず、
+                // 自分でBitmapを作って所有する
+                Image newImage = new Bitmap(clipboardImage);
+
+                // 現在の画像を解放
+                if (_image != null)
+                {
+                    Image oldImage = _image;
+
+                    if (ImageAnimator.CanAnimate(oldImage))
+                    {
+                        ImageAnimator.StopAnimate(oldImage, PictureBoxAnimationHandler);
+                    }
+
+                    _image = null;
+                    oldImage.Dispose();
+                }
+
+                // 新しい画像を設定
+                _image = newImage;
+                _isClipboardImage = true;
+
+                // 選択範囲を解除
+                _selectionRectangle = Rectangle.Empty;
+                _isSelecting = false;
+                _selectionClickCandidate = false;
+
+                // 画面に合わせて表示
+                FitImageToWindow();
+                CenterImage();
+
+                // タイトル・ステータス表示
+                Text = "クリップボード画像";
+                viewStatusTxt.Text = "クリップボードから貼り付けた画像";
+
+                // 再描画
+                pictureBox1.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "画像貼り付けエラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        // ============================================================
+        // クリップボード画像を名前を付けて保存
+        // ============================================================
+        private void SaveClipboardImage()
+        {
+            if (_image == null)
+                return;
+
+            using SaveFileDialog dialog = new SaveFileDialog
+            {
+                Title = "画像を保存",
+                FileName = "ClipboardImage.png",
+                Filter =
+                    "PNG画像 (*.png)|*.png|" +
+                    "JPEG画像 (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+                    "BMP画像 (*.bmp)|*.bmp|" +
+                    "TIFF画像 (*.tif;*.tiff)|*.tif;*.tiff",
+                FilterIndex = 1,
+                AddExtension = true,
+                OverwritePrompt = true
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            try
+            {
+                System.Drawing.Imaging.ImageFormat format;
+
+                switch (Path.GetExtension(dialog.FileName).ToLowerInvariant())
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                        format = System.Drawing.Imaging.ImageFormat.Jpeg;
+                        break;
+
+                    case ".bmp":
+                        format = System.Drawing.Imaging.ImageFormat.Bmp;
+                        break;
+
+                    case ".tif":
+                    case ".tiff":
+                        format = System.Drawing.Imaging.ImageFormat.Tiff;
+                        break;
+
+                    default:
+                        format = System.Drawing.Imaging.ImageFormat.Png;
+                        break;
+                }
+
+                // _imageを直接保存せず、Bitmapとしてコピーして保存
+                using Bitmap bitmap = new Bitmap(_image);
+
+                bitmap.Save(dialog.FileName, format);
+
+                // 保存後はタイトルをファイル名に変更
+                Text = Path.GetFileName(dialog.FileName);
+                viewStatusTxt.Text = dialog.FileName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "画像保存エラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

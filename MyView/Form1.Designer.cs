@@ -31,7 +31,9 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             splitContainer1 = new SplitContainer();
+            splitContainer2 = new SplitContainer();
             treeViewFolders = new TreeView();
+            logTxt = new TextBox();
             listViewThumbnails = new ListView();
             conMenu1 = new ContextMenuStrip(components);
             conTxtMenu1 = new ToolStripMenuItem();
@@ -48,7 +50,6 @@
             label1 = new Label();
             statusStrip1 = new StatusStrip();
             StatusLabel1 = new ToolStripStatusLabel();
-            logTxt = new TextBox();
             menuStrip1 = new MenuStrip();
             fileMenu = new ToolStripMenuItem();
             printMenu = new ToolStripMenuItem();
@@ -64,6 +65,10 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
             conMenu1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numThumbnailSize).BeginInit();
@@ -80,7 +85,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(treeViewFolders);
+            splitContainer1.Panel1.Controls.Add(splitContainer2);
             splitContainer1.Panel1.Cursor = Cursors.Default;
             // 
             // splitContainer1.Panel2
@@ -88,22 +93,52 @@
             splitContainer1.Panel2.Controls.Add(listViewThumbnails);
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Cursor = Cursors.Default;
-            splitContainer1.Size = new Size(673, 173);
-            splitContainer1.SplitterDistance = 238;
+            splitContainer1.Size = new Size(800, 440);
+            splitContainer1.SplitterDistance = 329;
             splitContainer1.SplitterWidth = 8;
             splitContainer1.TabIndex = 0;
+            // 
+            // splitContainer2
+            // 
+            splitContainer2.Cursor = Cursors.SizeNS;
+            splitContainer2.Location = new Point(42, 44);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(treeViewFolders);
+            splitContainer2.Panel1.Cursor = Cursors.Default;
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(logTxt);
+            splitContainer2.Panel2.Cursor = Cursors.Arrow;
+            splitContainer2.Size = new Size(255, 371);
+            splitContainer2.SplitterDistance = 277;
+            splitContainer2.SplitterWidth = 8;
+            splitContainer2.TabIndex = 1;
             // 
             // treeViewFolders
             // 
             treeViewFolders.BackColor = Color.White;
             treeViewFolders.Font = new Font("Yu Gothic UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 128);
             treeViewFolders.HideSelection = false;
-            treeViewFolders.Location = new Point(14, 34);
+            treeViewFolders.Location = new Point(36, 23);
             treeViewFolders.Name = "treeViewFolders";
             treeViewFolders.Size = new Size(136, 107);
             treeViewFolders.TabIndex = 0;
             treeViewFolders.BeforeExpand += TreeViewFolders_BeforeExpand;
             treeViewFolders.AfterSelect += TreeViewFolders_AfterSelect;
+            // 
+            // logTxt
+            // 
+            logTxt.Location = new Point(72, 18);
+            logTxt.Multiline = true;
+            logTxt.Name = "logTxt";
+            logTxt.ScrollBars = ScrollBars.Both;
+            logTxt.Size = new Size(100, 50);
+            logTxt.TabIndex = 3;
             // 
             // listViewThumbnails
             // 
@@ -199,7 +234,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(427, 38);
+            panel1.Size = new Size(463, 38);
             panel1.TabIndex = 2;
             // 
             // numThumbnailSize
@@ -229,7 +264,7 @@
             // 
             statusStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             statusStrip1.Items.AddRange(new ToolStripItem[] { StatusLabel1 });
-            statusStrip1.Location = new Point(0, 343);
+            statusStrip1.Location = new Point(0, 609);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 16, 0);
             statusStrip1.Size = new Size(886, 26);
@@ -241,15 +276,6 @@
             StatusLabel1.Name = "StatusLabel1";
             StatusLabel1.Size = new Size(74, 21);
             StatusLabel1.Text = "ここに文字";
-            // 
-            // logTxt
-            // 
-            logTxt.Location = new Point(12, 272);
-            logTxt.Multiline = true;
-            logTxt.Name = "logTxt";
-            logTxt.ScrollBars = ScrollBars.Both;
-            logTxt.Size = new Size(100, 50);
-            logTxt.TabIndex = 3;
             // 
             // menuStrip1
             // 
@@ -272,7 +298,7 @@
             // printMenu
             // 
             printMenu.Name = "printMenu";
-            printMenu.Size = new Size(180, 26);
+            printMenu.Size = new Size(172, 26);
             printMenu.Text = "一覧印刷(&P)...";
             printMenu.ToolTipText = "一覧印刷のプレビューを表示します。";
             printMenu.Click += printMenu_Click;
@@ -280,7 +306,7 @@
             // exitMenu
             // 
             exitMenu.Name = "exitMenu";
-            exitMenu.Size = new Size(180, 26);
+            exitMenu.Size = new Size(172, 26);
             exitMenu.Text = "終了(&X)";
             exitMenu.ToolTipText = "一覧帖を終了します";
             exitMenu.Click += exitMenu_Click;
@@ -295,7 +321,7 @@
             // folderUpdate
             // 
             folderUpdate.Name = "folderUpdate";
-            folderUpdate.Size = new Size(180, 26);
+            folderUpdate.Size = new Size(133, 26);
             folderUpdate.Text = "更新(&U)";
             folderUpdate.ToolTipText = "表示を更新(再読み込み)します";
             folderUpdate.Click += folderUpdate_Click;
@@ -346,10 +372,9 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(886, 369);
+            ClientSize = new Size(886, 635);
             Controls.Add(splitContainer1);
             Controls.Add(pathTxt);
-            Controls.Add(logTxt);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
@@ -365,6 +390,11 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
             conMenu1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -409,5 +439,6 @@
         private ToolStripMenuItem folderUpdate;
         private ToolStripMenuItem useMenu;
         private ToolStripMenuItem printMenu;
+        private SplitContainer splitContainer2;
     }
 }
