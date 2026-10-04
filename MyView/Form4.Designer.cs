@@ -77,6 +77,7 @@
             btnPageSet = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             btnPrev = new ToolStripButton();
+            toolStripSeparator4 = new ToolStripSeparator();
             btnNext = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             btnClose = new ToolStripButton();
@@ -563,7 +564,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Size = new Size(745, 713);
+            toolStripContainer1.ContentPanel.Size = new Size(745, 702);
             toolStripContainer1.Location = new Point(6, 12);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(745, 741);
@@ -577,23 +578,24 @@
             // toolStrip1
             // 
             toolStrip1.Dock = DockStyle.None;
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnPrev, btnNext, toolStripSeparator3, btnClose });
+            toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnPrev, toolStripSeparator4, btnNext, toolStripSeparator3, btnClose });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(501, 28);
+            toolStrip1.Size = new Size(698, 39);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
             // 
-            btnPrint.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnPrint.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrint.Image = (Image)resources.GetObject("btnPrint.Image");
+            btnPrint.ImageScaling = ToolStripItemImageScaling.None;
             btnPrint.ImageTransparentColor = Color.Magenta;
             btnPrint.Name = "btnPrint";
-            btnPrint.Size = new Size(74, 25);
-            btnPrint.Tag = "印刷します。";
+            btnPrint.Size = new Size(106, 36);
+            btnPrint.Tag = "印刷します。(Ctrl+P)";
             btnPrint.Text = "印刷(&P)...";
-            btnPrint.ToolTipText = "印刷します。";
+            btnPrint.ToolTipText = "印刷(Ctrl+P)";
             btnPrint.Click += btnPrint_Click;
             btnPrint.MouseEnter += Menu_MouseEnter;
             btnPrint.MouseLeave += Menu_MouseLeave;
@@ -601,19 +603,19 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 28);
+            toolStripSeparator1.Size = new Size(6, 39);
             // 
             // btnPrintSet
             // 
-            btnPrintSet.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnPrintSet.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrintSet.Image = (Image)resources.GetObject("btnPrintSet.Image");
+            btnPrintSet.ImageScaling = ToolStripItemImageScaling.None;
             btnPrintSet.ImageTransparentColor = Color.Magenta;
             btnPrintSet.Name = "btnPrintSet";
-            btnPrintSet.Size = new Size(121, 25);
-            btnPrintSet.Tag = "プリンタ設定を行います。";
+            btnPrintSet.Size = new Size(153, 36);
+            btnPrintSet.Tag = "プリンタ設定を行います。(Ctrl+R)";
             btnPrintSet.Text = "プリンタ設定(&R)...";
-            btnPrintSet.ToolTipText = "プリンタ設定を行います。";
+            btnPrintSet.ToolTipText = "プリンタ設定(Ctrl+R)";
             btnPrintSet.Click += btnPrintSet_Click;
             btnPrintSet.MouseEnter += Menu_MouseEnter;
             btnPrintSet.MouseLeave += Menu_MouseLeave;
@@ -623,9 +625,10 @@
             btnPageSet.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnPageSet.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPageSet.Image = (Image)resources.GetObject("btnPageSet.Image");
+            btnPageSet.ImageScaling = ToolStripItemImageScaling.None;
             btnPageSet.ImageTransparentColor = Color.Magenta;
             btnPageSet.Name = "btnPageSet";
-            btnPageSet.Size = new Size(91, 25);
+            btnPageSet.Size = new Size(91, 36);
             btnPageSet.Text = "ページ設定...";
             btnPageSet.Click += btnPageSet_Click;
             btnPageSet.MouseEnter += Menu_MouseLeave;
@@ -634,16 +637,16 @@
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 28);
+            toolStripSeparator2.Size = new Size(6, 39);
             // 
             // btnPrev
             // 
-            btnPrev.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnPrev.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrev.Image = (Image)resources.GetObject("btnPrev.Image");
+            btnPrev.ImageScaling = ToolStripItemImageScaling.None;
             btnPrev.ImageTransparentColor = Color.Magenta;
             btnPrev.Name = "btnPrev";
-            btnPrev.Size = new Size(66, 25);
+            btnPrev.Size = new Size(98, 36);
             btnPrev.Tag = "前のページを表示します。";
             btnPrev.Text = "前ページ";
             btnPrev.ToolTipText = "前のページを表示します。";
@@ -651,14 +654,19 @@
             btnPrev.MouseEnter += Menu_MouseEnter;
             btnPrev.MouseLeave += Menu_MouseLeave;
             // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 39);
+            // 
             // btnNext
             // 
-            btnNext.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnNext.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnNext.Image = (Image)resources.GetObject("btnNext.Image");
+            btnNext.ImageScaling = ToolStripItemImageScaling.None;
             btnNext.ImageTransparentColor = Color.Magenta;
             btnNext.Name = "btnNext";
-            btnNext.Size = new Size(66, 25);
+            btnNext.Size = new Size(98, 36);
             btnNext.Tag = "次のページを表示します。";
             btnNext.Text = "次ページ";
             btnNext.ToolTipText = "次のページを表示します。";
@@ -669,16 +677,16 @@
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 28);
+            toolStripSeparator3.Size = new Size(6, 39);
             // 
             // btnClose
             // 
-            btnClose.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnClose.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnClose.Image = (Image)resources.GetObject("btnClose.Image");
+            btnClose.ImageScaling = ToolStripItemImageScaling.None;
             btnClose.ImageTransparentColor = Color.Magenta;
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(53, 25);
+            btnClose.Size = new Size(85, 36);
             btnClose.Tag = "一覧印刷を閉じます。";
             btnClose.Text = "閉じる";
             btnClose.ToolTipText = "一覧印刷を閉じます。";
@@ -781,5 +789,6 @@
         private TextBox setMarginBottom;
         private Panel panel1;
         private Label Pagelabel;
+        private ToolStripSeparator toolStripSeparator4;
     }
 }

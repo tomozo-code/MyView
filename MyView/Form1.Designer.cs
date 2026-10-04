@@ -297,6 +297,7 @@
             // 
             // printMenu
             // 
+            printMenu.Image = (Image)resources.GetObject("printMenu.Image");
             printMenu.Name = "printMenu";
             printMenu.Size = new Size(172, 26);
             printMenu.Text = "一覧印刷(&P)...";
@@ -305,6 +306,7 @@
             // 
             // exitMenu
             // 
+            exitMenu.Image = (Image)resources.GetObject("exitMenu.Image");
             exitMenu.Name = "exitMenu";
             exitMenu.Size = new Size(172, 26);
             exitMenu.Text = "終了(&X)";
@@ -320,6 +322,7 @@
             // 
             // folderUpdate
             // 
+            folderUpdate.Image = (Image)resources.GetObject("folderUpdate.Image");
             folderUpdate.Name = "folderUpdate";
             folderUpdate.Size = new Size(133, 26);
             folderUpdate.Text = "更新(&U)";
@@ -335,6 +338,7 @@
             // 
             // useMenu
             // 
+            useMenu.Image = (Image)resources.GetObject("useMenu.Image");
             useMenu.Name = "useMenu";
             useMenu.Size = new Size(274, 26);
             useMenu.Text = "使い方(&U)...";
@@ -343,6 +347,7 @@
             // 
             // verMenu
             // 
+            verMenu.Image = (Image)resources.GetObject("verMenu.Image");
             verMenu.Name = "verMenu";
             verMenu.Size = new Size(274, 26);
             verMenu.Text = "バージョン情報(&A)...";
@@ -351,6 +356,7 @@
             // 
             // SettingFolderMenu
             // 
+            SettingFolderMenu.Image = (Image)resources.GetObject("SettingFolderMenu.Image");
             SettingFolderMenu.Name = "SettingFolderMenu";
             SettingFolderMenu.Size = new Size(274, 26);
             SettingFolderMenu.Text = "設定ファイルのフォルダを開く(&E)";

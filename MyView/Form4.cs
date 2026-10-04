@@ -1382,10 +1382,7 @@ namespace MyView
             if (itemsPerPage <= 0)
                 return;
 
-            int totalPages =
-                (int)Math.Ceiling(
-                    (double)_imageFiles.Count /
-                    itemsPerPage);
+            int totalPages =　(int)Math.Ceiling((double)_imageFiles.Count / itemsPerPage);
 
             if (previewControl.StartPage >= totalPages - 1)
                 return;

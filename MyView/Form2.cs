@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.DataFormats;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 // --------------------------------------------------------
 // バージョン情報フォーム
@@ -20,31 +22,34 @@ namespace MyView
         {
             InitializeComponent();
 
-            this.Width = 600;
-            this.Height = 550;
+            this.Width = 700;
+            this.Height = 600;
             this.MinimumSize = new Size(300, 300);
+
+            // スパン
+            splitContainer1.SplitterDistance = 200;
+            splitContainer1.Panel1MinSize = 100;
+
 
             // 使い方表示用TextBox
             UseTxtBox.ReadOnly = true;
             UseTxtBox.BorderStyle = BorderStyle.FixedSingle;
             UseTxtBox.BackColor = this.BackColor;
             UseTxtBox.TabStop = false;
+            UseTxtBox.Dock = DockStyle.Fill;
+
+            // ツリービュー
+            treeView1.Dock = DockStyle.Fill;
+            treeView1.BackColor = this.BackColor;
+            treeView1.ExpandAll();
 
             // EnterキーをOKボタンに割り当て
             this.AcceptButton = OkBtn;
 
-            UseTxtBox.Text = "本ソフトウェアは以下のオープンソースソフトウェアを使用しています：" + Environment.NewLine +
-                "・PhotoSauce.MagicScaler(MITライセンス)" + Environment.NewLine + Environment.NewLine +
-                "使い方：画像を選択し数字キーを押すとクリップボードにコピーされます" + Environment.NewLine +
-                "・１キー：フルパス（例：C:\\Pictures\\旅行\\IMG_001.jpg）" + Environment.NewLine +
-                "・２キー：ファイル名（例：IMG_001.jpg）" + Environment.NewLine +
-                "・３キー：フォルダーパス（例：C:\\Pictures\\旅行）" + Environment.NewLine +
-                "・４キー：画像そのもの" + Environment.NewLine +
-                "・５キー：拡張子（例：.jpg）" + Environment.NewLine +
-                "・６キー：ファイルサイズ（例：3.25 MB）" + Environment.NewLine +
-                "・７キー：画像サイズ（例：4032 × 3024）" + Environment.NewLine +
-                "・８キー：更新日時（例：2026 /09/09 15:32:10）" + Environment.NewLine +
-                "・９キー：作成日時（例：2026 /08/08 10:15:22）";
+            UseTxtBox.Text = "簡単な使い方、サードパーティライセンスの情報を表示します。" + Environment.NewLine +
+                "・フォルダ内の画像がサムネイル表示されます" + Environment.NewLine +
+                "・サムネイルをダブルクリックすると画像単体が画像ビューに表示されます" + Environment.NewLine +
+                "・フォルダ内の画像を一覧印刷します";
 
             linkLabel1.Tag = "既定のブラウザで " + linkLabel1.Text + " を開きます";
 
@@ -111,5 +116,75 @@ namespace MyView
             }
         }
 
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+            switch (e.Node?.Text)
+            {
+                case "簡単な使い方":
+                    UseTxtBox.Text = "簡単な使い方、サードパーティライセンスの情報を表示します。" + Environment.NewLine +
+                        "・フォルダ内の画像がサムネイル表示されます" + Environment.NewLine +
+                        "・サムネイルをダブルクリックすると画像単体が画像ビューに表示されます" + Environment.NewLine +
+                        "・フォルダ内の画像を一覧印刷します";
+                    break;
+
+                case "サムネイル":
+                    UseTxtBox.Text = "画像を選択し数字キーを押すとクリップボードにコピーされます。" + Environment.NewLine +
+                        "・１キー：フルパス（例：C:\\Pictures\\旅行\\IMG_001.jpg）" + Environment.NewLine +
+                        "・２キー：ファイル名（例：IMG_001.jpg）" + Environment.NewLine +
+                        "・３キー：フォルダーパス（例：C:\\Pictures\\旅行）" + Environment.NewLine +
+                        "・４キー：画像そのもの" + Environment.NewLine +
+                        "・５キー：拡張子（例：.jpg）" + Environment.NewLine +
+                        "・６キー：ファイルサイズ（例：3.25 MB）" + Environment.NewLine +
+                        "・７キー：画像サイズ（例：4032 × 3024）" + Environment.NewLine +
+                        "・８キー：更新日時（例：2026 /09/09 15:32:10）" + Environment.NewLine +
+                        "・９キー：作成日時（例：2026 /08/08 10:15:22）"; break;
+
+                case "画像ビュー":
+                    UseTxtBox.Text = "サムネイルをダブルクリックすると画像単体が画像ビューに表示されます。" + Environment.NewLine +
+                        "・前の画像：" + Environment.NewLine + 
+                        "　　上スクロール、↑キー、←キー、PageUpキー、backSpaceキー" + Environment.NewLine +
+                        "・次の画像：" + Environment.NewLine + 
+                        "　　下スクロール、↓キー、→キー、PageDownキー、Spaceキー" + Environment.NewLine +
+                        "・拡大：" + Environment.NewLine +
+                        "　　Ctrl＋上スクロール、＋キー" + Environment.NewLine +
+                        "・縮小：" + Environment.NewLine +
+                        "　　Ctrl＋下スクロールで縮小、－キー" + Environment.NewLine +
+                        "・画像内移動：" + Environment.NewLine + 
+                        "　　右ドラッグ、Ctrl＋矢印キー(1pxずつ)、Ctrl＋Shift＋矢印キー(10pxずつ)" + Environment.NewLine +
+                        "・左ドラッグで枠描画：" + Environment.NewLine +
+                        "　　枠内クリックで拡大" + Environment.NewLine +
+                        "　　枠線の四隅と上下左右のハンドルをドラッグすると枠サイズ変更" + Environment.NewLine +
+                        "　　コピーもしくは Ctrl＋Cで枠内画像をコピー" + Environment.NewLine +
+                        "・画像に名前を付けて保存(Ctrl＋S)" + Environment.NewLine +
+                        "・画像をコピー(Ctrl＋C)" + Environment.NewLine +
+                        "・クリップボードの画像を貼り付け(Ctrl＋V)";
+                    break;
+
+                case "印刷プレビュー":
+                    UseTxtBox.Text = "選択中のフォルダ内の画像を一覧印刷します。" + Environment.NewLine +
+                        "・前ページ：上スクロール" + Environment.NewLine + 
+                        "・次ページ：下スクロール" + Environment.NewLine +
+                        "・拡大：Ctrl＋上スクロール" + Environment.NewLine + 
+                        "・主将：Ctrl＋下スクロール" + Environment.NewLine +
+                        "・印刷プレビュー内移動：右ドラッグ";
+                    break;
+
+                case "サードパーティライセンス":
+                    UseTxtBox.Text = "本ソフトウェアは以下のオープンソースソフトウェアを使用しています：" + Environment.NewLine +
+                        "・PhotoSauce.MagicScaler(MITライセンス)" + Environment.NewLine + Environment.NewLine +
+                        "本ソフトウェアのメニューアイコンは以下サイトの画像を使用しています：" + Environment.NewLine +
+                        "・ICOOON MONO(https://icooon-mono.com/)";
+                    break;
+
+                default:
+                    UseTxtBox.Text = "簡単な使い方、サードパーティライセンスの情報を表示します。" + Environment.NewLine +
+                        "・フォルダ内の画像がサムネイル表示されます" + Environment.NewLine +
+                        "・サムネイルをダブルクリックすると画像単体が画像ビューに表示されます" + Environment.NewLine +
+                        "・フォルダ内の画像を一覧印刷します";
+                    break;
+            }
+
+        }
     }
 }

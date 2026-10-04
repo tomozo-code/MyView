@@ -11,9 +11,13 @@ using System.Windows.Forms;
 
 // サムネイルをダブルクリックで表示される
 // 左ドラッグで枠描画し、枠内クリックで拡大
+// 描画した枠は、8点をドラッグすることで調整
+// 枠内の画像はコピー可能
 // ctrl + 上スクロールで拡大、ctrl + 下スクロールで縮小
 // 右ドラッグで画像内移動
 // 上スクロールで前の画像、下スクロールで次の画像
+// 画像に名前を付けて保存
+// クリップボードの画像を貼り付け
 
 namespace MyView
 {
@@ -78,6 +82,42 @@ namespace MyView
         // 左クリック開始位置
         private Point _selectionClickStart;
 
+        // 選択範囲のサイズ変更
+        private enum SelectionHandle
+        {
+            None,
+
+            TopLeft,
+            Top,
+            TopRight,
+
+            Left,
+            Right,
+
+            BottomLeft,
+            Bottom,
+            BottomRight
+        }
+
+        // 現在ドラッグしているハンドル
+        private SelectionHandle _selectionHandle = SelectionHandle.None;
+
+        // 選択範囲をサイズ変更中かどうか
+        private bool _isResizingSelection = false;
+
+        // サイズ変更開始時の選択範囲
+        private Rectangle _selectionResizeStartRectangle;
+
+        // サイズ変更開始時のマウス位置
+        private Point _selectionResizeStartMouse;
+
+        // ハンドルの大きさ
+        private const int SelectionHandleSize = 10;
+
+        // 選択範囲の最小サイズ
+        private const int SelectionMinSize = 5;
+
+
         // 表示画像が変更されたことをForm1へ通知
         public event Action<string>? ImageChanged;
 
@@ -94,6 +134,10 @@ namespace MyView
             this.Width = 600;
             this.Height = 600;
             this.MinimumSize = new Size(300, 300);
+
+            toolStripContainer1.Dock = DockStyle.Fill;
+
+            panel1.Dock = DockStyle.Fill;
 
             _imagePath = imagePath;
 
@@ -124,9 +168,9 @@ namespace MyView
 
         }
 
-        // --------------------------------------------------------
+        // ============================================================
         // フォームをロードしたとき
-        // --------------------------------------------------------
+        // ============================================================
         private void Form3_Load(object sender, EventArgs e)
         {
             try
@@ -240,6 +284,8 @@ namespace MyView
                 Image image = Image.FromFile(imagePath);
 
                 _image = image;
+
+                // フォルダ内の画像を表示している場合、名前を付けて保存を無効にする場合は「false」
                 //_isClipboardImage = false;
                 _isClipboardImage = true;
 
@@ -495,7 +541,7 @@ namespace MyView
                     blackPen.DashStyle = DashStyle.Dash;
                     g.DrawRectangle(blackPen, _selectionRectangle);
                 }
-                
+
                 // 白線を上に描く
                 // → 黒い画像でも見える
                 using (Pen whitePen = new Pen(Color.White, 2))
@@ -503,6 +549,58 @@ namespace MyView
                     whitePen.DashStyle = DashStyle.Dash;
                     g.DrawRectangle(whitePen, _selectionRectangle);
                 }
+
+                // 選択範囲のサイズ変更ハンドル
+                DrawSelectionHandle(g, _selectionRectangle.Left, _selectionRectangle.Top);
+                DrawSelectionHandle(g, _selectionRectangle.Left + _selectionRectangle.Width / 2, _selectionRectangle.Top);
+
+                DrawSelectionHandle(g, _selectionRectangle.Right, _selectionRectangle.Top);
+
+                DrawSelectionHandle(g, _selectionRectangle.Left, _selectionRectangle.Top + _selectionRectangle.Height / 2);
+
+                DrawSelectionHandle(g, _selectionRectangle.Right, _selectionRectangle.Top + _selectionRectangle.Height / 2);
+
+                DrawSelectionHandle(g, _selectionRectangle.Left, _selectionRectangle.Bottom);
+
+                DrawSelectionHandle(g, _selectionRectangle.Left + _selectionRectangle.Width / 2, _selectionRectangle.Bottom);
+
+                DrawSelectionHandle(g, _selectionRectangle.Right, _selectionRectangle.Bottom);
+
+            }
+
+        }
+
+        // ============================================================
+        // 選択範囲のハンドルを描画
+        // ============================================================
+        private void DrawSelectionHandle(Graphics g, int x, int y)
+        {
+            int half = SelectionHandleSize / 2;
+
+            Rectangle handleRectangle = new Rectangle(
+                x - half,
+                y - half,
+                SelectionHandleSize,
+                SelectionHandleSize);
+
+            // 黒い外枠
+            using (Brush blackBrush = new SolidBrush(Color.Black))
+            {
+                g.FillRectangle(blackBrush, handleRectangle);
+            }
+
+            // 白い内側
+            int innerSize = SelectionHandleSize - 4;
+
+            Rectangle innerRectangle = new Rectangle(
+                x - innerSize / 2,
+                y - innerSize / 2,
+                innerSize,
+                innerSize);
+
+            using (Brush whiteBrush = new SolidBrush(Color.White))
+            {
+                g.FillRectangle(whiteBrush, innerRectangle);
             }
         }
 
@@ -580,24 +678,48 @@ namespace MyView
             // 左ボタン
             if (e.Button == MouseButtons.Left)
             {
-                // すでに選択範囲があり、その中をクリックした場合
-                if (!_selectionRectangle.IsEmpty &&
-                    _selectionRectangle.Contains(e.Location))
+                // すでに選択範囲がある場合
+                if (!_selectionRectangle.IsEmpty)
                 {
-                    _selectionClickCandidate = true;
-                    _selectionClickStart = e.Location;
+                    // ハンドルをクリックしたか
+                    SelectionHandle handle =
+                        GetSelectionHandle(e.Location);
 
-                    return;
+                    if (handle != SelectionHandle.None)
+                    {
+                        // サイズ変更開始
+                        _isResizingSelection = true;
+                        _selectionHandle = handle;
+
+                        // 開始時の状態を保存
+                        _selectionResizeStartRectangle = _selectionRectangle;
+
+                        _selectionResizeStartMouse = e.Location;
+
+                        pictureBox1.Cursor = GetSelectionCursor(handle);
+
+                        return;
+                    }
+
+                    // 選択範囲の中をクリック → 従来通り「拡大」
+                    if (_selectionRectangle.Contains(e.Location))
+                    {
+                        _selectionClickCandidate = true;
+                        _selectionClickStart = e.Location;
+
+                        return;
+                    }
                 }
 
                 // 新しい範囲選択を開始
                 _isSelecting = true;
                 _selectionStart = e.Location;
                 _selectionRectangle = Rectangle.Empty;
+
                 pictureBox1.Cursor = Cursors.Cross;
+
                 pictureBox1.Invalidate();
             }
-
         }
 
         // ============================================================
@@ -615,6 +737,16 @@ namespace MyView
                 // 画像位置を移動
                 _imageOffset = new PointF(_panStartOffset.X + dx, _panStartOffset.Y + dy);
                 pictureBox1.Invalidate();
+                return;
+            }
+
+            // 選択範囲のサイズ変更
+            if (_isResizingSelection)
+            {
+                ResizeSelection(e.Location);
+
+                pictureBox1.Invalidate();
+
                 return;
             }
 
@@ -652,6 +784,18 @@ namespace MyView
 
                 pictureBox1.Invalidate();
             }
+
+            // 選択範囲のハンドル上ではカーソルを変更
+            if (!_isSelecting &&
+                !_selectionClickCandidate &&
+                !_isResizingSelection &&
+                !_selectionRectangle.IsEmpty)
+            {
+                SelectionHandle handle = GetSelectionHandle(e.Location);
+
+                pictureBox1.Cursor = GetSelectionCursor(handle);
+            }
+
         }
 
         // ============================================================
@@ -670,6 +814,20 @@ namespace MyView
             // 左ボタン
             if (e.Button == MouseButtons.Left)
             {
+
+                // 選択範囲のサイズ変更終了
+                if (_isResizingSelection)
+                {
+                    _isResizingSelection = false;
+                    _selectionHandle = SelectionHandle.None;
+
+                    pictureBox1.Cursor = Cursors.Default;
+                    pictureBox1.Invalidate();
+
+                    return;
+                }
+
+
                 // 選択範囲内をクリックした
                 if (_selectionClickCandidate)
                 {
@@ -793,7 +951,7 @@ namespace MyView
                 if (_isClipboardImage)
                 {
                     // trueなら
-                    // クリップボード画像を名前を付けて保存
+                    // 画像に名前を付けて保存
                     SaveClipboardImage();
                 }
 
@@ -802,16 +960,18 @@ namespace MyView
                 return;
             }
 
-            // ↑・←・pageUp・BackSpaceキー
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
+            // pageUp・BackSpaceキー
+            //if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
+            if (e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
             {
                 // 上スクロール → 前の画像
                 ShowPreviousImage();
                 return;
             }
 
-            // ↓・→・pageDown・Spaceキー
-            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Space)
+            // pageDown・Spaceキー
+            //if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right || e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.PageDown || e.KeyCode == Keys.Space)
             {
                 // 下スクロール → 次の画像
                 ShowNextImage();
@@ -840,6 +1000,84 @@ namespace MyView
                 return;
             }
 
+        }
+
+        // ============================================================
+        // 矢印キー操作
+        // ============================================================
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (_image != null)
+            {
+
+                // --------------------------------------------------------
+                // Ctrl + 矢印 → 画像を移動(1px)
+                // Ctrl + Shift + 矢印 → 画像を移動(10px)
+                // --------------------------------------------------------
+                bool shift = (keyData & Keys.Shift) == Keys.Shift;
+                int step = shift ? 10 : 1;
+
+                if ((keyData & Keys.Control) == Keys.Control)
+                {
+                    Keys key = keyData & Keys.KeyCode;
+
+                    if (key == Keys.Up)
+                    {
+                        MoveImageByKeyboard(0, -step);
+                        return true;
+                    }
+
+                    if (key == Keys.Down)
+                    {
+                        MoveImageByKeyboard(0, step);
+                        return true;
+                    }
+
+                    if (key == Keys.Left)
+                    {
+                        MoveImageByKeyboard(-step, 0);
+                        return true;
+                    }
+
+                    if (key == Keys.Right)
+                    {
+                        MoveImageByKeyboard(step, 0);
+                        return true;
+                    }
+                }
+
+
+                // --------------------------------------------------------
+                // 通常の矢印キー
+                // --------------------------------------------------------
+                // ↑・←キー
+                if (keyData == Keys.Up || keyData == Keys.Left)
+                {
+                    ShowPreviousImage();
+                    return true;
+                }
+
+                // ↓・→キー
+                if (keyData == Keys.Down || keyData == Keys.Right)
+                {
+                    ShowNextImage();
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        // ============================================================
+        // キーボードで画像を移動
+        // ============================================================
+        private void MoveImageByKeyboard(int dx, int dy)
+        {
+            _imageOffset = new PointF(
+                _imageOffset.X + dx,
+                _imageOffset.Y + dy);
+
+            pictureBox1.Invalidate();
         }
 
         // ============================================================
@@ -1035,7 +1273,7 @@ namespace MyView
         }
 
         // ============================================================
-        // クリップボード画像を名前を付けて保存
+        // 画像に名前を付けて保存
         // ============================================================
         private void SaveClipboardImage()
         {
@@ -1101,6 +1339,206 @@ namespace MyView
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        // ============================================================
+        // 名前を付けて保存ボタンを押したとき
+        // ============================================================
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            // クリップボードから貼り付けた画像のみ名前を付けて保存
+            // ただし、今はフォルダ内のファイルも適用するようにしている
+            if (_isClipboardImage)
+            {
+                // trueなら
+                // 画像に名前を付けて保存
+                SaveClipboardImage();
+            }
+        }
+
+        // ============================================================
+        // コピーボタンを押したとき
+        // ============================================================
+        private void copyBtn_Click(object sender, EventArgs e)
+        {
+            // 画像をクリップボードへコピー
+            CopyImageToClipboard();
+        }
+
+        // ============================================================
+        // 貼り付けボタンを押したとき
+        // ============================================================
+        private void pasteBtn_Click(object sender, EventArgs e)
+        {
+            // クリップボードから画像を貼り付け
+            PasteImageFromClipboard();
+        }
+
+        // ============================================================
+        // 選択範囲のどのハンドルにマウスがあるか
+        // ============================================================
+        private SelectionHandle GetSelectionHandle(Point location)
+        {
+            if (_selectionRectangle.IsEmpty)
+                return SelectionHandle.None;
+
+            int half = SelectionHandleSize;
+
+            int left = _selectionRectangle.Left;
+            int right = _selectionRectangle.Right;
+            int top = _selectionRectangle.Top;
+            int bottom = _selectionRectangle.Bottom;
+
+            int centerX = _selectionRectangle.Left + _selectionRectangle.Width / 2;
+
+            int centerY = _selectionRectangle.Top + _selectionRectangle.Height / 2;
+
+            if (IsPointInHandle(location, left, top, half))
+                return SelectionHandle.TopLeft;
+
+            if (IsPointInHandle(location, centerX, top, half))
+                return SelectionHandle.Top;
+
+            if (IsPointInHandle(location, right, top, half))
+                return SelectionHandle.TopRight;
+
+            if (IsPointInHandle(location, left, centerY, half))
+                return SelectionHandle.Left;
+
+            if (IsPointInHandle(location, right, centerY, half))
+                return SelectionHandle.Right;
+
+            if (IsPointInHandle(location, left, bottom, half))
+                return SelectionHandle.BottomLeft;
+
+            if (IsPointInHandle(location, centerX, bottom, half))
+                return SelectionHandle.Bottom;
+
+            if (IsPointInHandle(location, right, bottom, half))
+                return SelectionHandle.BottomRight;
+
+            return SelectionHandle.None;
+        }
+
+        // ============================================================
+        // ハンドル内にマウスがあるか
+        // ============================================================
+        private bool IsPointInHandle(Point location, int x, int y, int size)
+        {
+            Rectangle rectangle = new Rectangle(x - size, y - size, size * 2, size * 2);
+
+            return rectangle.Contains(location);
+        }
+
+        // ============================================================
+        // ハンドルに対応するカーソル
+        // ============================================================
+        private Cursor GetSelectionCursor(SelectionHandle handle)
+        {
+            switch (handle)
+            {
+                case SelectionHandle.TopLeft:
+                case SelectionHandle.BottomRight:
+                    return Cursors.SizeNWSE;
+
+                case SelectionHandle.TopRight:
+                case SelectionHandle.BottomLeft:
+                    return Cursors.SizeNESW;
+
+                case SelectionHandle.Top:
+                case SelectionHandle.Bottom:
+                    return Cursors.SizeNS;
+
+                case SelectionHandle.Left:
+                case SelectionHandle.Right:
+                    return Cursors.SizeWE;
+
+                default:
+                    return Cursors.Default;
+            }
+        }
+
+        // ============================================================
+        // 選択範囲をサイズ変更
+        // ============================================================
+        private void ResizeSelection(Point mouseLocation)
+        {
+            Rectangle start = _selectionResizeStartRectangle;
+
+            int left = start.Left;
+            int top = start.Top;
+            int right = start.Right;
+            int bottom = start.Bottom;
+
+            switch (_selectionHandle)
+            {
+                case SelectionHandle.TopLeft:
+                    left = mouseLocation.X;
+                    top = mouseLocation.Y;
+                    break;
+
+                case SelectionHandle.Top:
+                    top = mouseLocation.Y;
+                    break;
+
+                case SelectionHandle.TopRight:
+                    right = mouseLocation.X;
+                    top = mouseLocation.Y;
+                    break;
+
+                case SelectionHandle.Left:
+                    left = mouseLocation.X;
+                    break;
+
+                case SelectionHandle.Right:
+                    right = mouseLocation.X;
+                    break;
+
+                case SelectionHandle.BottomLeft:
+                    left = mouseLocation.X;
+                    bottom = mouseLocation.Y;
+                    break;
+
+                case SelectionHandle.Bottom:
+                    bottom = mouseLocation.Y;
+                    break;
+
+                case SelectionHandle.BottomRight:
+                    right = mouseLocation.X;
+                    bottom = mouseLocation.Y;
+                    break;
+            }
+
+            // 最小サイズを維持
+            if (right - left < SelectionMinSize)
+            {
+                if (_selectionHandle == SelectionHandle.TopLeft ||
+                    _selectionHandle == SelectionHandle.Left ||
+                    _selectionHandle == SelectionHandle.BottomLeft)
+                {
+                    left = right - SelectionMinSize;
+                }
+                else
+                {
+                    right = left + SelectionMinSize;
+                }
+            }
+
+            if (bottom - top < SelectionMinSize)
+            {
+                if (_selectionHandle == SelectionHandle.TopLeft ||
+                    _selectionHandle == SelectionHandle.Top ||
+                    _selectionHandle == SelectionHandle.TopRight)
+                {
+                    top = bottom - SelectionMinSize;
+                }
+                else
+                {
+                    bottom = top + SelectionMinSize;
+                }
+            }
+
+            _selectionRectangle = Rectangle.FromLTRB(left, top, right, bottom);
         }
     }
 }
