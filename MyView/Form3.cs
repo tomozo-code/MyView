@@ -131,8 +131,8 @@ namespace MyView
             // Form3でKeyDownを拾えるように
             this.KeyPreview = true;
 
-            this.Width = 600;
-            this.Height = 600;
+            this.Width = 800;
+            this.Height = 700;
             this.MinimumSize = new Size(300, 300);
 
             toolStripContainer1.Dock = DockStyle.Fill;
@@ -960,6 +960,28 @@ namespace MyView
                 return;
             }
 
+            // Ctrl + L → 左へ90°回転
+            if (e.Control && e.KeyCode == Keys.L)
+            {
+                // 左へ90°回転
+                RotateImageLeft();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + R → 右へ90°回転
+            if (e.Control && e.KeyCode == Keys.R)
+            {
+                // 右へ90°回転
+                RotateImageRight();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             // pageUp・BackSpaceキー
             //if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
             if (e.KeyCode == Keys.PageUp || e.KeyCode == Keys.Back)
@@ -1539,6 +1561,116 @@ namespace MyView
             }
 
             _selectionRectangle = Rectangle.FromLTRB(left, top, right, bottom);
+        }
+
+        // ============================================================
+        // 画像を左へ90度回転
+        // ============================================================
+        private void RotateImageLeft()
+        {
+            if (_image == null)
+                return;
+
+            try
+            {
+                // GIFアニメーションを停止
+                if (ImageAnimator.CanAnimate(_image))
+                {
+                    ImageAnimator.StopAnimate(_image, PictureBoxAnimationHandler);
+                }
+
+                // 画像を左へ90度回転
+                _image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+
+                // 選択範囲を解除
+                _selectionRectangle = Rectangle.Empty;
+                _isSelecting = false;
+                _selectionClickCandidate = false;
+                _isResizingSelection = false;
+                _selectionHandle = SelectionHandle.None;
+
+                // 回転後の画像を画面に合わせる
+                FitImageToWindow();
+                CenterImage();
+
+                pictureBox1.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "画像回転エラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+
+        // ============================================================
+        // 画像を右へ90度回転
+        // ============================================================
+        private void RotateImageRight()
+        {
+            if (_image == null)
+                return;
+
+            try
+            {
+                // GIFアニメーションを停止
+                if (ImageAnimator.CanAnimate(_image))
+                {
+                    ImageAnimator.StopAnimate(_image, PictureBoxAnimationHandler);
+                }
+
+                // 画像を右へ90度回転
+                _image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                // 選択範囲を解除
+                _selectionRectangle = Rectangle.Empty;
+                _isSelecting = false;
+                _selectionClickCandidate = false;
+                _isResizingSelection = false;
+                _selectionHandle = SelectionHandle.None;
+
+                // 回転後の画像を画面に合わせる
+                FitImageToWindow();
+                CenterImage();
+
+                pictureBox1.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "画像回転エラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        // ============================================================
+        // 左へ回転を押したとき
+        // ============================================================
+        private void roolLeftBtn_Click(object sender, EventArgs e)
+        {
+            RotateImageLeft();
+        }
+
+        // ============================================================
+        // 右へ回転を押したとき
+        // ============================================================
+        private void roolRightBtn_Click(object sender, EventArgs e)
+        {
+            RotateImageRight();
+        }
+
+        // ============================================================
+        // 閉じるを押したとき
+        // ============================================================
+        private void closeBtn_Click(object sender, EventArgs e)
+        {
+            // 現在のフォームを閉じる
+            this.Close();
         }
     }
 }

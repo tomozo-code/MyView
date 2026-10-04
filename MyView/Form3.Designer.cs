@@ -38,6 +38,12 @@
             copyBtn = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             pasteBtn = new ToolStripButton();
+            toolStripSeparator3 = new ToolStripSeparator();
+            roolLeftBtn = new ToolStripButton();
+            toolStripSeparator4 = new ToolStripSeparator();
+            roolRightBtn = new ToolStripButton();
+            toolStripSeparator5 = new ToolStripSeparator();
+            closeBtn = new ToolStripButton();
             panel1 = new Panel();
             toolStripContainer1 = new ToolStripContainer();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -70,14 +76,14 @@
             statusStrip1.Items.AddRange(new ToolStripItem[] { viewStatusTxt });
             statusStrip1.Location = new Point(0, 436);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(574, 26);
+            statusStrip1.Size = new Size(776, 26);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
             // viewStatusTxt
             // 
             viewStatusTxt.Name = "viewStatusTxt";
-            viewStatusTxt.Size = new Size(559, 21);
+            viewStatusTxt.Size = new Size(761, 21);
             viewStatusTxt.Spring = true;
             viewStatusTxt.Text = "ここにフルパス";
             viewStatusTxt.TextAlign = ContentAlignment.MiddleLeft;
@@ -86,10 +92,10 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, roolLeftBtn, toolStripSeparator4, roolRightBtn, toolStripSeparator5, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(367, 39);
+            toolStrip1.Size = new Size(715, 39);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -100,7 +106,7 @@
             saveBtn.ImageTransparentColor = Color.Magenta;
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(163, 36);
-            saveBtn.Tag = "名前を付けて保存します";
+            saveBtn.Tag = "画像に名前を付けて保存します";
             saveBtn.Text = "名前を付けて保存";
             saveBtn.ToolTipText = "名前を付けて保存(Ctrl+S)";
             saveBtn.Click += saveBtn_Click;
@@ -139,6 +145,57 @@
             pasteBtn.ToolTipText = "貼り付け(Ctrl+V)";
             pasteBtn.Click += pasteBtn_Click;
             // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 39);
+            // 
+            // roolLeftBtn
+            // 
+            roolLeftBtn.Image = (Image)resources.GetObject("roolLeftBtn.Image");
+            roolLeftBtn.ImageScaling = ToolStripItemImageScaling.None;
+            roolLeftBtn.ImageTransparentColor = Color.Magenta;
+            roolLeftBtn.Name = "roolLeftBtn";
+            roolLeftBtn.Size = new Size(107, 36);
+            roolLeftBtn.Tag = "画像を左へ90°回転します";
+            roolLeftBtn.Text = "左へ回転";
+            roolLeftBtn.ToolTipText = "左へ90°回転(Ctrl+L)";
+            roolLeftBtn.Click += roolLeftBtn_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 39);
+            // 
+            // roolRightBtn
+            // 
+            roolRightBtn.Image = (Image)resources.GetObject("roolRightBtn.Image");
+            roolRightBtn.ImageScaling = ToolStripItemImageScaling.None;
+            roolRightBtn.ImageTransparentColor = Color.Magenta;
+            roolRightBtn.Name = "roolRightBtn";
+            roolRightBtn.Size = new Size(107, 36);
+            roolRightBtn.Tag = "画像を右へ90°回転します";
+            roolRightBtn.Text = "右へ回転";
+            roolRightBtn.ToolTipText = "右へ90°回転(Ctrl+R)";
+            roolRightBtn.Click += roolRightBtn_Click;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 39);
+            // 
+            // closeBtn
+            // 
+            closeBtn.Image = (Image)resources.GetObject("closeBtn.Image");
+            closeBtn.ImageScaling = ToolStripItemImageScaling.None;
+            closeBtn.ImageTransparentColor = Color.Magenta;
+            closeBtn.Name = "closeBtn";
+            closeBtn.Size = new Size(85, 36);
+            closeBtn.Tag = "ウィンドウを閉じます";
+            closeBtn.Text = "閉じる";
+            closeBtn.ToolTipText = "閉じる(Esc)";
+            closeBtn.Click += closeBtn_Click;
+            // 
             // panel1
             // 
             panel1.Controls.Add(pictureBox1);
@@ -153,10 +210,10 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(panel1);
-            toolStripContainer1.ContentPanel.Size = new Size(480, 309);
+            toolStripContainer1.ContentPanel.Size = new Size(739, 309);
             toolStripContainer1.Location = new Point(12, 52);
             toolStripContainer1.Name = "toolStripContainer1";
-            toolStripContainer1.Size = new Size(480, 348);
+            toolStripContainer1.Size = new Size(739, 348);
             toolStripContainer1.TabIndex = 4;
             toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -169,7 +226,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(574, 462);
+            ClientSize = new Size(776, 462);
             Controls.Add(toolStripContainer1);
             Controls.Add(statusStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
@@ -208,5 +265,11 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripContainer toolStripContainer1;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripButton roolLeftBtn;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripButton roolRightBtn;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripButton closeBtn;
     }
 }
