@@ -135,6 +135,8 @@ namespace MyView
             this.Height = 700;
             this.MinimumSize = new Size(300, 300);
 
+            this.WindowState = FormWindowState.Maximized;
+
             toolStripContainer1.Dock = DockStyle.Fill;
 
             panel1.Dock = DockStyle.Fill;
@@ -1671,6 +1673,22 @@ namespace MyView
         {
             // 現在のフォームを閉じる
             this.Close();
+        }
+
+        // ============================================================
+        // 拡大を押したとき
+        // ============================================================
+        private void zoomInBtn_Click(object sender, EventArgs e)
+        {
+            ZoomImage(ZoomStep);
+        }
+
+        // ============================================================
+        // 縮小を押したとき
+        // ============================================================
+        private void zoomOutBtn_Click(object sender, EventArgs e)
+        {
+            ZoomImage(1.0f / ZoomStep);
         }
     }
 }

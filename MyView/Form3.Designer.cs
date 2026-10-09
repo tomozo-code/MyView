@@ -39,8 +39,10 @@
             toolStripSeparator2 = new ToolStripSeparator();
             pasteBtn = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
-            roolLeftBtn = new ToolStripButton();
+            zoomInBtn = new ToolStripButton();
+            zoomOutBtn = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
+            roolLeftBtn = new ToolStripButton();
             roolRightBtn = new ToolStripButton();
             toolStripSeparator5 = new ToolStripSeparator();
             closeBtn = new ToolStripButton();
@@ -92,21 +94,20 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, roolLeftBtn, toolStripSeparator4, roolRightBtn, toolStripSeparator5, closeBtn });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(715, 39);
+            toolStrip1.Size = new Size(736, 28);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
             // saveBtn
             // 
             saveBtn.Image = (Image)resources.GetObject("saveBtn.Image");
-            saveBtn.ImageScaling = ToolStripItemImageScaling.None;
             saveBtn.ImageTransparentColor = Color.Magenta;
             saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(163, 36);
-            saveBtn.Tag = "画像に名前を付けて保存します";
+            saveBtn.Size = new Size(147, 25);
+            saveBtn.Tag = "画像に名前を付けて保存します。";
             saveBtn.Text = "名前を付けて保存";
             saveBtn.ToolTipText = "名前を付けて保存(Ctrl+S)";
             saveBtn.Click += saveBtn_Click;
@@ -114,16 +115,15 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 39);
+            toolStripSeparator1.Size = new Size(6, 28);
             // 
             // copyBtn
             // 
             copyBtn.Image = (Image)resources.GetObject("copyBtn.Image");
-            copyBtn.ImageScaling = ToolStripItemImageScaling.None;
             copyBtn.ImageTransparentColor = Color.Magenta;
             copyBtn.Name = "copyBtn";
-            copyBtn.Size = new Size(78, 36);
-            copyBtn.Tag = "画像をコピーします";
+            copyBtn.Size = new Size(62, 25);
+            copyBtn.Tag = "画像をコピーします。";
             copyBtn.Text = "コピー";
             copyBtn.ToolTipText = "コピー(Ctrl+C)";
             copyBtn.Click += copyBtn_Click;
@@ -131,16 +131,15 @@
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 39);
+            toolStripSeparator2.Size = new Size(6, 28);
             // 
             // pasteBtn
             // 
             pasteBtn.Image = (Image)resources.GetObject("pasteBtn.Image");
-            pasteBtn.ImageScaling = ToolStripItemImageScaling.None;
             pasteBtn.ImageTransparentColor = Color.Magenta;
             pasteBtn.Name = "pasteBtn";
-            pasteBtn.Size = new Size(102, 36);
-            pasteBtn.Tag = "画像を貼り付けます";
+            pasteBtn.Size = new Size(86, 25);
+            pasteBtn.Tag = "画像を貼り付けます。";
             pasteBtn.Text = "貼り付け";
             pasteBtn.ToolTipText = "貼り付け(Ctrl+V)";
             pasteBtn.Click += pasteBtn_Click;
@@ -148,33 +147,53 @@
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 39);
+            toolStripSeparator3.Size = new Size(6, 28);
             // 
-            // roolLeftBtn
+            // zoomInBtn
             // 
-            roolLeftBtn.Image = (Image)resources.GetObject("roolLeftBtn.Image");
-            roolLeftBtn.ImageScaling = ToolStripItemImageScaling.None;
-            roolLeftBtn.ImageTransparentColor = Color.Magenta;
-            roolLeftBtn.Name = "roolLeftBtn";
-            roolLeftBtn.Size = new Size(107, 36);
-            roolLeftBtn.Tag = "画像を左へ90°回転します";
-            roolLeftBtn.Text = "左へ回転";
-            roolLeftBtn.ToolTipText = "左へ90°回転(Ctrl+L)";
-            roolLeftBtn.Click += roolLeftBtn_Click;
+            zoomInBtn.Image = (Image)resources.GetObject("zoomInBtn.Image");
+            zoomInBtn.ImageTransparentColor = Color.Magenta;
+            zoomInBtn.Name = "zoomInBtn";
+            zoomInBtn.Size = new Size(62, 25);
+            zoomInBtn.Tag = "画像を拡大します。";
+            zoomInBtn.Text = "拡大";
+            zoomInBtn.ToolTipText = "拡大(Ctrl+上スクロール)";
+            zoomInBtn.Click += zoomInBtn_Click;
+            // 
+            // zoomOutBtn
+            // 
+            zoomOutBtn.Image = (Image)resources.GetObject("zoomOutBtn.Image");
+            zoomOutBtn.ImageTransparentColor = Color.Magenta;
+            zoomOutBtn.Name = "zoomOutBtn";
+            zoomOutBtn.Size = new Size(62, 25);
+            zoomOutBtn.Tag = "画像を縮小します。";
+            zoomOutBtn.Text = "縮小";
+            zoomOutBtn.ToolTipText = "縮小(Ctrl+下スクロール)";
+            zoomOutBtn.Click += zoomOutBtn_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(6, 39);
+            toolStripSeparator4.Size = new Size(6, 28);
+            // 
+            // roolLeftBtn
+            // 
+            roolLeftBtn.Image = (Image)resources.GetObject("roolLeftBtn.Image");
+            roolLeftBtn.ImageTransparentColor = Color.Magenta;
+            roolLeftBtn.Name = "roolLeftBtn";
+            roolLeftBtn.Size = new Size(91, 25);
+            roolLeftBtn.Tag = "画像を左へ90°回転します。";
+            roolLeftBtn.Text = "左へ回転";
+            roolLeftBtn.ToolTipText = "左へ90°回転(Ctrl+L)";
+            roolLeftBtn.Click += roolLeftBtn_Click;
             // 
             // roolRightBtn
             // 
             roolRightBtn.Image = (Image)resources.GetObject("roolRightBtn.Image");
-            roolRightBtn.ImageScaling = ToolStripItemImageScaling.None;
             roolRightBtn.ImageTransparentColor = Color.Magenta;
             roolRightBtn.Name = "roolRightBtn";
-            roolRightBtn.Size = new Size(107, 36);
-            roolRightBtn.Tag = "画像を右へ90°回転します";
+            roolRightBtn.Size = new Size(91, 25);
+            roolRightBtn.Tag = "画像を右へ90°回転します。";
             roolRightBtn.Text = "右へ回転";
             roolRightBtn.ToolTipText = "右へ90°回転(Ctrl+R)";
             roolRightBtn.Click += roolRightBtn_Click;
@@ -182,16 +201,15 @@
             // toolStripSeparator5
             // 
             toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(6, 39);
+            toolStripSeparator5.Size = new Size(6, 28);
             // 
             // closeBtn
             // 
             closeBtn.Image = (Image)resources.GetObject("closeBtn.Image");
-            closeBtn.ImageScaling = ToolStripItemImageScaling.None;
             closeBtn.ImageTransparentColor = Color.Magenta;
             closeBtn.Name = "closeBtn";
-            closeBtn.Size = new Size(85, 36);
-            closeBtn.Tag = "ウィンドウを閉じます";
+            closeBtn.Size = new Size(69, 25);
+            closeBtn.Tag = "ウィンドウを閉じます。";
             closeBtn.Text = "閉じる";
             closeBtn.ToolTipText = "閉じる(Esc)";
             closeBtn.Click += closeBtn_Click;
@@ -210,7 +228,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(panel1);
-            toolStripContainer1.ContentPanel.Size = new Size(739, 309);
+            toolStripContainer1.ContentPanel.Size = new Size(739, 320);
             toolStripContainer1.Location = new Point(12, 52);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(739, 348);
@@ -271,5 +289,7 @@
         private ToolStripButton roolRightBtn;
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripButton closeBtn;
+        private ToolStripButton zoomInBtn;
+        private ToolStripButton zoomOutBtn;
     }
 }

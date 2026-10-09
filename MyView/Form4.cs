@@ -347,15 +347,9 @@ namespace MyView
             if (ModifierKeys == Keys.Control)
             {
                 if (e.Delta > 0)
-                    previewControl.Zoom += 0.1;
+                    ChangeZoom(0.1);
                 else
-                    previewControl.Zoom -= 0.1;
-
-                if (previewControl.Zoom < 0.2)
-                    previewControl.Zoom = 0.2;
-
-                if (previewControl.Zoom > 3.0)
-                    previewControl.Zoom = 3.0;
+                    ChangeZoom(-0.1);
 
                 return;
             }
@@ -371,6 +365,21 @@ namespace MyView
                 // 下 → 次のページ
                 GoToNextPage();
             }
+        }
+
+        // ============================================================
+        // プレビューの拡大・縮小
+        // ============================================================
+        private void ChangeZoom(double amount)
+        {
+            previewControl.Zoom += amount;
+
+            // ズーム範囲を制限
+            if (previewControl.Zoom < 0.2)
+                previewControl.Zoom = 0.2;
+
+            if (previewControl.Zoom > 3.0)
+                previewControl.Zoom = 3.0;
         }
 
         // ============================================================
@@ -1382,7 +1391,7 @@ namespace MyView
             if (itemsPerPage <= 0)
                 return;
 
-            int totalPages =　(int)Math.Ceiling((double)_imageFiles.Count / itemsPerPage);
+            int totalPages = (int)Math.Ceiling((double)_imageFiles.Count / itemsPerPage);
 
             if (previewControl.StartPage >= totalPages - 1)
                 return;
@@ -2060,6 +2069,22 @@ namespace MyView
             {
                 ApplyMargins();
             }
+        }
+
+        // ============================================================
+        // 拡大を押したとき
+        // ============================================================
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            ChangeZoom(0.1);
+        }
+
+        // ============================================================
+        // 縮小を押したとき
+        // ============================================================
+        private void btnZoomOut_Click(object sender, EventArgs e)
+        {
+            ChangeZoom(-0.1);
         }
     }
 }
