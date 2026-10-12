@@ -19,6 +19,7 @@ using System.Windows.Forms;
 // 画像に名前を付けて保存
 // クリップボードの画像を貼り付け
 // Ctrl+Rで右へ90°回転、Ctrl+Lで左へ90°回転
+// 右クリック(コンテキストメニュー)
 
 namespace MyView
 {
