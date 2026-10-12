@@ -21,6 +21,7 @@ using System.Windows.Forms;
 // Ctrl+Rで右へ90°回転、Ctrl+Lで左へ90°回転
 // 右クリック(コンテキストメニュー)
 
+
 namespace MyView
 {
     public partial class Form3 : Form
