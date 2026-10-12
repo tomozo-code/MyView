@@ -18,6 +18,7 @@ using System.Windows.Forms;
 // 上スクロールで前の画像、下スクロールで次の画像
 // 画像に名前を付けて保存
 // クリップボードの画像を貼り付け
+// Ctrl+Rで右へ90°回転、Ctrl+Lで左へ90°回転
 
 namespace MyView
 {
@@ -65,6 +66,9 @@ namespace MyView
 
         // 右ドラッグ開始時の画像位置
         private PointF _panStartOffset;
+
+        // 右ドラッグでコンテキストメニューを抑制する
+        private bool _suppressContextMenu = false;
 
 
         // 左ドラッグ範囲選択中かどうか
@@ -664,6 +668,7 @@ namespace MyView
             if (e.Button == MouseButtons.Right)
             {
                 _isPanning = true;
+                _suppressContextMenu = false;
 
                 // ドラッグ開始時のマウス位置
                 _panStartMouse = e.Location;
@@ -735,6 +740,12 @@ namespace MyView
                 // ドラッグ開始位置からの移動量
                 float dx = e.X - _panStartMouse.X;
                 float dy = e.Y - _panStartMouse.Y;
+
+                // 一定距離以上動いたら、右ドラッグと判定する
+                if (Math.Abs(dx) > SystemInformation.DragSize.Width / 2 || Math.Abs(dy) > SystemInformation.DragSize.Height / 2)
+                {
+                    _suppressContextMenu = true;
+                }
 
                 // 画像位置を移動
                 _imageOffset = new PointF(_panStartOffset.X + dx, _panStartOffset.Y + dy);
@@ -1689,6 +1700,18 @@ namespace MyView
         private void zoomOutBtn_Click(object sender, EventArgs e)
         {
             ZoomImage(1.0f / ZoomStep);
+        }
+
+        // ============================================================
+        // コンテキストメニューを表示する直前の処理
+        // ============================================================
+        private void conTxtMenu1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_suppressContextMenu)
+            {
+                e.Cancel = true;
+                _suppressContextMenu = false;
+            }
         }
     }
 }
