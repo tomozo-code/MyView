@@ -49,10 +49,7 @@ namespace MyView
                 "PrintSettings.txt");
 
 
-        // ============================================================
         // 右ドラッグによるプレビュー移動
-        // ============================================================
-
         private bool _isPreviewDragging = false;
         private Point _previewDragStartPoint;
         private int _previewDragStartHorizontalValue;
@@ -702,12 +699,17 @@ namespace MyView
         // ============================================================
         private void UpdatePrinterInfo()
         {
+            // 用紙の向き 縦:1、横:0
+            setDirection.SelectedIndex = _printDocument.DefaultPageSettings.Landscape ? 1 : 0;
+
+            /*
             //string landscapelabel = "縦";
             if (_printDocument.DefaultPageSettings.Landscape)
             {
                 //landscapelabel = "横";
                 setDirection.SelectedIndex = 1;
             }
+            */
 
             // setPrinterName の選択状態を復元
             int printerIndex = setPrinterName.Items.IndexOf(_printDocument.PrinterSettings.PrinterName);
@@ -758,6 +760,13 @@ namespace MyView
             Graphics? g = e.Graphics;
             if (g == null)
                 return;
+
+            // 実際の印刷時だけ、プリンターのハードマージンを補正
+            // プレビューには適用しない
+            if (_isActualPrinting)
+            {
+                g.TranslateTransform(-e.PageSettings.HardMarginX, -e.PageSettings.HardMarginY);
+            }
 
             int rows = (int)tate.Value;
             int cols = (int)yoko.Value;
@@ -975,18 +984,6 @@ namespace MyView
             }
 
             // 次のページ
-            /*
-            _currentPageIndex++;
-
-            e.HasMorePages = (_currentPageIndex * itemsPerPage < _imageFiles.Count);
-
-            if (!e.HasMorePages)
-            {
-                _currentPageIndex = 0;
-            }
-            */
-
-            // 次のページ
             _currentPageIndex++;
 
             if (_isActualPrinting)
@@ -1169,8 +1166,7 @@ namespace MyView
                 int rows = (int)tate.Value;
                 int cols = (int)yoko.Value;
 
-                int itemsPerPage =
-                    rows * cols;
+                int itemsPerPage = rows * cols;
 
                 int totalPages =
                     itemsPerPage > 0

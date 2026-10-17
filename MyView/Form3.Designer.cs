@@ -43,9 +43,13 @@
             toolStripSeparator9 = new ToolStripSeparator();
             roolLeftBtn2 = new ToolStripMenuItem();
             roolRightBtn2 = new ToolStripMenuItem();
+            toolStripSeparator10 = new ToolStripSeparator();
+            closeBtn2 = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             viewStatusTxt = new ToolStripStatusLabel();
             toolStrip1 = new ToolStrip();
+            printBtn = new ToolStripButton();
+            toolStripSeparator11 = new ToolStripSeparator();
             saveBtn = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             copyBtn = new ToolStripButton();
@@ -90,9 +94,9 @@
             // conTxtMenu1
             // 
             conTxtMenu1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2 });
+            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, closeBtn2 });
             conTxtMenu1.Name = "conTxtMenu1";
-            conTxtMenu1.Size = new Size(217, 210);
+            conTxtMenu1.Size = new Size(217, 242);
             conTxtMenu1.Opening += conTxtMenu1_Opening;
             // 
             // saveBtn2
@@ -178,20 +182,34 @@
             roolRightBtn2.ToolTipText = "右へ90°回転(Ctrl+R)";
             roolRightBtn2.Click += roolRightBtn_Click;
             // 
+            // toolStripSeparator10
+            // 
+            toolStripSeparator10.Name = "toolStripSeparator10";
+            toolStripSeparator10.Size = new Size(213, 6);
+            // 
+            // closeBtn2
+            // 
+            closeBtn2.Image = (Image)resources.GetObject("closeBtn2.Image");
+            closeBtn2.Name = "closeBtn2";
+            closeBtn2.Size = new Size(216, 26);
+            closeBtn2.Text = "閉じる(&X)";
+            closeBtn2.ToolTipText = "閉じる(Esc)";
+            closeBtn2.Click += closeBtn_Click;
+            // 
             // statusStrip1
             // 
             statusStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             statusStrip1.Items.AddRange(new ToolStripItem[] { viewStatusTxt });
-            statusStrip1.Location = new Point(0, 436);
+            statusStrip1.Location = new Point(0, 470);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(776, 26);
+            statusStrip1.Size = new Size(921, 26);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
             // viewStatusTxt
             // 
             viewStatusTxt.Name = "viewStatusTxt";
-            viewStatusTxt.Size = new Size(761, 21);
+            viewStatusTxt.Size = new Size(906, 21);
             viewStatusTxt.Spring = true;
             viewStatusTxt.Text = "ここにフルパス";
             viewStatusTxt.TextAlign = ContentAlignment.MiddleLeft;
@@ -200,12 +218,28 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, closeBtn });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { printBtn, toolStripSeparator11, saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(712, 28);
+            toolStrip1.Size = new Size(820, 28);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
+            // 
+            // printBtn
+            // 
+            printBtn.Image = (Image)resources.GetObject("printBtn.Image");
+            printBtn.ImageTransparentColor = Color.Magenta;
+            printBtn.Name = "printBtn";
+            printBtn.Size = new Size(71, 25);
+            printBtn.Tag = "画像に印刷します。";
+            printBtn.Text = "印刷...";
+            printBtn.ToolTipText = "印刷プレビューを表示します。(Ctrl+P)";
+            printBtn.Click += printBtn_Click;
+            // 
+            // toolStripSeparator11
+            // 
+            toolStripSeparator11.Name = "toolStripSeparator11";
+            toolStripSeparator11.Size = new Size(6, 28);
             // 
             // saveBtn
             // 
@@ -334,10 +368,10 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(panel1);
-            toolStripContainer1.ContentPanel.Size = new Size(739, 320);
+            toolStripContainer1.ContentPanel.Size = new Size(909, 320);
             toolStripContainer1.Location = new Point(12, 52);
             toolStripContainer1.Name = "toolStripContainer1";
-            toolStripContainer1.Size = new Size(739, 348);
+            toolStripContainer1.Size = new Size(909, 348);
             toolStripContainer1.TabIndex = 4;
             toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -350,7 +384,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(776, 462);
+            ClientSize = new Size(921, 496);
             Controls.Add(toolStripContainer1);
             Controls.Add(statusStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
@@ -410,5 +444,9 @@
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripMenuItem roolLeftBtn2;
         private ToolStripMenuItem roolRightBtn2;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripMenuItem closeBtn2;
+        private ToolStripButton printBtn;
+        private ToolStripSeparator toolStripSeparator11;
     }
 }

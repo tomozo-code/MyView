@@ -584,7 +584,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnZoomIn, btnZoomOut, toolStripSeparator4, btnPrev, btnNext, toolStripSeparator3, btnClose });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(742, 28);
+            toolStrip1.Size = new Size(711, 28);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint

@@ -501,6 +501,8 @@ namespace MyView
 
             // Form1へ通知
             ImageChanged?.Invoke(imagePath);
+
+
         }
 
         // ============================================================
@@ -991,6 +993,17 @@ namespace MyView
             {
                 // 右へ90°回転
                 RotateImageRight();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + P → 印刷
+            if (e.Control && e.KeyCode == Keys.P)
+            {
+                // 印刷プレビュー表示
+                printBtn.PerformClick();
 
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -1713,6 +1726,32 @@ namespace MyView
             {
                 e.Cancel = true;
                 _suppressContextMenu = false;
+            }
+        }
+        // ============================================================
+        // 印刷を押したとき
+        // ============================================================
+        private void printBtn_Click(object sender, EventArgs e)
+        {
+            // 現在表示している画像のパスを取得
+            string? currentImagePath = viewStatusTxt.Text;
+
+            // ファイルが存在する場合だけ印刷プレビューを開く
+            if (!File.Exists(currentImagePath))
+            {
+                MessageBox.Show(
+                    "現在表示している画像ファイルが見つかりません。",
+                    "印刷プレビュー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            // Form5 に現在表示している画像ファイルを渡して表示
+            using (var form5 = new Form5(currentImagePath))
+            {
+                form5.ShowDialog(this);
             }
         }
     }
