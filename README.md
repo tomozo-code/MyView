@@ -27,27 +27,32 @@
 ---
 
 ## 🎯 主な機能
-- 📖 画像ファイルのサムネイル表示
+- 📖 画像ファイルのサムネイル表示(表示形式:jpg、jpeg、png、bmp、gif、tif、tiff、ico、wmf、emf)
 - 🎴 サムネイルを選択し、数字キーに割り当てられた各種コマンド(クリップボードへのコピー)の実行
 - 🖼 画像ファイルの単体表示(画像ビュー)
-- 🎞️ 画像ビューは、名前を付けて保存、コピー、貼り付け、拡大縮小、前の画像、次の画像 が可能
-- 🖨️ 画像の一覧印刷
+- 🎞️ 画像ビューは、名前を付けて保存、コピー、貼り付け、拡大縮小、前の画像、次の画像、90°回転 が可能
+- 🖨️ 画像印刷及びフォルダ内の画像を一覧印刷
 
 ---
 
 ## 🖼 スクリーンショット
 ### 📖 サムネイル表示
-<img width="1196" height="704" alt="image001" src="https://github.com/user-attachments/assets/c462227b-664e-46d1-9c9f-40be0db5c50b" />
+<img width="986" height="754" alt="image001" src="https://github.com/user-attachments/assets/768e4f34-d28c-4ce8-bf38-cb5779147652" />
 
 ---
 
 ### 🖼 画像ビュー
-<img width="983" height="692" alt="image002" src="https://github.com/user-attachments/assets/72123737-1673-480f-982d-5358c7957185" />
+<img width="940" height="735" alt="image002" src="https://github.com/user-attachments/assets/e17f2c84-9f13-461e-a7c4-6461b6bcd2bd" />
 
 ---
 
-### 🖼 印刷プレビュー
-<img width="986" height="693" alt="image003" src="https://github.com/user-attachments/assets/0bba12ce-c0a0-467e-a53c-5bfdc504a8d6" />
+### 🖨️ 画像印刷
+<img width="986" height="693" alt="image003" src="https://github.com/user-attachments/assets/8bc89dda-33aa-4cee-b8c9-9ed3bcf87be0" />
+
+---
+
+### 🖨️ 一覧印刷
+<img width="986" height="693" alt="image004" src="https://github.com/user-attachments/assets/33811fd8-97a4-4cdd-9f76-850a71ba839c" />
 
 ---
 
@@ -56,6 +61,7 @@
 2. サムネイル表示したフォルダを選択
 3. サムネイル画像を選択し、キーボード上段の数字キー及びテンキーに割り当てられた各種コマンドを実行
 4. サムネイル画像をダブルクリックすると、画像ファイルの単体表示(画像ビュー)
+5. 画像印刷及び一覧印刷
 
 ---
 
@@ -90,7 +96,7 @@
 
    C:\Users\ユーザー名\AppData\Local\MyView\
 
-   ファイル名は LastFolder.txt、 PrintSettings.txt です。
+   ファイル名は LastFolder.txt、 PrintSettings.txt、 PrintSettings2.txt です。
 
 - AppDataフォルダは、標準の設定では隠し属性を付与して非表示となっています。
 
