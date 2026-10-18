@@ -181,6 +181,19 @@ namespace MyView
         // ============================================================
         private void Form3_Load(object sender, EventArgs e)
         {
+            // 印刷(ショートカットキー)右クリ用
+            printBtn2.ShortcutKeys = Keys.Control | Keys.P;
+            // 保存(ショートカットキー)右クリ用
+            saveBtn2.ShortcutKeys = Keys.Control | Keys.S;
+            // コピー(ショートカットキー)右クリ用
+            copyBtn2.ShortcutKeys = Keys.Control | Keys.C;
+            // 貼り付け(ショートカットキー)右クリ用
+            pasteBtn2.ShortcutKeys = Keys.Control | Keys.V;
+            // 左へ回転(ショートカットキー)右クリ用
+            roolLeftBtn2.ShortcutKeys = Keys.Control | Keys.L;
+            // 右へ回転(ショートカットキー)右クリ用
+            roolRightBtn2.ShortcutKeys = Keys.Control | Keys.R;
+
             try
             {
                 if (!File.Exists(_imagePath))
@@ -1736,23 +1749,29 @@ namespace MyView
             // 現在表示している画像のパスを取得
             string? currentImagePath = viewStatusTxt.Text;
 
-            // ファイルが存在する場合だけ印刷プレビューを開く
-            if (!File.Exists(currentImagePath))
+            // ファイル画像なら、従来どおりファイルパスを渡す
+            if (!string.IsNullOrWhiteSpace(currentImagePath) &&
+                File.Exists(currentImagePath))
             {
-                MessageBox.Show(
-                    "現在表示している画像ファイルが見つかりません。",
-                    "印刷プレビュー",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                // Form5 にファイル画像を渡して表示
+                using var form5 = new Form5(currentImagePath);
+                form5.ShowDialog(this);
                 return;
             }
 
-            // Form5 に現在表示している画像ファイルを渡して表示
-            using (var form5 = new Form5(currentImagePath))
+            // ファイルが存在しない場合は、現在表示している画像を渡す
+            if (_image != null)
             {
+                using var form5 = new Form5(_image);
                 form5.ShowDialog(this);
+                return;
             }
+
+            MessageBox.Show(
+                "印刷する画像がありません。",
+                "印刷プレビュー",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
         }
     }
 }

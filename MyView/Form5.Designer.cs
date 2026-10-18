@@ -328,7 +328,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(177, 28);
+            toolStrip1.Size = new Size(227, 28);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
@@ -351,9 +351,9 @@
             closeBtn.Image = (Image)resources.GetObject("closeBtn.Image");
             closeBtn.ImageTransparentColor = Color.Magenta;
             closeBtn.Name = "closeBtn";
-            closeBtn.Size = new Size(69, 25);
+            closeBtn.Size = new Size(88, 25);
             closeBtn.Tag = "ウィンドウを閉じます。";
-            closeBtn.Text = "閉じる";
+            closeBtn.Text = "閉じる(&X)";
             closeBtn.ToolTipText = "閉じる(Esc)";
             closeBtn.Click += closeBtn_Click;
             // 
@@ -367,6 +367,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Name = "Form5";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "画像印刷";
             FormClosing += Form5_FormClosing;
             Load += Form5_Load;

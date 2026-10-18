@@ -15,7 +15,6 @@ using System.Linq;
 
 // 印刷設定値は、「PrintSettings2.txt」へ保存
 
-
 namespace MyView
 {
     public partial class Form5 : Form
@@ -31,6 +30,14 @@ namespace MyView
         // 印刷対象の画像
         private Image? _printImage;
 
+        // 実際の印刷中かどうか
+        private bool _isActualPrinting = false;
+
+        private bool _isRestoringPrinter = false;
+
+        private bool _isSyncingPrinterSettings = false;
+
+
         // 前回終了時(Form5を閉じたとき)の印刷設定保存
         // C:\Users\ユーザー名\AppData\Local\MyView\LastFolder.txt
         private string PrintSettingsFilePath =>
@@ -44,25 +51,36 @@ namespace MyView
         // コンストラクタ
         // ============================================================
 
-        public Form5(string imagePath)
+        public Form5(string imagePath) : this(imagePath, null)
+        {
+
+        }
+
+        public Form5(Image image) : this(null, image)
+        {
+
+        }
+
+        private Form5(string? imagePath, Image? image)
         {
             InitializeComponent();
 
             // Form5でKeyDownを拾えるように
             this.KeyPreview = true;
 
-            _imagePath = imagePath;
+            //_imagePath = imagePath;
+            _imagePath = imagePath ?? string.Empty;
 
             // フォームサイズ
             this.Width = 1000;
             this.Height = 700;
             this.MinimumSize = new Size(400, 400);
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
 
             toolStripContainer1.Dock = DockStyle.Fill;
 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.SplitterDistance = 100;
+            splitContainer1.SplitterDistance = 400;
             splitContainer1.Panel1MinSize = 200;
 
             panel2.Dock = DockStyle.Fill;
@@ -72,7 +90,7 @@ namespace MyView
             previewControl.BackColor = Color.DimGray;
 
             setDirection.Items.AddRange(new string[] { "縦", "横" });
-            setDirection.SelectedIndex = 0;
+            setDirection.SelectedIndex = 1;
 
             // PrintPreviewControl に Document を割り当て
             previewControl.Document = _printDocument;
@@ -81,6 +99,26 @@ namespace MyView
             _printDocument.PrintPage += PrintDocument_PrintPage;
 
             // 画像を読み込む
+            if (image != null)
+            {
+                // Form3の画像とは別の画像を作り、Form5側で管理する
+                _printImage = new Bitmap(image);
+            }
+            else if (!string.IsNullOrEmpty(_imagePath) && File.Exists(_imagePath))
+            {
+                // 従来どおり、ファイルから画像を読み込む
+                _printImage = Image.FromFile(_imagePath);
+            }
+            else
+            {
+                MessageBox.Show(
+                    "印刷する画像を読み込めませんでした。",
+                    "印刷プレビュー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+
+            /*
             if (!string.IsNullOrEmpty(_imagePath) && File.Exists(_imagePath))
             {
                 _printImage = Image.FromFile(_imagePath);
@@ -93,15 +131,15 @@ namespace MyView
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
-
+            */
 
             // 印刷設定の初期値
             // A4(210mm×297mm)・幅・高さ
             _printDocument.DefaultPageSettings.PaperSize = new PaperSize("A4 (210x297mm)", 827, 1169);
             // 縦:false、横:ture
             _printDocument.DefaultPageSettings.Landscape = false;
-            // 余白10mm 指定は1/100インチ
-            int margin = (int)Math.Round(10 / 25.4 * 100);
+            // 余白0mm 指定は1/100インチ
+            int margin = (int)Math.Round(0 / 25.4 * 100);
 
             _printDocument.DefaultPageSettings.Margins =
                 new Margins(
@@ -110,10 +148,10 @@ namespace MyView
                     margin,
                     margin);
 
-            setMarginLeft.Text = "10.00";
-            setMarginRight.Text = "10.00";
-            setMarginTop.Text = "10.00";
-            setMarginBottom.Text = "10.00";
+            setMarginLeft.Text = "0.00";
+            setMarginRight.Text = "0.00";
+            setMarginTop.Text = "0.00";
+            setMarginBottom.Text = "0.00";
 
 
 
@@ -148,6 +186,24 @@ namespace MyView
                 _isLoadingSettings = false;
             }
 
+            // 設定ファイルの余白をチェック
+            // この時点では setPaper / setDirection が設定済み
+            if (!ApplyMargins())
+            {
+                // 不正な余白だった場合は初期値に戻す
+                setMarginLeft.Text = "0.00";
+                setMarginRight.Text = "0.00";
+                setMarginTop.Text = "0.00";
+                setMarginBottom.Text = "0.00";
+
+                _printDocument.DefaultPageSettings.Margins =
+                    new Margins(
+                        MmToHundredthsInch(0.00m),
+                        MmToHundredthsInch(0.00m),
+                        MmToHundredthsInch(0.00m),
+                        MmToHundredthsInch(0.00m));
+            }
+
             // プレビュー更新
             UpdatePreview();
         }
@@ -172,10 +228,10 @@ namespace MyView
                 // 用紙方向
                 bool landscape = false;
                 // 余白（mm）
-                decimal marginLeftMm = 10.00m;
-                decimal marginRightMm = 10.00m;
-                decimal marginTopMm = 10.00m;
-                decimal marginBottomMm = 10.00m;
+                decimal marginLeftMm = 0.00m;
+                decimal marginRightMm = 0.00m;
+                decimal marginTopMm = 0.00m;
+                decimal marginBottomMm = 0.00m;
 
                 foreach (string line in lines)
                 {
@@ -393,6 +449,21 @@ namespace MyView
                 return;
             }
 
+            Graphics? g = e.Graphics;
+
+            if (g == null || _printImage == null)
+            {
+                e.HasMorePages = false;
+                return;
+            }
+
+            // 実際の印刷時だけ、プリンターのハードマージンを補正
+            // プレビューには適用しない
+            if (_isActualPrinting)
+            {
+                g.TranslateTransform(-e.PageSettings.HardMarginX, -e.PageSettings.HardMarginY);
+            }
+
             // 余白を除いた印刷可能領域
             Rectangle bounds = e.MarginBounds;
 
@@ -409,9 +480,7 @@ namespace MyView
             int x = bounds.Left + (bounds.Width - width) / 2;
             int y = bounds.Top + (bounds.Height - height) / 2;
 
-            e.Graphics?.DrawImage(
-                _printImage,
-                new Rectangle(x, y, width, height));
+            g.DrawImage(_printImage, new Rectangle(x, y, width, height));
 
             e.HasMorePages = false;
         }
@@ -477,10 +546,13 @@ namespace MyView
         // ============================================================
         private void setPrinterName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_isLoadingSettings)
-                return;
+            //if (_isLoadingSettings)
+                //return;
 
             if (setPrinterName.SelectedItem == null)
+                return;
+
+            if (_isRestoringPrinter || _isSyncingPrinterSettings || _isLoadingSettings)
                 return;
 
             // 変更前の設定を保存
@@ -519,55 +591,6 @@ namespace MyView
 
             btnHaichi.PerformClick();
 
-
-            /*
-
-            string? printerName = setPrinterName.SelectedItem?.ToString();
-
-            if (string.IsNullOrWhiteSpace(printerName))
-                return;
-
-            // 変更前の設定を保存
-            string oldPrinterName = _printDocument.PrinterSettings.PrinterName;
-            PaperSize oldPaperSize = _printDocument.DefaultPageSettings.PaperSize;
-            string? oldPaperName = setPaper.SelectedItem?.ToString();
-            int oldPaperWidth = oldPaperSize.Width;
-            int oldPaperHeight = oldPaperSize.Height;
-            bool oldLandscape = _printDocument.DefaultPageSettings.Landscape;
-            Margins oldMargins = _printDocument.DefaultPageSettings.Margins;
-
-            try
-            {
-                // 新しいプリンタへ変更
-                string newPrinterName = setPrinterName.SelectedItem.ToString()!;
-
-                _printDocument.PrinterSettings.PrinterName = printerName;
-
-                if (!_printDocument.PrinterSettings.IsValid)
-                {
-                    MessageBox.Show(
-                        "選択したプリンターを使用できません。",
-                        "印刷設定",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // 選択したプリンターに対応する用紙一覧を読み込む
-                LoadPaperSizes();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"プリンターの変更に失敗しました。\n\n{ex.Message}",
-                    "印刷設定",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-            */
-
-
         }
 
         // ============================================================
@@ -578,6 +601,8 @@ namespace MyView
             // 変更前の用紙情報を保存
             PaperSize oldPaperSize = _printDocument.DefaultPageSettings.PaperSize;
 
+            // 新しいプリンタの用紙一覧を取得
+            _isSyncingPrinterSettings = true;
 
             try
             {
@@ -654,7 +679,7 @@ namespace MyView
             }
             finally
             {
-                //_isSyncingPrinterSettings = false;
+                _isSyncingPrinterSettings = false;
             }
 
             // 新しいプリンタ・用紙で余白チェック
@@ -664,7 +689,7 @@ namespace MyView
             }
 
             // 余白NG → 元のプリンタへ戻す
-            //_isRestoringPrinter = true;
+            _isRestoringPrinter = true;
 
             try
             {
@@ -738,7 +763,7 @@ namespace MyView
             }
             finally
             {
-                //_isRestoringPrinter = false;
+                _isRestoringPrinter = false;
             }
 
             return false;
@@ -1127,7 +1152,17 @@ namespace MyView
                     if (pd.ShowDialog() != DialogResult.OK)
                         return;
 
-                    _printDocument.Print();
+                    // プレビュー描画と実印刷を区別
+                    _isActualPrinting = true;
+
+                    try
+                    {
+                        _printDocument.Print();
+                    }
+                    finally
+                    {
+                        _isActualPrinting = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1167,6 +1202,7 @@ namespace MyView
         // ============================================================
         private void Form5_KeyDown(object sender, KeyEventArgs e)
         {
+            /*
             // EscキーでForm5を閉じる
             if (e.KeyCode == Keys.Escape)
             {
@@ -1175,6 +1211,7 @@ namespace MyView
                 e.SuppressKeyPress = true;
                 return;
             }
+            */
 
             // Ctrl + P → 印刷
             if (e.Control && e.KeyCode == Keys.P)
@@ -1186,6 +1223,20 @@ namespace MyView
                 e.SuppressKeyPress = true;
                 return;
             }
+        }
+
+        // ============================================================
+        // Escキーをフォーム全体で処理
+        // ============================================================
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                Close();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
 

@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             pictureBox1 = new PictureBox();
             conTxtMenu1 = new ContextMenuStrip(components);
+            printBtn2 = new ToolStripMenuItem();
+            toolStripSeparator12 = new ToolStripSeparator();
             saveBtn2 = new ToolStripMenuItem();
             toolStripSeparator6 = new ToolStripSeparator();
             copyBtn2 = new ToolStripMenuItem();
@@ -94,58 +96,72 @@
             // conTxtMenu1
             // 
             conTxtMenu1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, closeBtn2 });
+            conTxtMenu1.Items.AddRange(new ToolStripItem[] { printBtn2, toolStripSeparator12, saveBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, closeBtn2 });
             conTxtMenu1.Name = "conTxtMenu1";
-            conTxtMenu1.Size = new Size(217, 242);
+            conTxtMenu1.Size = new Size(207, 296);
             conTxtMenu1.Opening += conTxtMenu1_Opening;
+            // 
+            // printBtn2
+            // 
+            printBtn2.Image = (Image)resources.GetObject("printBtn2.Image");
+            printBtn2.Name = "printBtn2";
+            printBtn2.Size = new Size(206, 26);
+            printBtn2.Text = "印刷...";
+            printBtn2.ToolTipText = "印刷(Ctrl+P)";
+            printBtn2.Click += printBtn_Click;
+            // 
+            // toolStripSeparator12
+            // 
+            toolStripSeparator12.Name = "toolStripSeparator12";
+            toolStripSeparator12.Size = new Size(203, 6);
             // 
             // saveBtn2
             // 
             saveBtn2.Image = (Image)resources.GetObject("saveBtn2.Image");
             saveBtn2.Name = "saveBtn2";
-            saveBtn2.Size = new Size(216, 26);
-            saveBtn2.Text = "名前を付けて保存(&S)";
+            saveBtn2.Size = new Size(206, 26);
+            saveBtn2.Text = "名前を付けて保存...";
             saveBtn2.ToolTipText = "名前を付けて保存(Ctrl+S)";
             saveBtn2.Click += saveBtn_Click;
             // 
             // toolStripSeparator6
             // 
             toolStripSeparator6.Name = "toolStripSeparator6";
-            toolStripSeparator6.Size = new Size(213, 6);
+            toolStripSeparator6.Size = new Size(203, 6);
             // 
             // copyBtn2
             // 
             copyBtn2.Image = (Image)resources.GetObject("copyBtn2.Image");
             copyBtn2.Name = "copyBtn2";
-            copyBtn2.Size = new Size(216, 26);
-            copyBtn2.Text = "コピー(&C)";
+            copyBtn2.Size = new Size(206, 26);
+            copyBtn2.Text = "コピー";
             copyBtn2.ToolTipText = "コピー(Ctrl+C)";
             copyBtn2.Click += copyBtn_Click;
             // 
             // toolStripSeparator7
             // 
             toolStripSeparator7.Name = "toolStripSeparator7";
-            toolStripSeparator7.Size = new Size(213, 6);
+            toolStripSeparator7.Size = new Size(203, 6);
             // 
             // pasteBtn2
             // 
             pasteBtn2.Image = (Image)resources.GetObject("pasteBtn2.Image");
             pasteBtn2.Name = "pasteBtn2";
-            pasteBtn2.Size = new Size(216, 26);
-            pasteBtn2.Text = "貼り付け(&P)";
+            pasteBtn2.Size = new Size(206, 26);
+            pasteBtn2.Text = "貼り付け";
             pasteBtn2.ToolTipText = "貼り付け(Ctrl+V)";
             pasteBtn2.Click += pasteBtn_Click;
             // 
             // toolStripSeparator8
             // 
             toolStripSeparator8.Name = "toolStripSeparator8";
-            toolStripSeparator8.Size = new Size(213, 6);
+            toolStripSeparator8.Size = new Size(203, 6);
             // 
             // zoomInBtn2
             // 
             zoomInBtn2.Image = (Image)resources.GetObject("zoomInBtn2.Image");
             zoomInBtn2.Name = "zoomInBtn2";
-            zoomInBtn2.Size = new Size(216, 26);
+            zoomInBtn2.Size = new Size(206, 26);
             zoomInBtn2.Text = "拡大";
             zoomInBtn2.ToolTipText = "拡大(Ctrl+上スクロール)";
             zoomInBtn2.Click += zoomInBtn_Click;
@@ -154,7 +170,7 @@
             // 
             zoomOutBtn2.Image = (Image)resources.GetObject("zoomOutBtn2.Image");
             zoomOutBtn2.Name = "zoomOutBtn2";
-            zoomOutBtn2.Size = new Size(216, 26);
+            zoomOutBtn2.Size = new Size(206, 26);
             zoomOutBtn2.Text = "縮小";
             zoomOutBtn2.ToolTipText = "縮小(Ctrl+下スクロール)";
             zoomOutBtn2.Click += zoomOutBtn_Click;
@@ -162,14 +178,14 @@
             // toolStripSeparator9
             // 
             toolStripSeparator9.Name = "toolStripSeparator9";
-            toolStripSeparator9.Size = new Size(213, 6);
+            toolStripSeparator9.Size = new Size(203, 6);
             // 
             // roolLeftBtn2
             // 
             roolLeftBtn2.Image = (Image)resources.GetObject("roolLeftBtn2.Image");
             roolLeftBtn2.Name = "roolLeftBtn2";
-            roolLeftBtn2.Size = new Size(216, 26);
-            roolLeftBtn2.Text = "左へ回転(&L)";
+            roolLeftBtn2.Size = new Size(206, 26);
+            roolLeftBtn2.Text = "左へ回転";
             roolLeftBtn2.ToolTipText = "左へ90°回転(Ctrl+L)";
             roolLeftBtn2.Click += roolLeftBtn_Click;
             // 
@@ -177,22 +193,22 @@
             // 
             roolRightBtn2.Image = (Image)resources.GetObject("roolRightBtn2.Image");
             roolRightBtn2.Name = "roolRightBtn2";
-            roolRightBtn2.Size = new Size(216, 26);
-            roolRightBtn2.Text = "右へ回転(&R)";
+            roolRightBtn2.Size = new Size(206, 26);
+            roolRightBtn2.Text = "右へ回転";
             roolRightBtn2.ToolTipText = "右へ90°回転(Ctrl+R)";
             roolRightBtn2.Click += roolRightBtn_Click;
             // 
             // toolStripSeparator10
             // 
             toolStripSeparator10.Name = "toolStripSeparator10";
-            toolStripSeparator10.Size = new Size(213, 6);
+            toolStripSeparator10.Size = new Size(203, 6);
             // 
             // closeBtn2
             // 
             closeBtn2.Image = (Image)resources.GetObject("closeBtn2.Image");
             closeBtn2.Name = "closeBtn2";
-            closeBtn2.Size = new Size(216, 26);
-            closeBtn2.Text = "閉じる(&X)";
+            closeBtn2.Size = new Size(206, 26);
+            closeBtn2.Text = "閉じる";
             closeBtn2.ToolTipText = "閉じる(Esc)";
             closeBtn2.Click += closeBtn_Click;
             // 
@@ -221,7 +237,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { printBtn, toolStripSeparator11, saveBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(820, 28);
+            toolStrip1.Size = new Size(906, 28);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -230,9 +246,9 @@
             printBtn.Image = (Image)resources.GetObject("printBtn.Image");
             printBtn.ImageTransparentColor = Color.Magenta;
             printBtn.Name = "printBtn";
-            printBtn.Size = new Size(71, 25);
+            printBtn.Size = new Size(90, 25);
             printBtn.Tag = "画像に印刷します。";
-            printBtn.Text = "印刷...";
+            printBtn.Text = "印刷(&P)...";
             printBtn.ToolTipText = "印刷プレビューを表示します。(Ctrl+P)";
             printBtn.Click += printBtn_Click;
             // 
@@ -246,9 +262,9 @@
             saveBtn.Image = (Image)resources.GetObject("saveBtn.Image");
             saveBtn.ImageTransparentColor = Color.Magenta;
             saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(147, 25);
+            saveBtn.Size = new Size(175, 25);
             saveBtn.Tag = "画像に名前を付けて保存します。";
-            saveBtn.Text = "名前を付けて保存";
+            saveBtn.Text = "名前を付けて保存(&S)...";
             saveBtn.ToolTipText = "名前を付けて保存(Ctrl+S)";
             saveBtn.Click += saveBtn_Click;
             // 
@@ -262,9 +278,9 @@
             copyBtn.Image = (Image)resources.GetObject("copyBtn.Image");
             copyBtn.ImageTransparentColor = Color.Magenta;
             copyBtn.Name = "copyBtn";
-            copyBtn.Size = new Size(62, 25);
+            copyBtn.Size = new Size(82, 25);
             copyBtn.Tag = "画像をコピーします。";
-            copyBtn.Text = "コピー";
+            copyBtn.Text = "コピー(&C)";
             copyBtn.ToolTipText = "コピー(Ctrl+C)";
             copyBtn.Click += copyBtn_Click;
             // 
@@ -278,9 +294,9 @@
             pasteBtn.Image = (Image)resources.GetObject("pasteBtn.Image");
             pasteBtn.ImageTransparentColor = Color.Magenta;
             pasteBtn.Name = "pasteBtn";
-            pasteBtn.Size = new Size(86, 25);
+            pasteBtn.Size = new Size(106, 25);
             pasteBtn.Tag = "画像を貼り付けます。";
-            pasteBtn.Text = "貼り付け";
+            pasteBtn.Text = "貼り付け(&V)";
             pasteBtn.ToolTipText = "貼り付け(Ctrl+V)";
             pasteBtn.Click += pasteBtn_Click;
             // 
@@ -321,9 +337,9 @@
             roolLeftBtn.Image = (Image)resources.GetObject("roolLeftBtn.Image");
             roolLeftBtn.ImageTransparentColor = Color.Magenta;
             roolLeftBtn.Name = "roolLeftBtn";
-            roolLeftBtn.Size = new Size(91, 25);
+            roolLeftBtn.Size = new Size(109, 25);
             roolLeftBtn.Tag = "画像を左へ90°回転します。";
-            roolLeftBtn.Text = "左へ回転";
+            roolLeftBtn.Text = "左へ回転(&L)";
             roolLeftBtn.ToolTipText = "左へ90°回転(Ctrl+L)";
             roolLeftBtn.Click += roolLeftBtn_Click;
             // 
@@ -332,9 +348,9 @@
             roolRightBtn.Image = (Image)resources.GetObject("roolRightBtn.Image");
             roolRightBtn.ImageTransparentColor = Color.Magenta;
             roolRightBtn.Name = "roolRightBtn";
-            roolRightBtn.Size = new Size(91, 25);
+            roolRightBtn.Size = new Size(111, 25);
             roolRightBtn.Tag = "画像を右へ90°回転します。";
-            roolRightBtn.Text = "右へ回転";
+            roolRightBtn.Text = "右へ回転(&R)";
             roolRightBtn.ToolTipText = "右へ90°回転(Ctrl+R)";
             roolRightBtn.Click += roolRightBtn_Click;
             // 
@@ -348,9 +364,9 @@
             closeBtn.Image = (Image)resources.GetObject("closeBtn.Image");
             closeBtn.ImageTransparentColor = Color.Magenta;
             closeBtn.Name = "closeBtn";
-            closeBtn.Size = new Size(69, 25);
+            closeBtn.Size = new Size(88, 25);
             closeBtn.Tag = "ウィンドウを閉じます。";
-            closeBtn.Text = "閉じる";
+            closeBtn.Text = "閉じる(&X)";
             closeBtn.ToolTipText = "閉じる(Esc)";
             closeBtn.Click += closeBtn_Click;
             // 
@@ -392,7 +408,7 @@
             KeyPreview = true;
             Name = "Form3";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Form3";
+            Text = "画像ファイル名表示";
             Load += Form3_Load;
             KeyDown += Form3_KeyDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -448,5 +464,7 @@
         private ToolStripMenuItem closeBtn2;
         private ToolStripButton printBtn;
         private ToolStripSeparator toolStripSeparator11;
+        private ToolStripMenuItem printBtn2;
+        private ToolStripSeparator toolStripSeparator12;
     }
 }

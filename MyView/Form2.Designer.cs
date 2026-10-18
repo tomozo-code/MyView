@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             TreeNode treeNode1 = new TreeNode("サムネイル");
             TreeNode treeNode2 = new TreeNode("画像ビュー");
-            TreeNode treeNode3 = new TreeNode("印刷プレビュー");
+            TreeNode treeNode3 = new TreeNode("画像一覧印刷プレビュー");
             TreeNode treeNode4 = new TreeNode("簡単な使い方", new TreeNode[] { treeNode1, treeNode2, treeNode3 });
             TreeNode treeNode5 = new TreeNode("サードパーティライセンス");
             TitleTxt = new Label();
@@ -171,7 +171,7 @@
             treeNode2.Name = "view";
             treeNode2.Text = "画像ビュー";
             treeNode3.Name = "preview";
-            treeNode3.Text = "印刷プレビュー";
+            treeNode3.Text = "画像一覧印刷プレビュー";
             treeNode4.Name = "use";
             treeNode4.Text = "簡単な使い方";
             treeNode5.Name = "licenses";

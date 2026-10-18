@@ -151,6 +151,7 @@ namespace MyView
                         "　　枠内クリックで拡大" + Environment.NewLine +
                         "　　枠線の四隅と上下左右のハンドルをドラッグすると枠サイズ変更" + Environment.NewLine +
                         "　　コピーもしくは Ctrl＋Cで枠内画像をコピー" + Environment.NewLine +
+                        "・画像を印刷(Ctrl＋P)" + Environment.NewLine +
                         "・画像に名前を付けて保存(Ctrl＋S)" + Environment.NewLine +
                         "・画像をコピー(Ctrl＋C)" + Environment.NewLine +
                         "・クリップボードの画像を貼り付け(Ctrl＋V)" + Environment.NewLine +
@@ -158,11 +159,20 @@ namespace MyView
                         "・右へ90°回転(Ctrl＋R)";
                     break;
 
-                case "印刷プレビュー":
-                    UseTxtBox.Text = "選択中のフォルダ内の画像を一覧印刷します。" + Environment.NewLine +
+                case "画像一覧印刷プレビュー":
+                    UseTxtBox.Text = "選択中のフォルダ内の画像を一覧印刷(印刷プレビュー)します。" + Environment.NewLine +
                         "・前ページ：上スクロール" + Environment.NewLine + 
                         "・次ページ：下スクロール" + Environment.NewLine +
                         "・拡大：Ctrl＋上スクロール" + Environment.NewLine + 
+                        "・主将：Ctrl＋下スクロール" + Environment.NewLine +
+                        "・印刷プレビュー内移動：右ドラッグ";
+                    break;
+
+                case "画像印刷プレビュー":
+                    UseTxtBox.Text = "画像ビューに表示されている画像を印刷(印刷プレビュー)します。" + Environment.NewLine +
+                        "・前ページ：上スクロール" + Environment.NewLine +
+                        "・次ページ：下スクロール" + Environment.NewLine +
+                        "・拡大：Ctrl＋上スクロール" + Environment.NewLine +
                         "・主将：Ctrl＋下スクロール" + Environment.NewLine +
                         "・印刷プレビュー内移動：右ドラッグ";
                     break;
