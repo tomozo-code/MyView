@@ -116,6 +116,9 @@ namespace MyView
             }
         }
 
+        // ============================================================
+        // ツリービュー
+        // ============================================================
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
 
@@ -159,22 +162,20 @@ namespace MyView
                         "・右へ90°回転(Ctrl＋R)";
                     break;
 
-                case "画像一覧印刷プレビュー":
+                case "画像一覧印刷":
                     UseTxtBox.Text = "選択中のフォルダ内の画像を一覧印刷(印刷プレビュー)します。" + Environment.NewLine +
+                        "・メインウィンドウ(サムネイル)にてフォルダを選択し、「ファイル(F) - 一覧印刷(P)...」をクリックします。" + Environment.NewLine +
                         "・前ページ：上スクロール" + Environment.NewLine + 
                         "・次ページ：下スクロール" + Environment.NewLine +
                         "・拡大：Ctrl＋上スクロール" + Environment.NewLine + 
-                        "・主将：Ctrl＋下スクロール" + Environment.NewLine +
+                        "・縮小：Ctrl＋下スクロール" + Environment.NewLine +
                         "・印刷プレビュー内移動：右ドラッグ";
                     break;
 
-                case "画像印刷プレビュー":
+                case "画像印刷":
                     UseTxtBox.Text = "画像ビューに表示されている画像を印刷(印刷プレビュー)します。" + Environment.NewLine +
-                        "・前ページ：上スクロール" + Environment.NewLine +
-                        "・次ページ：下スクロール" + Environment.NewLine +
-                        "・拡大：Ctrl＋上スクロール" + Environment.NewLine +
-                        "・主将：Ctrl＋下スクロール" + Environment.NewLine +
-                        "・印刷プレビュー内移動：右ドラッグ";
+                        "・画像ビューで画像を表示させ「印刷(P)...」をクリックします。" + Environment.NewLine +
+                        "・画像印刷ウィンドウが表示され、印刷設定を行い印刷します。";
                     break;
 
                 case "サードパーティライセンス":

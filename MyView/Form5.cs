@@ -51,16 +51,19 @@ namespace MyView
         // コンストラクタ
         // ============================================================
 
+        // ファイルパスを受け取る
         public Form5(string imagePath) : this(imagePath, null)
         {
 
         }
 
+        // 画像データを直接受け取る
         public Form5(Image image) : this(null, image)
         {
 
         }
 
+        // フォームの初期化と画像の読み込みをまとめて行う
         private Form5(string? imagePath, Image? image)
         {
             InitializeComponent();
@@ -1202,16 +1205,6 @@ namespace MyView
         // ============================================================
         private void Form5_KeyDown(object sender, KeyEventArgs e)
         {
-            /*
-            // EscキーでForm5を閉じる
-            if (e.KeyCode == Keys.Escape)
-            {
-                Close();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-                return;
-            }
-            */
 
             // Ctrl + P → 印刷
             if (e.Control && e.KeyCode == Keys.P)
