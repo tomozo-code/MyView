@@ -41,6 +41,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // Form2:バージョン情報フォーム
 // Form3:画像ビューフォーム
 // Form4:一覧印刷フォーム
+// Form5:画像印刷フォーム
 
 // --------------------------------------------------------
 // クラス
@@ -85,6 +86,16 @@ namespace MyView
         private Point _dragStartPoint;
         private int _dragIndex = -1;
 
+
+        // 配置解除前のウィンドウ位置・サイズ・状態を保存
+        private Rectangle form1OriginalBounds;
+        private Rectangle form3OriginalBounds;
+
+        private FormWindowState form1OriginalWindowState;
+        private FormWindowState form3OriginalWindowState;
+
+        private bool layoutSaved = false;
+
         // 画像プレビュー用Form3
         private Form3? _previewForm;
 
@@ -121,6 +132,9 @@ namespace MyView
             listViewThumbnails.Invalidate();
             listViewThumbnails.Update();
         }
+
+        // フラグ: pathTxtにてフォーカスを得た最初のクリックで全選択するかどうか
+        private bool pathTxtselectAllOnClick = true;
 
         // ============================================================
         // コンストラクタ
@@ -161,11 +175,12 @@ namespace MyView
 
             numThumbnailSize.Value = 256;
 
-            // 背景色
-            treeViewFolders.BackColor = Color.Gray;
-            listViewThumbnails.BackColor = Color.Gray;
-            logTxt.BackColor = Color.Gray;
-            pathTxt.BackColor = Color.Gray;
+            // 背景色(明るいグレー)
+            treeViewFolders.BackColor = Color.Gainsboro;
+            listViewThumbnails.BackColor = Color.Gainsboro;
+            logTxt.BackColor = Color.Gainsboro;
+            pathTxt.BackColor = Color.Gainsboro;
+
 
             // ステータス
             StatusLabel1.Text = "画像ファイルはありません。";
@@ -227,8 +242,12 @@ namespace MyView
 
             // F5でフォルダー更新(ショートカットキー)
             folderUpdate.ShortcutKeys = Keys.F5;
-            // 一覧印刷(ショートカットキー)
+            // Ctrl+P 一覧印刷(ショートカットキー)
             printMenu.ShortcutKeys = Keys.Control | Keys.P;
+            //フォルダツリー表示・非表示(ショートカットキー)
+            foldertreeMenu.ShortcutKeys = Keys.Control | Keys.F;
+            //情報ボックス表示・非表示(ショートカットキー)
+            infoboxMenu.ShortcutKeys = Keys.Control | Keys.I;
         }
 
         // ============================================================
@@ -1201,7 +1220,7 @@ namespace MyView
                     {
                         return;
                     }
- 
+
                     // 画像情報をlogTxtに表示
                     string fullPath = _imageFiles[index];
                     ShowImageInfo(fullPath);
@@ -1237,6 +1256,14 @@ namespace MyView
             e.Handled = true;
             e.SuppressKeyPress = true;
 
+            CopyImageInfo(number);
+        }
+
+        // ============================================================
+        // Form3から数字キーの情報取得を依頼されたとき
+        // ============================================================
+        public void ExecuteImageInfoKey(int number)
+        {
             CopyImageInfo(number);
         }
 
@@ -1450,6 +1477,12 @@ namespace MyView
             {
                 string fullPath = _imageFiles[_dragIndex];
                 ShowImageInfo(fullPath);
+
+                // Form3が開いていれば、クリックした画像に切り替える
+                if (_previewForm != null && !_previewForm.IsDisposed)
+                {
+                    _previewForm.SetImage(fullPath);
+                }
             }
         }
 
@@ -1669,6 +1702,8 @@ namespace MyView
                 _previewForm.FormClosed += PreviewForm_FormClosed;
                 _previewForm.ImageChanged += PreviewForm_ImageChanged;
                 _previewForm.Show(this);
+
+                //SetForm3(_previewForm);
             }
             else
             {
@@ -1742,10 +1777,24 @@ namespace MyView
 
         // ============================================================
         // フォルダパスのテキストボックスをクリックすると全選択
+        // 全選択中に再クリックしたら、全選択を解除
         // ============================================================
         private void pathTxt_Click(object sender, EventArgs e)
         {
-            pathTxt.SelectAll();
+
+            if (pathTxtselectAllOnClick)
+            {
+                pathTxt.SelectAll();
+                pathTxtselectAllOnClick = false;
+            }
+        }
+
+        // ============================================================
+        // パス(pathTxt)からフォーカスが離れたとき
+        // ============================================================
+        private void pathTxt_Leave(object sender, EventArgs e)
+        {
+            pathTxtselectAllOnClick = true;
         }
 
         // ============================================================
@@ -1983,6 +2032,207 @@ namespace MyView
             // 画像情報をlogTxtに表示
             string fullPath = _imageFiles[index];
             ShowImageInfo(fullPath);
+        }
+
+        // ============================================================
+        // splitContainer1.Panel1(左パネル)と情報ボックスのメニュー状態を更新
+        // ============================================================
+        private void UpdateFolderPanelVertical()
+        {
+            foldertreeMenu.Checked = !splitContainer1.Panel1Collapsed;
+            infoboxMenu.Checked = !splitContainer2.Panel2Collapsed;
+        }
+
+
+        // ============================================================
+        // フォルダーツリーの表示・非表示を切り替える
+        // ============================================================
+        private void ToggleFolderPanelHorizontal1()
+        {
+            splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
+
+            UpdateFolderPanelVertical();
+        }
+
+        // ============================================================
+        // 情報ボックスの表示・非表示を切り替える
+        // ============================================================
+        private void ToggleFolderPanelHorizontal2()
+        {
+            splitContainer2.Panel2Collapsed = !splitContainer2.Panel2Collapsed;
+
+            UpdateFolderPanelVertical();
+        }
+
+        // ============================================================
+        // form1のキーダウン処理
+        // ============================================================
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Ctrl + F：フォルダーツリーの表示・非表示
+            if (e.Control && e.KeyCode == Keys.F)
+            {
+                ToggleFolderPanelHorizontal1();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + I：情報ボックスの表示・非表示
+            if (e.Control && e.KeyCode == Keys.I)
+            {
+                ToggleFolderPanelHorizontal2();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+        }
+
+        // ============================================================
+        // フォルダツリーをクリックしたとき
+        // ============================================================
+        private void foldertreeMenu_Click(object sender, EventArgs e)
+        {
+            ToggleFolderPanelHorizontal1();
+        }
+
+        // ============================================================
+        // 情報ボックスをクリックしたとき
+        // ============================================================
+        private void infoboxMenu_Click(object sender, EventArgs e)
+        {
+            ToggleFolderPanelHorizontal2();
+        }
+
+        // ============================================================
+        // 元の位置とサイズを保存
+        // ============================================================
+        private void SaveOriginalLayout()
+        {
+            if (layoutSaved || _previewForm == null || _previewForm.IsDisposed)
+            {
+                return;
+            }
+
+            form1OriginalBounds = this.Bounds;
+            form3OriginalBounds = _previewForm.Bounds;
+
+            form1OriginalWindowState = this.WindowState;
+            form3OriginalWindowState = _previewForm.WindowState;
+
+            layoutSaved = true;
+        }
+
+        // ============================================================
+        // 左右配置
+        // ============================================================
+        private void LeftRightLayout_Click(object sender, EventArgs e)
+        {
+            if (_previewForm == null || _previewForm.IsDisposed)
+            {
+                MessageBox.Show("画像ビューが開かれていません。");
+                return;
+            }
+
+            SaveOriginalLayout();
+
+            Rectangle area = Screen.FromControl(this).WorkingArea;
+            int leftWidth = area.Width / 2;
+
+            // 最大化状態を解除してから位置・サイズを設定
+            this.WindowState = FormWindowState.Normal;
+            _previewForm.WindowState = FormWindowState.Normal;
+
+            this.StartPosition = FormStartPosition.Manual;
+            _previewForm.StartPosition = FormStartPosition.Manual;
+
+            // Form1を左半分に配置
+            this.Bounds = new Rectangle(
+                area.Left,
+                area.Top,
+                leftWidth,
+                area.Height);
+
+            // Form3を右半分に配置
+            _previewForm.Bounds = new Rectangle(
+                area.Left + leftWidth,
+                area.Top,
+                area.Width - leftWidth,
+                area.Height);
+
+            this.Activate();
+        }
+
+        // ============================================================
+        // 上下配置
+        // ============================================================
+        private void TopBottomLayout_Click(object sender, EventArgs e)
+        {
+            if (_previewForm == null || _previewForm.IsDisposed)
+            {
+                MessageBox.Show("画像ビューが開かれていません。");
+                return;
+            }
+
+            SaveOriginalLayout();
+
+            Rectangle area = Screen.FromControl(this).WorkingArea;
+            int topHeight = area.Height / 2;
+
+            // 最大化状態を解除してから位置・サイズを設定
+            this.WindowState = FormWindowState.Normal;
+            _previewForm.WindowState = FormWindowState.Normal;
+
+            this.StartPosition = FormStartPosition.Manual;
+            _previewForm.StartPosition = FormStartPosition.Manual;
+
+            // Form1を上半分に配置
+            this.Bounds = new Rectangle(
+                area.Left,
+                area.Top,
+                area.Width,
+                topHeight);
+
+            // Form3を下半分に配置
+            _previewForm.Bounds = new Rectangle(
+                area.Left,
+                area.Top + topHeight,
+                area.Width,
+                area.Height - topHeight);
+
+            this.Activate();
+        }
+
+        // ============================================================
+        // 配置解除：配置変更前の位置・サイズに戻す
+        // ============================================================
+        private void LayoutReset_Click(object sender, EventArgs e)
+        {
+            if (_previewForm == null || _previewForm.IsDisposed)
+            {
+                MessageBox.Show("画像ビューが開かれていません。");
+                return;
+            }
+
+            if (!layoutSaved)
+                return;
+
+            // まず通常状態に戻す
+            this.WindowState = FormWindowState.Normal;
+            _previewForm.WindowState = FormWindowState.Normal;
+
+            // 保存しておいた位置・サイズを復元
+            this.Bounds = form1OriginalBounds;
+            _previewForm.Bounds = form3OriginalBounds;
+
+            // 元が最大化されていた場合は最大化に戻す
+            this.WindowState = form1OriginalWindowState;
+            _previewForm.WindowState = form3OriginalWindowState;
+
+            layoutSaved = false;
         }
 
     }

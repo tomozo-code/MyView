@@ -31,6 +31,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
             panel2 = new Panel();
+            label1 = new Label();
+            yoko = new NumericUpDown();
+            tate = new NumericUpDown();
+            label2 = new Label();
             groupBox4 = new GroupBox();
             setMarginBottom = new TextBox();
             setMarginTop = new TextBox();
@@ -56,11 +60,6 @@
             setFont = new ComboBox();
             label6 = new Label();
             setFontSize = new NumericUpDown();
-            groupBox1 = new GroupBox();
-            label1 = new Label();
-            yoko = new NumericUpDown();
-            label2 = new Label();
-            tate = new NumericUpDown();
             btnHaichi = new Button();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -83,14 +82,14 @@
             btnNext = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             btnClose = new ToolStripButton();
+            groupBox1 = new GroupBox();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)yoko).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tate).BeginInit();
             groupBox4.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)setFontSize).BeginInit();
-            groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)yoko).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)tate).BeginInit();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -101,20 +100,65 @@
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             toolStrip1.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // panel2
             // 
             panel2.AutoScroll = true;
+            panel2.Controls.Add(groupBox1);
             panel2.Controls.Add(groupBox4);
             panel2.Controls.Add(groupBox2);
             panel2.Controls.Add(groupBox3);
-            panel2.Controls.Add(groupBox1);
             panel2.Controls.Add(btnHaichi);
             panel2.Location = new Point(41, 26);
             panel2.Name = "panel2";
             panel2.Size = new Size(313, 649);
             panel2.TabIndex = 8;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(10, 28);
+            label1.Name = "label1";
+            label1.Size = new Size(42, 21);
+            label1.TabIndex = 3;
+            label1.Text = "縦：";
+            // 
+            // yoko
+            // 
+            yoko.Location = new Point(185, 26);
+            yoko.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            yoko.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            yoko.Name = "yoko";
+            yoko.Size = new Size(50, 29);
+            yoko.TabIndex = 1;
+            yoko.Tag = "横方向の配置数を指定します。(1～10)";
+            yoko.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            yoko.Enter += NumericUpDown_Enter;
+            yoko.MouseClick += NumericUpDown_MouseClick;
+            // 
+            // tate
+            // 
+            tate.Location = new Point(61, 26);
+            tate.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            tate.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            tate.Name = "tate";
+            tate.Size = new Size(50, 29);
+            tate.TabIndex = 0;
+            tate.Tag = "縦方向の配置数を指定します。(1～10)";
+            tate.Value = new decimal(new int[] { 4, 0, 0, 0 });
+            tate.Enter += NumericUpDown_Enter;
+            tate.MouseClick += NumericUpDown_MouseClick;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(133, 28);
+            label2.Name = "label2";
+            label2.Size = new Size(42, 21);
+            label2.TabIndex = 4;
+            label2.Text = "横：";
             // 
             // groupBox4
             // 
@@ -127,7 +171,7 @@
             groupBox4.Controls.Add(label12);
             groupBox4.Controls.Add(label11);
             groupBox4.Controls.Add(label10);
-            groupBox4.Location = new Point(10, 300);
+            groupBox4.Location = new Point(10, 305);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(290, 95);
             groupBox4.TabIndex = 2;
@@ -245,7 +289,7 @@
             groupBox2.Controls.Add(setDpi);
             groupBox2.Controls.Add(setPaper);
             groupBox2.Controls.Add(label7);
-            groupBox2.Location = new Point(10, 126);
+            groupBox2.Location = new Point(10, 131);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(290, 165);
             groupBox2.TabIndex = 1;
@@ -348,7 +392,7 @@
             groupBox3.Controls.Add(setFont);
             groupBox3.Controls.Add(label6);
             groupBox3.Controls.Add(setFontSize);
-            groupBox3.Location = new Point(10, 403);
+            groupBox3.Location = new Point(10, 408);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(290, 136);
             groupBox3.TabIndex = 3;
@@ -420,64 +464,6 @@
             setFontSize.Value = new decimal(new int[] { 8, 0, 0, 0 });
             setFontSize.Enter += NumericUpDown_Enter;
             setFontSize.MouseClick += NumericUpDown_MouseClick;
-            // 
-            // groupBox1
-            // 
-            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(yoko);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(tate);
-            groupBox1.Location = new Point(10, 58);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(290, 60);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "画像配置";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(10, 25);
-            label1.Name = "label1";
-            label1.Size = new Size(42, 21);
-            label1.TabIndex = 3;
-            label1.Text = "縦：";
-            // 
-            // yoko
-            // 
-            yoko.Location = new Point(185, 23);
-            yoko.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            yoko.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            yoko.Name = "yoko";
-            yoko.Size = new Size(50, 29);
-            yoko.TabIndex = 1;
-            yoko.Tag = "横方向の配置数を指定します。(1～10)";
-            yoko.Value = new decimal(new int[] { 2, 0, 0, 0 });
-            yoko.Enter += NumericUpDown_Enter;
-            yoko.MouseClick += NumericUpDown_MouseClick;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(133, 25);
-            label2.Name = "label2";
-            label2.Size = new Size(42, 21);
-            label2.TabIndex = 4;
-            label2.Text = "横：";
-            // 
-            // tate
-            // 
-            tate.Location = new Point(61, 23);
-            tate.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            tate.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            tate.Name = "tate";
-            tate.Size = new Size(50, 29);
-            tate.TabIndex = 0;
-            tate.Tag = "縦方向の配置数を指定します。(1～10)";
-            tate.Value = new decimal(new int[] { 4, 0, 0, 0 });
-            tate.Enter += NumericUpDown_Enter;
-            tate.MouseClick += NumericUpDown_MouseClick;
             // 
             // btnHaichi
             // 
@@ -584,7 +570,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnZoomIn, btnZoomOut, toolStripSeparator4, btnPrev, btnNext, toolStripSeparator3, btnClose });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(742, 28);
+            toolStrip1.Size = new Size(730, 28);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
@@ -716,6 +702,20 @@
             btnClose.MouseEnter += Menu_MouseEnter;
             btnClose.MouseLeave += Menu_MouseLeave;
             // 
+            // groupBox1
+            // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(yoko);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(tate);
+            groupBox1.Location = new Point(10, 60);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(290, 65);
+            groupBox1.TabIndex = 15;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "画像配置";
+            // 
             // Form4
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
@@ -731,6 +731,8 @@
             FormClosing += Form4_FormClosing;
             Load += Form4_Load;
             panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)yoko).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tate).EndInit();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -738,10 +740,6 @@
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)setFontSize).EndInit();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)yoko).EndInit();
-            ((System.ComponentModel.ISupportInitialize)tate).EndInit();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
@@ -756,6 +754,8 @@
             toolStripContainer1.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -770,7 +770,6 @@
         private Label label1;
         private SplitContainer splitContainer1;
         private Button btnHaichi;
-        private GroupBox groupBox1;
         private ComboBox setDpi;
         private Label label4;
         private ToolStripStatusLabel toolStripStatusLabel1;
@@ -814,5 +813,6 @@
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton btnZoomIn;
         private ToolStripButton btnZoomOut;
+        private GroupBox groupBox1;
     }
 }

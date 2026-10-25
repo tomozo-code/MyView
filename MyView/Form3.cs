@@ -157,8 +157,8 @@ namespace MyView
             // 自前で画像を描画するため、SizeModeはNormalにする
             pictureBox1.SizeMode = PictureBoxSizeMode.Normal;
 
-            // 背景色
-            pictureBox1.BackColor = Color.DimGray;
+            // 背景色(明るいグレー)
+            pictureBox1.BackColor = Color.Gainsboro;
 
             // ダブルバッファリングでちらつきを抑える
             typeof(Control)
@@ -1061,6 +1061,32 @@ namespace MyView
                 e.Handled = true;
                 e.SuppressKeyPress = true;
                 return;
+            }
+
+            // 数字キー取得
+            int number = e.KeyCode switch
+            {
+                Keys.D1 or Keys.NumPad1 => 1,
+                Keys.D2 or Keys.NumPad2 => 2,
+                Keys.D3 or Keys.NumPad3 => 3,
+                Keys.D4 or Keys.NumPad4 => 4,
+                Keys.D5 or Keys.NumPad5 => 5,
+                Keys.D6 or Keys.NumPad6 => 6,
+                Keys.D7 or Keys.NumPad7 => 7,
+                Keys.D8 or Keys.NumPad8 => 8,
+                Keys.D9 or Keys.NumPad9 => 9,
+                _ => 0
+            };
+
+            if (number == 0)
+                return;
+
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+
+            if (this.Owner is Form1 form1)
+            {
+                form1.ExecuteImageInfoKey(number);
             }
 
         }

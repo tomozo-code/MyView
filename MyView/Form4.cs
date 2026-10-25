@@ -79,12 +79,12 @@ namespace MyView
             splitContainer1.Panel1MinSize = 200;
 
             previewControl.Dock = DockStyle.Fill;
-            previewControl.BackColor = Color.DimGray;
-
-            panel2.BackColor = Color.DimGray;
             panel2.Dock = DockStyle.Fill;
 
-            //panel1.BackColor = Color.DimGray;
+            // 背景色
+            previewControl.BackColor = Color.Gray;
+            panel2.BackColor = Color.Gray;
+
 
             setDpi.Items.AddRange(new string[] { "100", "200", "300", "400", "500", "600" });
             setDpi.SelectedIndex = 2;

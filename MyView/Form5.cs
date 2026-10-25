@@ -87,10 +87,11 @@ namespace MyView
             splitContainer1.Panel1MinSize = 200;
 
             panel2.Dock = DockStyle.Fill;
-            panel2.BackColor = Color.DimGray;
-
             previewControl.Dock = DockStyle.Fill;
-            previewControl.BackColor = Color.DimGray;
+
+            // 背景色
+            previewControl.BackColor = Color.Gray;
+            panel2.BackColor = Color.Gray;
 
             setDirection.Items.AddRange(new string[] { "縦", "横" });
             setDirection.SelectedIndex = 1;

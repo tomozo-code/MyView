@@ -49,7 +49,8 @@
             closeBtn2 = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             viewStatusTxt = new ToolStripStatusLabel();
-            toolStrip1 = new ToolStrip();
+            //toolStrip1 = new ToolStrip();
+            toolStrip1 = new ClickThroughToolStrip(); 
             printBtn = new ToolStripButton();
             toolStripSeparator11 = new ToolStripSeparator();
             saveBtn = new ToolStripButton();
@@ -432,7 +433,8 @@
         private PictureBox pictureBox1;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel viewStatusTxt;
-        private ToolStrip toolStrip1;
+        //private ToolStrip toolStrip1;
+        private ClickThroughToolStrip toolStrip1;
         private ToolStripButton saveBtn;
         private ToolStripButton copyBtn;
         private Panel panel1;
