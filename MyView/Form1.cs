@@ -47,6 +47,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // クラス
 // --------------------------------------------------------
 // NaturalStringComparer.cs:ファイル名ソート用クラス
+// ClickThroughMenuStrip.cs:form1が非アクティブでもメニューをクリックしたら展開するクラス
+// ClickThroughToolStrip.cs:form3が非アクティブでもツールバーをクリックしたら発火するクラス
 
 namespace MyView
 {
@@ -135,6 +137,9 @@ namespace MyView
 
         // フラグ: pathTxtにてフォーカスを得た最初のクリックで全選択するかどうか
         private bool pathTxtselectAllOnClick = true;
+
+        // 起動時にフォルダーを設定するとき、TreeViewの再読み込みを抑止する
+        private bool _suppressTreeSelectionLoad;
 
         // ============================================================
         // コンストラクタ
@@ -237,8 +242,6 @@ namespace MyView
         // ============================================================
         private async void Form1_Load(object? sender, EventArgs e)
         {
-            // 起動時に前回のフォルダを復元
-            await RestoreLastFolderAsync();
 
             // F5でフォルダー更新(ショートカットキー)
             folderUpdate.ShortcutKeys = Keys.F5;
@@ -248,7 +251,115 @@ namespace MyView
             foldertreeMenu.ShortcutKeys = Keys.Control | Keys.F;
             //情報ボックス表示・非表示(ショートカットキー)
             infoboxMenu.ShortcutKeys = Keys.Control | Keys.I;
+
+            // エクスプローラーから渡されたファイルパスを取得
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 1 && File.Exists(args[1]))
+            {
+                await OpenImageFromExplorerAsync(args[1]);
+                return;
+            }
+
+            // 起動時に前回のフォルダを復元
+            await RestoreLastFolderAsync();
         }
+
+        // ============================================================
+        // エクスプローラーから指定された画像を開く
+        // ============================================================
+
+        private async Task OpenImageFromExplorerAsync(string imagePath)
+        {
+            try
+            {
+                imagePath = Path.GetFullPath(imagePath);
+
+                if (!File.Exists(imagePath))
+                {
+                    await RestoreLastFolderAsync();
+                    return;
+                }
+
+                string? folderPath = Path.GetDirectoryName(imagePath);
+
+                if (string.IsNullOrEmpty(folderPath) ||
+                    !Directory.Exists(folderPath))
+                {
+                    await RestoreLastFolderAsync();
+                    return;
+                }
+
+                // 先にフォルダーツリーを目的のフォルダーへ移動
+                TreeNode? node = FindAndExpandTreeNode(folderPath);
+
+                if (node == null)
+                {
+                    StatusLabel1.Text =
+                        "フォルダーツリーで対象フォルダーを見つけられませんでした。";
+
+                    // ツリーで見つからなくても画像フォルダーの読み込みは行う
+                    pathTxt.Text = folderPath;
+                    await LoadFolderAsync(folderPath);
+                }
+                else
+                {
+                    _suppressTreeSelectionLoad = true;
+
+                    try
+                    {
+                        treeViewFolders.SelectedNode = node;
+                        node.EnsureVisible();
+                        pathTxt.Text = folderPath;
+                    }
+                    finally
+                    {
+                        _suppressTreeSelectionLoad = false;
+                    }
+
+                    // 選択状態を設定した後に読み込む
+                    await LoadFolderAsync(folderPath);
+                }
+
+                // 指定画像を一覧から探す
+                int index = _imageFiles.FindIndex(file =>
+                    string.Equals(
+                        Path.GetFullPath(file),
+                        imagePath,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (index < 0 ||
+                    index >= listViewThumbnails.VirtualListSize)
+                {
+                    StatusLabel1.Text =
+                        "指定された画像が一覧に見つかりませんでした。";
+                    return;
+                }
+
+                // 指定画像を選択して表示位置へ移動
+                listViewThumbnails.SelectedIndices.Clear();
+                listViewThumbnails.SelectedIndices.Add(index);
+                listViewThumbnails.EnsureVisible(index);
+                listViewThumbnails.Invalidate();
+
+                // 画像情報を表示
+                ShowImageInfo(imagePath);
+
+                // Form3で画像を表示
+                ListViewThumbnails_DoubleClick(
+                    listViewThumbnails,
+                    EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"画像を開けませんでした。\r\n\r\n{ex.Message}",
+                    "画像を開くエラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
 
         // ============================================================
         // 前回のフォルダを復元
@@ -411,6 +522,7 @@ namespace MyView
             {
                 var dirInfo = new DirectoryInfo(path);
 
+                /*
                 foreach (var dir in dirInfo.GetDirectories())
                 {
                     if ((dir.Attributes & FileAttributes.Hidden) != 0)
@@ -418,6 +530,22 @@ namespace MyView
                         continue;
                     }
 
+                    var childNode = new TreeNode(dir.Name)
+                    {
+                        Tag = dir.FullName
+                    };
+
+                    childNode.Nodes.Add("...");
+
+                    node.Nodes.Add(childNode);
+                }
+                */
+
+                // 画像のファイル名ソート用クラスを利用してフォルダをソート
+                foreach (var dir in dirInfo.GetDirectories()
+                    .Where(d => (d.Attributes & FileAttributes.Hidden) == 0)
+                    .OrderBy(d => d.Name, new NaturalStringComparer()))
+                {
                     var childNode = new TreeNode(dir.Name)
                     {
                         Tag = dir.FullName
@@ -447,6 +575,9 @@ namespace MyView
         // ============================================================
         private async void TreeViewFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            if (_suppressTreeSelectionLoad)
+                return;
+
             if (e.Node?.Tag == null)
                 return;
 

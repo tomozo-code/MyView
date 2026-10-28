@@ -310,7 +310,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Size = new Size(771, 607);
+            toolStripContainer1.ContentPanel.Size = new Size(771, 596);
             toolStripContainer1.Location = new Point(12, 12);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(771, 635);
@@ -328,15 +328,16 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, closeBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(227, 28);
+            toolStrip1.Size = new Size(228, 39);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
             // 
             btnPrint.Image = (Image)resources.GetObject("btnPrint.Image");
+            btnPrint.ImageScaling = ToolStripItemImageScaling.None;
             btnPrint.ImageTransparentColor = Color.Magenta;
             btnPrint.Name = "btnPrint";
-            btnPrint.Size = new Size(90, 25);
+            btnPrint.Size = new Size(106, 36);
             btnPrint.Text = "印刷(&P)...";
             btnPrint.ToolTipText = "印刷します。";
             btnPrint.Click += btnPrint_Click;
@@ -344,14 +345,15 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 28);
+            toolStripSeparator1.Size = new Size(6, 39);
             // 
             // closeBtn
             // 
             closeBtn.Image = (Image)resources.GetObject("closeBtn.Image");
+            closeBtn.ImageScaling = ToolStripItemImageScaling.None;
             closeBtn.ImageTransparentColor = Color.Magenta;
             closeBtn.Name = "closeBtn";
-            closeBtn.Size = new Size(88, 25);
+            closeBtn.Size = new Size(104, 36);
             closeBtn.Tag = "ウィンドウを閉じます。";
             closeBtn.Text = "閉じる(&X)";
             closeBtn.ToolTipText = "閉じる(Esc)";

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 // --------------------------------------------------------
@@ -49,6 +50,12 @@ namespace MyView
         // ズーム倍率の最小・最大
         private const float MinZoom = 0.1f;
         private const float MaxZoom = 10.0f;
+
+        // 上下反転中かどうか
+        private bool _flipVertical = false;
+
+        // 左右反転中かどうか
+        private bool _flipHorizontal = false;
 
         // 1回のホイール操作で変化する倍率
         private const float ZoomStep = 1.2f;
@@ -147,6 +154,8 @@ namespace MyView
 
             panel1.Dock = DockStyle.Fill;
 
+            menuStrip1.Visible = false;
+
             _imagePath = imagePath;
 
             // 同じフォルダにある画像を取得
@@ -181,18 +190,26 @@ namespace MyView
         // ============================================================
         private void Form3_Load(object sender, EventArgs e)
         {
-            // 印刷(ショートカットキー)右クリ用
+            // 印刷(ショートカットキー)右クリ用、メニュー用
             printBtn2.ShortcutKeys = Keys.Control | Keys.P;
-            // 保存(ショートカットキー)右クリ用
+            printMenu.ShortcutKeys = Keys.Control | Keys.P;
+            // 保存(ショートカットキー)右クリ用、メニュー用
             saveBtn2.ShortcutKeys = Keys.Control | Keys.S;
-            // コピー(ショートカットキー)右クリ用
+            saveasMenu.ShortcutKeys = Keys.Control | Keys.S;
+            // コピー(ショートカットキー)右クリ用、メニュー用
             copyBtn2.ShortcutKeys = Keys.Control | Keys.C;
-            // 貼り付け(ショートカットキー)右クリ用
+            copyMenu.ShortcutKeys = Keys.Control | Keys.C;
+            // 貼り付け(ショートカットキー)右クリ用、メニュー用
             pasteBtn2.ShortcutKeys = Keys.Control | Keys.V;
-            // 左へ回転(ショートカットキー)右クリ用
-            roolLeftBtn2.ShortcutKeys = Keys.Control | Keys.L;
-            // 右へ回転(ショートカットキー)右クリ用
-            roolRightBtn2.ShortcutKeys = Keys.Control | Keys.R;
+            pasteMenu.ShortcutKeys = Keys.Control | Keys.V;
+            // 左へ回転(ショートカットキー)右クリ用、メニュー用
+            //roolLeftBtn2.ShortcutKeys = Keys.Control | Keys.L;
+            //roolLeftMenu.ShortcutKeys = Keys.Control | Keys.L;
+            // 右へ回転(ショートカットキー)右クリ用、メニュー用
+            //roolRightBtn2.ShortcutKeys = Keys.Control | Keys.R;
+            //roolRightMenu.ShortcutKeys = Keys.Control | Keys.R;
+            //roolRightBtn2.ShortcutKeys = Keys.R;
+            //roolRightMenu.ShortcutKeys = Keys.R;
 
             try
             {
@@ -552,7 +569,35 @@ namespace MyView
                 height);
 
             // 画像を描画
-            g.DrawImage(_image, destRect);
+            //g.DrawImage(_image, destRect);
+
+            // 画像の描画状態を保存
+            GraphicsState state = g.Save();
+
+            try
+            {
+                // 画像の中心を基準に反転する
+                float centerX = destRect.X + destRect.Width / 2.0f;
+                float centerY = destRect.Y + destRect.Height / 2.0f;
+
+                g.TranslateTransform(centerX, centerY);
+
+                float scaleX = _flipHorizontal ? -1.0f : 1.0f;
+                float scaleY = _flipVertical ? -1.0f : 1.0f;
+
+                g.ScaleTransform(scaleX, scaleY);
+
+                g.TranslateTransform(-centerX, -centerY);
+
+                // 画像を描画
+                g.DrawImage(_image, destRect);
+            }
+            finally
+            {
+                // 選択範囲などの描画に反転が影響しないよう元に戻す
+                g.Restore(state);
+            }
+
 
             // 左ドラッグの選択範囲を描画
             if (!_selectionRectangle.IsEmpty)
@@ -990,8 +1035,11 @@ namespace MyView
                 return;
             }
 
-            // Ctrl + L → 左へ90°回転
-            if (e.Control && e.KeyCode == Keys.L)
+
+            // Lキー → 左へ90°回転
+            //if (e.Control && e.KeyCode == Keys.L)
+            if (e.KeyCode == Keys.L)
+
             {
                 // 左へ90°回転
                 RotateImageLeft();
@@ -1000,12 +1048,42 @@ namespace MyView
                 e.SuppressKeyPress = true;
                 return;
             }
+                        
+            // Rキー → 右へ90°回転
+            //if (e.Control && e.KeyCode == Keys.R)
+            if (e.KeyCode == Keys.R)
 
-            // Ctrl + R → 右へ90°回転
-            if (e.Control && e.KeyCode == Keys.R)
             {
                 // 右へ90°回転
                 RotateImageRight();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+            
+            // Vキー → 上下反転
+            //if (e.Control && e.Shift && e.KeyCode == Keys.V)
+            if (e.KeyCode == Keys.V)
+            {
+                //_flipVertical = !_flipVertical;
+                //pictureBox1.Invalidate();
+
+                FlipVerticallyImage();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // H → 左右反転
+            //if (e.Control && e.Shift && e.KeyCode == Keys.H)
+            if (e.KeyCode == Keys.H)
+            {
+                //_flipHorizontal = !_flipHorizontal;
+                //pictureBox1.Invalidate();
+
+                FlipHorizontallyImage();
 
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -1672,7 +1750,6 @@ namespace MyView
             }
         }
 
-
         // ============================================================
         // 画像を右へ90度回転
         // ============================================================
@@ -1714,6 +1791,25 @@ namespace MyView
                     MessageBoxIcon.Error);
             }
         }
+
+        // ============================================================
+        // 画像を上下反転
+        // ============================================================
+        private void FlipVerticallyImage()
+        {
+            _flipVertical = !_flipVertical;
+            pictureBox1.Invalidate();
+        }
+
+        // ============================================================
+        // 画像を左右反転
+        // ============================================================
+        private void FlipHorizontallyImage()
+        {
+            _flipHorizontal = !_flipHorizontal;
+            pictureBox1.Invalidate();
+        }
+
 
         // ============================================================
         // 左へ回転を押したとき
@@ -1767,6 +1863,7 @@ namespace MyView
                 _suppressContextMenu = false;
             }
         }
+
         // ============================================================
         // 印刷を押したとき
         // ============================================================
@@ -1798,6 +1895,22 @@ namespace MyView
                 "印刷プレビュー",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
+        }
+
+        // ============================================================
+        // 上下反転を押したとき
+        // ============================================================
+        private void flip_vBtn_Click(object sender, EventArgs e)
+        {
+            FlipVerticallyImage();
+        }
+
+        // ============================================================
+        // 左右反転を押したとき
+        // ============================================================
+        private void flip_hBtn_Click(object sender, EventArgs e)
+        {
+            FlipHorizontallyImage();
         }
     }
 }

@@ -31,10 +31,11 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
             panel2 = new Panel();
+            groupBox1 = new GroupBox();
             label1 = new Label();
             yoko = new NumericUpDown();
-            tate = new NumericUpDown();
             label2 = new Label();
+            tate = new NumericUpDown();
             groupBox4 = new GroupBox();
             setMarginBottom = new TextBox();
             setMarginTop = new TextBox();
@@ -82,8 +83,8 @@
             btnNext = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             btnClose = new ToolStripButton();
-            groupBox1 = new GroupBox();
             panel2.SuspendLayout();
+            groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)yoko).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tate).BeginInit();
             groupBox4.SuspendLayout();
@@ -100,7 +101,6 @@
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             toolStrip1.SuspendLayout();
-            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // panel2
@@ -115,6 +115,20 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(313, 649);
             panel2.TabIndex = 8;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(yoko);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(tate);
+            groupBox1.Location = new Point(10, 60);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(290, 65);
+            groupBox1.TabIndex = 15;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "画像配置";
             // 
             // label1
             // 
@@ -138,6 +152,15 @@
             yoko.Enter += NumericUpDown_Enter;
             yoko.MouseClick += NumericUpDown_MouseClick;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(133, 28);
+            label2.Name = "label2";
+            label2.Size = new Size(42, 21);
+            label2.TabIndex = 4;
+            label2.Text = "横：";
+            // 
             // tate
             // 
             tate.Location = new Point(61, 26);
@@ -150,15 +173,6 @@
             tate.Value = new decimal(new int[] { 4, 0, 0, 0 });
             tate.Enter += NumericUpDown_Enter;
             tate.MouseClick += NumericUpDown_MouseClick;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(133, 28);
-            label2.Name = "label2";
-            label2.Size = new Size(42, 21);
-            label2.TabIndex = 4;
-            label2.Text = "横：";
             // 
             // groupBox4
             // 
@@ -467,6 +481,8 @@
             // 
             // btnHaichi
             // 
+            btnHaichi.Image = (Image)resources.GetObject("btnHaichi.Image");
+            btnHaichi.ImageAlign = ContentAlignment.MiddleLeft;
             btnHaichi.Location = new Point(11, 12);
             btnHaichi.Name = "btnHaichi";
             btnHaichi.Size = new Size(120, 40);
@@ -552,7 +568,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Size = new Size(745, 713);
+            toolStripContainer1.ContentPanel.Size = new Size(745, 702);
             toolStripContainer1.Location = new Point(6, 12);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(745, 741);
@@ -570,16 +586,17 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnZoomIn, btnZoomOut, toolStripSeparator4, btnPrev, btnNext, toolStripSeparator3, btnClose });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(730, 28);
+            toolStrip1.Size = new Size(742, 39);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
             // 
             btnPrint.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrint.Image = (Image)resources.GetObject("btnPrint.Image");
+            btnPrint.ImageScaling = ToolStripItemImageScaling.None;
             btnPrint.ImageTransparentColor = Color.Magenta;
             btnPrint.Name = "btnPrint";
-            btnPrint.Size = new Size(90, 25);
+            btnPrint.Size = new Size(106, 36);
             btnPrint.Tag = "印刷します。(Ctrl+P)";
             btnPrint.Text = "印刷(&P)...";
             btnPrint.ToolTipText = "印刷(Ctrl+P)";
@@ -590,15 +607,16 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 28);
+            toolStripSeparator1.Size = new Size(6, 39);
             // 
             // btnPrintSet
             // 
             btnPrintSet.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrintSet.Image = (Image)resources.GetObject("btnPrintSet.Image");
+            btnPrintSet.ImageScaling = ToolStripItemImageScaling.None;
             btnPrintSet.ImageTransparentColor = Color.Magenta;
             btnPrintSet.Name = "btnPrintSet";
-            btnPrintSet.Size = new Size(137, 25);
+            btnPrintSet.Size = new Size(153, 36);
             btnPrintSet.Tag = "プリンタ設定を行います。(Ctrl+R)";
             btnPrintSet.Text = "プリンタ設定(&R)...";
             btnPrintSet.ToolTipText = "プリンタ設定(Ctrl+R)";
@@ -613,7 +631,7 @@
             btnPageSet.Image = (Image)resources.GetObject("btnPageSet.Image");
             btnPageSet.ImageTransparentColor = Color.Magenta;
             btnPageSet.Name = "btnPageSet";
-            btnPageSet.Size = new Size(91, 25);
+            btnPageSet.Size = new Size(91, 36);
             btnPageSet.Text = "ページ設定...";
             btnPageSet.Click += btnPageSet_Click;
             btnPageSet.MouseEnter += Menu_MouseLeave;
@@ -622,14 +640,15 @@
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 28);
+            toolStripSeparator2.Size = new Size(6, 39);
             // 
             // btnZoomIn
             // 
             btnZoomIn.Image = (Image)resources.GetObject("btnZoomIn.Image");
+            btnZoomIn.ImageScaling = ToolStripItemImageScaling.None;
             btnZoomIn.ImageTransparentColor = Color.Magenta;
             btnZoomIn.Name = "btnZoomIn";
-            btnZoomIn.Size = new Size(62, 25);
+            btnZoomIn.Size = new Size(78, 36);
             btnZoomIn.Tag = "印刷プレビューを拡大します。";
             btnZoomIn.Text = "拡大";
             btnZoomIn.ToolTipText = "印刷プレビューを拡大します。(Ctrl+上スクロール)";
@@ -640,9 +659,10 @@
             // btnZoomOut
             // 
             btnZoomOut.Image = (Image)resources.GetObject("btnZoomOut.Image");
+            btnZoomOut.ImageScaling = ToolStripItemImageScaling.None;
             btnZoomOut.ImageTransparentColor = Color.Magenta;
             btnZoomOut.Name = "btnZoomOut";
-            btnZoomOut.Size = new Size(62, 25);
+            btnZoomOut.Size = new Size(78, 36);
             btnZoomOut.Tag = "印刷プレビューを縮小します。";
             btnZoomOut.Text = "縮小";
             btnZoomOut.ToolTipText = "印刷プレビューを縮小します。(Ctrl+下スクロール)";
@@ -653,15 +673,16 @@
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(6, 28);
+            toolStripSeparator4.Size = new Size(6, 39);
             // 
             // btnPrev
             // 
             btnPrev.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnPrev.Image = (Image)resources.GetObject("btnPrev.Image");
+            btnPrev.ImageScaling = ToolStripItemImageScaling.None;
             btnPrev.ImageTransparentColor = Color.Magenta;
             btnPrev.Name = "btnPrev";
-            btnPrev.Size = new Size(82, 25);
+            btnPrev.Size = new Size(98, 36);
             btnPrev.Tag = "前のページを表示します。";
             btnPrev.Text = "前ページ";
             btnPrev.ToolTipText = "前のページを表示します。";
@@ -673,9 +694,10 @@
             // 
             btnNext.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnNext.Image = (Image)resources.GetObject("btnNext.Image");
+            btnNext.ImageScaling = ToolStripItemImageScaling.None;
             btnNext.ImageTransparentColor = Color.Magenta;
             btnNext.Name = "btnNext";
-            btnNext.Size = new Size(82, 25);
+            btnNext.Size = new Size(98, 36);
             btnNext.Tag = "次のページを表示します。";
             btnNext.Text = "次ページ";
             btnNext.ToolTipText = "次のページを表示します。";
@@ -686,35 +708,22 @@
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 28);
+            toolStripSeparator3.Size = new Size(6, 39);
             // 
             // btnClose
             // 
             btnClose.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             btnClose.Image = (Image)resources.GetObject("btnClose.Image");
+            btnClose.ImageScaling = ToolStripItemImageScaling.None;
             btnClose.ImageTransparentColor = Color.Magenta;
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(88, 25);
+            btnClose.Size = new Size(104, 36);
             btnClose.Tag = "一覧印刷を閉じます。";
             btnClose.Text = "閉じる(&X)";
             btnClose.ToolTipText = "一覧印刷を閉じます。";
             btnClose.Click += btnClose_Click;
             btnClose.MouseEnter += Menu_MouseEnter;
             btnClose.MouseLeave += Menu_MouseLeave;
-            // 
-            // groupBox1
-            // 
-            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(yoko);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(tate);
-            groupBox1.Location = new Point(10, 60);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(290, 65);
-            groupBox1.TabIndex = 15;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "画像配置";
             // 
             // Form4
             // 
@@ -731,6 +740,8 @@
             FormClosing += Form4_FormClosing;
             Load += Form4_Load;
             panel2.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)yoko).EndInit();
             ((System.ComponentModel.ISupportInitialize)tate).EndInit();
             groupBox4.ResumeLayout(false);
@@ -754,8 +765,6 @@
             toolStripContainer1.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
