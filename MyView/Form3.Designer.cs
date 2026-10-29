@@ -68,6 +68,9 @@
             flip_hBtn = new ToolStripButton();
             toolStripSeparator16 = new ToolStripSeparator();
             closeBtn = new ToolStripButton();
+            toolStripSeparator17 = new ToolStripSeparator();
+            optionBtn = new ToolStripDropDownButton();
+            iconLabelBtn = new ToolStripMenuItem();
             panel1 = new Panel();
             toolStripContainer1 = new ToolStripContainer();
             menuStrip1 = new MenuStrip();
@@ -240,14 +243,14 @@
             statusStrip1.Items.AddRange(new ToolStripItem[] { viewStatusTxt });
             statusStrip1.Location = new Point(0, 470);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(703, 26);
+            statusStrip1.Size = new Size(830, 26);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
             // viewStatusTxt
             // 
             viewStatusTxt.Name = "viewStatusTxt";
-            viewStatusTxt.Size = new Size(688, 21);
+            viewStatusTxt.Size = new Size(815, 21);
             viewStatusTxt.Spring = true;
             viewStatusTxt.Text = "ここにフルパス";
             viewStatusTxt.TextAlign = ContentAlignment.MiddleLeft;
@@ -256,10 +259,10 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator11, printBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, flip_vBtn, flip_hBtn, toolStripSeparator16, closeBtn });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator11, printBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, flip_vBtn, flip_hBtn, toolStripSeparator16, closeBtn, toolStripSeparator17, optionBtn });
             toolStrip1.Location = new Point(3, 29);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(481, 39);
+            toolStrip1.Size = new Size(532, 39);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -272,7 +275,7 @@
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(36, 36);
             saveBtn.Tag = "画像に名前を付けて保存します。";
-            saveBtn.Text = "名前を付けて保存(&S)...";
+            saveBtn.Text = "保存(&S)...";
             saveBtn.ToolTipText = "名前を付けて保存(Ctrl+S)";
             saveBtn.Click += saveBtn_Click;
             // 
@@ -291,7 +294,7 @@
             printBtn.Size = new Size(36, 36);
             printBtn.Tag = "画像に印刷します。";
             printBtn.Text = "印刷(&P)...";
-            printBtn.ToolTipText = "印刷プレビューを表示します。(Ctrl+P)";
+            printBtn.ToolTipText = "印刷プレビュー(Ctrl+P)";
             printBtn.Click += printBtn_Click;
             // 
             // toolStripSeparator1
@@ -439,6 +442,32 @@
             closeBtn.ToolTipText = "閉じる(Esc)";
             closeBtn.Click += closeBtn_Click;
             // 
+            // toolStripSeparator17
+            // 
+            toolStripSeparator17.Name = "toolStripSeparator17";
+            toolStripSeparator17.Size = new Size(6, 39);
+            // 
+            // optionBtn
+            // 
+            optionBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            optionBtn.DropDownItems.AddRange(new ToolStripItem[] { iconLabelBtn });
+            optionBtn.Image = (Image)resources.GetObject("optionBtn.Image");
+            optionBtn.ImageScaling = ToolStripItemImageScaling.None;
+            optionBtn.ImageTransparentColor = Color.Magenta;
+            optionBtn.Name = "optionBtn";
+            optionBtn.Size = new Size(45, 36);
+            optionBtn.Tag = "オプション";
+            optionBtn.Text = "オプション";
+            optionBtn.ToolTipText = "オプション";
+            // 
+            // iconLabelBtn
+            // 
+            iconLabelBtn.Name = "iconLabelBtn";
+            iconLabelBtn.Size = new Size(232, 26);
+            iconLabelBtn.Text = "アイコンラベルを表示する";
+            iconLabelBtn.ToolTipText = "アイコンラベルの表示・非表示を切り替えます。";
+            iconLabelBtn.Click += iconLabelBtn_Click;
+            // 
             // panel1
             // 
             panel1.Controls.Add(pictureBox1);
@@ -453,10 +482,10 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(panel1);
-            toolStripContainer1.ContentPanel.Size = new Size(638, 255);
+            toolStripContainer1.ContentPanel.Size = new Size(795, 280);
             toolStripContainer1.Location = new Point(9, 64);
             toolStripContainer1.Name = "toolStripContainer1";
-            toolStripContainer1.Size = new Size(638, 348);
+            toolStripContainer1.Size = new Size(795, 348);
             toolStripContainer1.TabIndex = 4;
             toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -473,7 +502,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, editMenu, viewMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(638, 29);
+            menuStrip1.Size = new Size(795, 29);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -617,7 +646,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(703, 496);
+            ClientSize = new Size(830, 496);
             Controls.Add(toolStripContainer1);
             Controls.Add(statusStrip1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
@@ -708,5 +737,8 @@
         private ToolStripButton flip_vBtn;
         private ToolStripButton flip_hBtn;
         private ToolStripSeparator toolStripSeparator16;
+        private ToolStripDropDownButton optionBtn;
+        private ToolStripMenuItem iconLabelBtn;
+        private ToolStripSeparator toolStripSeparator17;
     }
 }

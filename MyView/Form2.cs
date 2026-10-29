@@ -140,8 +140,8 @@ namespace MyView
                         "・５キー：拡張子（例：.jpg）" + Environment.NewLine +
                         "・６キー：ファイルサイズ（例：3.25 MB）" + Environment.NewLine +
                         "・７キー：画像サイズ（例：4032 × 3024）" + Environment.NewLine +
-                        "・８キー：更新日時（例：2026 /09/09 15:32:10）" + Environment.NewLine +
-                        "・９キー：作成日時（例：2026 /08/08 10:15:22）"; break;
+                        "・８キー：更新日時（例：2026/09/09 15:32:10）" + Environment.NewLine +
+                        "・９キー：作成日時（例：2026/08/08 10:15:22）"; break;
 
                 case "画像ビュー":
                     UseTxtBox.Text = "サムネイルをダブルクリックすると画像単体が画像ビューに表示されます。" + Environment.NewLine +
@@ -158,8 +158,11 @@ namespace MyView
                         "・画像に名前を付けて保存(Ctrl＋S)" + Environment.NewLine +
                         "・画像をコピー(Ctrl＋C)" + Environment.NewLine +
                         "・クリップボードの画像を貼り付け(Ctrl＋V)" + Environment.NewLine +
-                        "・左へ90°回転(Ctrl＋L)" + Environment.NewLine +
-                        "・右へ90°回転(Ctrl＋R)";
+                        "・左へ90°回転(L)" + Environment.NewLine +
+                        "・右へ90°回転(R)" + Environment.NewLine +
+                        "・上下反転(V)" + Environment.NewLine +
+                        "・左右反転(H)" + Environment.NewLine +
+                        "・サムネイルと同様に１～９キーの機能利用できます";
                     break;
 
                 case "画像一覧印刷":
@@ -182,7 +185,8 @@ namespace MyView
                     UseTxtBox.Text = "本ソフトウェアは以下のオープンソースソフトウェアを使用しています：" + Environment.NewLine +
                         "・PhotoSauce.MagicScaler(MITライセンス)" + Environment.NewLine + Environment.NewLine +
                         "本ソフトウェアのメニューアイコンは以下サイトの画像を使用しています：" + Environment.NewLine +
-                        "・ICOOON MONO(https://icooon-mono.com/)";
+                        "・Material Symbols & Icons - Google Fonts(https://fonts.google.com/)" + Environment.NewLine +
+                        "　(Apache License 2.0)";
                     break;
 
                 default:

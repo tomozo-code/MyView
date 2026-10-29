@@ -960,8 +960,7 @@ namespace MyView
 
             var item = new ListViewItem(fileName, imageIndex);
 
-            e.Item =
-                item;
+            e.Item = item;
         }
 
         // ============================================================
@@ -1612,8 +1611,31 @@ namespace MyView
                 // Form3が開いていれば、クリックした画像に切り替える
                 if (_previewForm != null && !_previewForm.IsDisposed)
                 {
+                    // クリックした画像に切り替える
+                    _previewForm.SetImage(fullPath);
+
+                    // 最小化されていたら元のサイズに戻す
+                    if (_previewForm.WindowState == FormWindowState.Minimized)
+                    {
+                        // ウィンドウを最大化
+                        _previewForm.WindowState = FormWindowState.Maximized;
+                    }
+
+                    // Form3を前面に表示する
+                    if (!_previewForm.Visible)
+                    {
+                        _previewForm.Show(this);
+                    }
+
+                    _previewForm.Activate();
+                }
+
+                /*
+                if (_previewForm != null && !_previewForm.IsDisposed)
+                {
                     _previewForm.SetImage(fullPath);
                 }
+                */
             }
         }
 
@@ -2264,7 +2286,7 @@ namespace MyView
         {
             if (_previewForm == null || _previewForm.IsDisposed)
             {
-                MessageBox.Show("画像ビューが開かれていません。");
+                MessageBox.Show("画像ビューが開かれていません。", "確認", MessageBoxButtons.OK);
                 return;
             }
 
@@ -2304,7 +2326,7 @@ namespace MyView
         {
             if (_previewForm == null || _previewForm.IsDisposed)
             {
-                MessageBox.Show("画像ビューが開かれていません。");
+                MessageBox.Show("画像ビューが開かれていません。", "確認", MessageBoxButtons.OK);
                 return;
             }
 
@@ -2344,7 +2366,7 @@ namespace MyView
         {
             if (_previewForm == null || _previewForm.IsDisposed)
             {
-                MessageBox.Show("画像ビューが開かれていません。");
+                MessageBox.Show("画像ビューが開かれていません。", "確認", MessageBoxButtons.OK);
                 return;
             }
 

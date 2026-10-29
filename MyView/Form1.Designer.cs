@@ -47,19 +47,16 @@
             conTxtMenu9 = new ToolStripMenuItem();
             panel1 = new Panel();
             numThumbnailSize = new NumericUpDown();
-            label1 = new Label();
-            statusStrip1 = new StatusStrip();
-            StatusLabel1 = new ToolStripStatusLabel();
             menuStrip1 = new ClickThroughMenuStrip();
             fileMenu = new ToolStripMenuItem();
             printMenu = new ToolStripMenuItem();
             exitMenu = new ToolStripMenuItem();
             viewMenu = new ToolStripMenuItem();
             folderUpdate = new ToolStripMenuItem();
-            sideBar = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
             foldertreeMenu = new ToolStripMenuItem();
             infoboxMenu = new ToolStripMenuItem();
-            windowlayoutMenu = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             LeftRightLayout = new ToolStripMenuItem();
             TopBottomLayout = new ToolStripMenuItem();
             LayoutReset = new ToolStripMenuItem();
@@ -67,6 +64,9 @@
             useMenu = new ToolStripMenuItem();
             verMenu = new ToolStripMenuItem();
             SettingFolderMenu = new ToolStripMenuItem();
+            label1 = new Label();
+            statusStrip1 = new StatusStrip();
+            StatusLabel1 = new ToolStripStatusLabel();
             pathTxt = new TextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -79,14 +79,14 @@
             conMenu1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numThumbnailSize).BeginInit();
-            statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
             // 
             splitContainer1.Cursor = Cursors.SizeWE;
-            splitContainer1.Location = new Point(12, 84);
+            splitContainer1.Location = new Point(12, 166);
             splitContainer1.MinimumSize = new Size(500, 0);
             splitContainer1.Name = "splitContainer1";
             // 
@@ -98,7 +98,6 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(listViewThumbnails);
-            splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Cursor = Cursors.Default;
             splitContainer1.Size = new Size(800, 440);
             splitContainer1.SplitterDistance = 329;
@@ -237,17 +236,18 @@
             // panel1
             // 
             panel1.Controls.Add(numThumbnailSize);
+            panel1.Controls.Add(menuStrip1);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(463, 38);
+            panel1.Size = new Size(886, 38);
             panel1.TabIndex = 2;
             // 
             // numThumbnailSize
             // 
             numThumbnailSize.Increment = new decimal(new int[] { 32, 0, 0, 0 });
-            numThumbnailSize.Location = new Point(202, 3);
+            numThumbnailSize.Location = new Point(454, 7);
             numThumbnailSize.Maximum = new decimal(new int[] { 256, 0, 0, 0 });
             numThumbnailSize.Minimum = new decimal(new int[] { 64, 0, 0, 0 });
             numThumbnailSize.Name = "numThumbnailSize";
@@ -258,10 +258,165 @@
             numThumbnailSize.Value = new decimal(new int[] { 256, 0, 0, 0 });
             numThumbnailSize.ValueChanged += NumThumbnailSize_ValueChanged;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.AutoSize = false;
+            menuStrip1.Dock = DockStyle.None;
+            menuStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, viewMenu, helpMenu });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(265, 36);
+            menuStrip1.TabIndex = 4;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileMenu
+            // 
+            fileMenu.DropDownItems.AddRange(new ToolStripItem[] { printMenu, exitMenu });
+            fileMenu.Name = "fileMenu";
+            fileMenu.Size = new Size(85, 32);
+            fileMenu.Text = "ファイル(&F)";
+            // 
+            // printMenu
+            // 
+            printMenu.Image = (Image)resources.GetObject("printMenu.Image");
+            printMenu.ImageScaling = ToolStripItemImageScaling.None;
+            printMenu.Name = "printMenu";
+            printMenu.Size = new Size(188, 38);
+            printMenu.Text = "一覧印刷(&P)...";
+            printMenu.ToolTipText = "一覧印刷のプレビューを表示します。";
+            printMenu.Click += printMenu_Click;
+            // 
+            // exitMenu
+            // 
+            exitMenu.Image = (Image)resources.GetObject("exitMenu.Image");
+            exitMenu.ImageScaling = ToolStripItemImageScaling.None;
+            exitMenu.Name = "exitMenu";
+            exitMenu.Size = new Size(188, 38);
+            exitMenu.Text = "終了(&X)";
+            exitMenu.ToolTipText = "一覧帖を終了します。";
+            exitMenu.Click += exitMenu_Click;
+            // 
+            // viewMenu
+            // 
+            viewMenu.DropDownItems.AddRange(new ToolStripItem[] { folderUpdate, toolStripSeparator1, foldertreeMenu, infoboxMenu, toolStripSeparator2, LeftRightLayout, TopBottomLayout, LayoutReset });
+            viewMenu.Name = "viewMenu";
+            viewMenu.Size = new Size(74, 32);
+            viewMenu.Text = "表示(&V)";
+            // 
+            // folderUpdate
+            // 
+            folderUpdate.Image = (Image)resources.GetObject("folderUpdate.Image");
+            folderUpdate.ImageScaling = ToolStripItemImageScaling.None;
+            folderUpdate.Name = "folderUpdate";
+            folderUpdate.Size = new Size(196, 38);
+            folderUpdate.Text = "更新(&U)";
+            folderUpdate.ToolTipText = "表示を更新(再読み込み)します。";
+            folderUpdate.Click += folderUpdate_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(193, 6);
+            // 
+            // foldertreeMenu
+            // 
+            foldertreeMenu.Checked = true;
+            foldertreeMenu.CheckState = CheckState.Checked;
+            foldertreeMenu.Image = (Image)resources.GetObject("foldertreeMenu.Image");
+            foldertreeMenu.ImageScaling = ToolStripItemImageScaling.None;
+            foldertreeMenu.Name = "foldertreeMenu";
+            foldertreeMenu.Size = new Size(196, 38);
+            foldertreeMenu.Text = "フォルダツリー(&F)";
+            foldertreeMenu.ToolTipText = "フォルダツリーの表示・非表示を切り替えます。";
+            // 
+            // infoboxMenu
+            // 
+            infoboxMenu.Checked = true;
+            infoboxMenu.CheckState = CheckState.Checked;
+            infoboxMenu.Image = (Image)resources.GetObject("infoboxMenu.Image");
+            infoboxMenu.ImageScaling = ToolStripItemImageScaling.None;
+            infoboxMenu.Name = "infoboxMenu";
+            infoboxMenu.Size = new Size(196, 38);
+            infoboxMenu.Text = "情報ボックス(&I)";
+            infoboxMenu.ToolTipText = "情報ボックスの表示・非表示を切り替えます。";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(193, 6);
+            // 
+            // LeftRightLayout
+            // 
+            LeftRightLayout.Image = (Image)resources.GetObject("LeftRightLayout.Image");
+            LeftRightLayout.ImageScaling = ToolStripItemImageScaling.None;
+            LeftRightLayout.Name = "LeftRightLayout";
+            LeftRightLayout.Size = new Size(196, 38);
+            LeftRightLayout.Text = "左右配置";
+            LeftRightLayout.ToolTipText = "サムネイルと画像ビューを左右に配置します。";
+            LeftRightLayout.Click += LeftRightLayout_Click;
+            // 
+            // TopBottomLayout
+            // 
+            TopBottomLayout.Image = (Image)resources.GetObject("TopBottomLayout.Image");
+            TopBottomLayout.ImageScaling = ToolStripItemImageScaling.None;
+            TopBottomLayout.Name = "TopBottomLayout";
+            TopBottomLayout.Size = new Size(196, 38);
+            TopBottomLayout.Text = "上下配置";
+            TopBottomLayout.ToolTipText = "サムネイルと画像ビューを上下に配置します。";
+            TopBottomLayout.Click += TopBottomLayout_Click;
+            // 
+            // LayoutReset
+            // 
+            LayoutReset.Image = (Image)resources.GetObject("LayoutReset.Image");
+            LayoutReset.ImageScaling = ToolStripItemImageScaling.None;
+            LayoutReset.Name = "LayoutReset";
+            LayoutReset.Size = new Size(196, 38);
+            LayoutReset.Text = "配置解除";
+            LayoutReset.ToolTipText = "サムネイルと画像ビューの配置を解除します。";
+            LayoutReset.Click += LayoutReset_Click;
+            // 
+            // helpMenu
+            // 
+            helpMenu.DropDownItems.AddRange(new ToolStripItem[] { useMenu, verMenu, SettingFolderMenu });
+            helpMenu.Name = "helpMenu";
+            helpMenu.Size = new Size(81, 32);
+            helpMenu.Text = "ヘルプ(&H)";
+            // 
+            // useMenu
+            // 
+            useMenu.Image = (Image)resources.GetObject("useMenu.Image");
+            useMenu.ImageScaling = ToolStripItemImageScaling.None;
+            useMenu.Name = "useMenu";
+            useMenu.Size = new Size(290, 38);
+            useMenu.Text = "使い方(&U)...";
+            useMenu.ToolTipText = "使い方.pdfを表示します。";
+            useMenu.Click += useMenu_Click;
+            // 
+            // verMenu
+            // 
+            verMenu.Image = (Image)resources.GetObject("verMenu.Image");
+            verMenu.ImageScaling = ToolStripItemImageScaling.None;
+            verMenu.Name = "verMenu";
+            verMenu.Size = new Size(290, 38);
+            verMenu.Text = "バージョン情報(&A)...";
+            verMenu.ToolTipText = "バージョン情報を表示します。";
+            verMenu.Click += verMenu_Click;
+            // 
+            // SettingFolderMenu
+            // 
+            SettingFolderMenu.Image = (Image)resources.GetObject("SettingFolderMenu.Image");
+            SettingFolderMenu.ImageScaling = ToolStripItemImageScaling.None;
+            SettingFolderMenu.Name = "SettingFolderMenu";
+            SettingFolderMenu.Size = new Size(290, 38);
+            SettingFolderMenu.Text = "設定ファイルのフォルダを開く(&E)";
+            SettingFolderMenu.ToolTipText = "終了時のパスの記録しているフォルダを開きます。";
+            SettingFolderMenu.Click += SettingFolderMenu_Click;
+            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(9, 5);
+            label1.Location = new Point(268, 9);
             label1.Name = "label1";
             label1.Size = new Size(187, 21);
             label1.TabIndex = 2;
@@ -284,169 +439,10 @@
             StatusLabel1.Size = new Size(74, 21);
             StatusLabel1.Text = "ここに文字";
             // 
-            // menuStrip1
-            // 
-            menuStrip1.AutoSize = false;
-            menuStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, viewMenu, helpMenu });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(886, 36);
-            menuStrip1.TabIndex = 4;
-            menuStrip1.Text = "menuStrip1";
-            // 
-            // fileMenu
-            // 
-            fileMenu.DropDownItems.AddRange(new ToolStripItem[] { printMenu, exitMenu });
-            fileMenu.Name = "fileMenu";
-            fileMenu.Size = new Size(85, 32);
-            fileMenu.Text = "ファイル(&F)";
-            // 
-            // printMenu
-            // 
-            printMenu.Image = (Image)resources.GetObject("printMenu.Image");
-            printMenu.ImageScaling = ToolStripItemImageScaling.None;
-            printMenu.Name = "printMenu";
-            printMenu.Size = new Size(196, 38);
-            printMenu.Text = "一覧印刷(&P)...";
-            printMenu.ToolTipText = "一覧印刷のプレビューを表示します。";
-            printMenu.Click += printMenu_Click;
-            // 
-            // exitMenu
-            // 
-            exitMenu.Image = (Image)resources.GetObject("exitMenu.Image");
-            exitMenu.ImageScaling = ToolStripItemImageScaling.None;
-            exitMenu.Name = "exitMenu";
-            exitMenu.Size = new Size(196, 38);
-            exitMenu.Text = "終了(&X)";
-            exitMenu.ToolTipText = "一覧帖を終了します";
-            exitMenu.Click += exitMenu_Click;
-            // 
-            // viewMenu
-            // 
-            viewMenu.DropDownItems.AddRange(new ToolStripItem[] { folderUpdate, sideBar, windowlayoutMenu });
-            viewMenu.Name = "viewMenu";
-            viewMenu.Size = new Size(74, 32);
-            viewMenu.Text = "表示(&V)";
-            // 
-            // folderUpdate
-            // 
-            folderUpdate.Image = (Image)resources.GetObject("folderUpdate.Image");
-            folderUpdate.ImageScaling = ToolStripItemImageScaling.None;
-            folderUpdate.Name = "folderUpdate";
-            folderUpdate.Size = new Size(196, 38);
-            folderUpdate.Text = "更新(&U)";
-            folderUpdate.ToolTipText = "表示を更新(再読み込み)します";
-            folderUpdate.Click += folderUpdate_Click;
-            // 
-            // sideBar
-            // 
-            sideBar.DropDownItems.AddRange(new ToolStripItem[] { foldertreeMenu, infoboxMenu });
-            sideBar.Image = (Image)resources.GetObject("sideBar.Image");
-            sideBar.ImageScaling = ToolStripItemImageScaling.None;
-            sideBar.Name = "sideBar";
-            sideBar.Size = new Size(196, 38);
-            sideBar.Text = "サイドバー";
-            // 
-            // foldertreeMenu
-            // 
-            foldertreeMenu.Checked = true;
-            foldertreeMenu.CheckState = CheckState.Checked;
-            foldertreeMenu.Image = (Image)resources.GetObject("foldertreeMenu.Image");
-            foldertreeMenu.ImageScaling = ToolStripItemImageScaling.None;
-            foldertreeMenu.Name = "foldertreeMenu";
-            foldertreeMenu.Size = new Size(196, 38);
-            foldertreeMenu.Text = "フォルダツリー(&F)";
-            foldertreeMenu.Click += foldertreeMenu_Click;
-            // 
-            // infoboxMenu
-            // 
-            infoboxMenu.Checked = true;
-            infoboxMenu.CheckState = CheckState.Checked;
-            infoboxMenu.Image = (Image)resources.GetObject("infoboxMenu.Image");
-            infoboxMenu.ImageScaling = ToolStripItemImageScaling.None;
-            infoboxMenu.Name = "infoboxMenu";
-            infoboxMenu.Size = new Size(196, 38);
-            infoboxMenu.Text = "情報ボックス(&I)";
-            infoboxMenu.Click += infoboxMenu_Click;
-            // 
-            // windowlayoutMenu
-            // 
-            windowlayoutMenu.DropDownItems.AddRange(new ToolStripItem[] { LeftRightLayout, TopBottomLayout, LayoutReset });
-            windowlayoutMenu.Image = (Image)resources.GetObject("windowlayoutMenu.Image");
-            windowlayoutMenu.ImageScaling = ToolStripItemImageScaling.None;
-            windowlayoutMenu.Name = "windowlayoutMenu";
-            windowlayoutMenu.Size = new Size(196, 38);
-            windowlayoutMenu.Text = "ウィンドウ配置";
-            // 
-            // LeftRightLayout
-            // 
-            LeftRightLayout.Image = (Image)resources.GetObject("LeftRightLayout.Image");
-            LeftRightLayout.ImageScaling = ToolStripItemImageScaling.None;
-            LeftRightLayout.Name = "LeftRightLayout";
-            LeftRightLayout.Size = new Size(196, 38);
-            LeftRightLayout.Text = "左右配置";
-            LeftRightLayout.Click += LeftRightLayout_Click;
-            // 
-            // TopBottomLayout
-            // 
-            TopBottomLayout.Image = (Image)resources.GetObject("TopBottomLayout.Image");
-            TopBottomLayout.ImageScaling = ToolStripItemImageScaling.None;
-            TopBottomLayout.Name = "TopBottomLayout";
-            TopBottomLayout.Size = new Size(196, 38);
-            TopBottomLayout.Text = "上下配置";
-            TopBottomLayout.Click += TopBottomLayout_Click;
-            // 
-            // LayoutReset
-            // 
-            LayoutReset.Image = (Image)resources.GetObject("LayoutReset.Image");
-            LayoutReset.ImageScaling = ToolStripItemImageScaling.None;
-            LayoutReset.Name = "LayoutReset";
-            LayoutReset.Size = new Size(196, 38);
-            LayoutReset.Text = "配置解除";
-            LayoutReset.Click += LayoutReset_Click;
-            // 
-            // helpMenu
-            // 
-            helpMenu.DropDownItems.AddRange(new ToolStripItem[] { useMenu, verMenu, SettingFolderMenu });
-            helpMenu.Name = "helpMenu";
-            helpMenu.Size = new Size(81, 32);
-            helpMenu.Text = "ヘルプ(&H)";
-            // 
-            // useMenu
-            // 
-            useMenu.Image = (Image)resources.GetObject("useMenu.Image");
-            useMenu.ImageScaling = ToolStripItemImageScaling.None;
-            useMenu.Name = "useMenu";
-            useMenu.Size = new Size(290, 38);
-            useMenu.Text = "使い方(&U)...";
-            useMenu.ToolTipText = "使い方.pdfを表示します";
-            useMenu.Click += useMenu_Click;
-            // 
-            // verMenu
-            // 
-            verMenu.Image = (Image)resources.GetObject("verMenu.Image");
-            verMenu.ImageScaling = ToolStripItemImageScaling.None;
-            verMenu.Name = "verMenu";
-            verMenu.Size = new Size(290, 38);
-            verMenu.Text = "バージョン情報(&A)...";
-            verMenu.ToolTipText = "バージョン情報を表示します";
-            verMenu.Click += verMenu_Click;
-            // 
-            // SettingFolderMenu
-            // 
-            SettingFolderMenu.Image = (Image)resources.GetObject("SettingFolderMenu.Image");
-            SettingFolderMenu.ImageScaling = ToolStripItemImageScaling.None;
-            SettingFolderMenu.Name = "SettingFolderMenu";
-            SettingFolderMenu.Size = new Size(290, 38);
-            SettingFolderMenu.Text = "設定ファイルのフォルダを開く(&E)";
-            SettingFolderMenu.ToolTipText = "終了時のパスの記録しているフォルダを開きます";
-            SettingFolderMenu.Click += SettingFolderMenu_Click;
-            // 
             // pathTxt
             // 
             pathTxt.Font = new Font("Yu Gothic UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            pathTxt.Location = new Point(62, 39);
+            pathTxt.Location = new Point(54, 48);
             pathTxt.Name = "pathTxt";
             pathTxt.Size = new Size(100, 33);
             pathTxt.TabIndex = 6;
@@ -463,7 +459,7 @@
             Controls.Add(splitContainer1);
             Controls.Add(pathTxt);
             Controls.Add(statusStrip1);
-            Controls.Add(menuStrip1);
+            Controls.Add(panel1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
@@ -487,10 +483,10 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numThumbnailSize).EndInit();
-            statusStrip1.ResumeLayout(false);
-            statusStrip1.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -529,10 +525,10 @@
         private ToolStripMenuItem useMenu;
         private ToolStripMenuItem printMenu;
         private SplitContainer splitContainer2;
-        private ToolStripMenuItem sideBar;
+        private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem foldertreeMenu;
         private ToolStripMenuItem infoboxMenu;
-        private ToolStripMenuItem windowlayoutMenu;
+        private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem LeftRightLayout;
         private ToolStripMenuItem TopBottomLayout;
         private ToolStripMenuItem LayoutReset;

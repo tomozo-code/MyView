@@ -428,6 +428,21 @@ namespace MyView
         }
 
         // ============================================================
+        // キー操作
+        // ============================================================
+        private void Form4_KeyDown(object sender, KeyEventArgs e)
+        {
+            // EscキーでForm4を閉じる
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+        }
+
+        // ============================================================
         // フォームを開いたときに印刷設定を読み込む
         // ============================================================
         private void LoadPrintSettings()
@@ -1871,6 +1886,20 @@ namespace MyView
         }
 
         // ============================================================
+        // 余白 入力にフォーカスが移動したとき全選択
+        // ============================================================
+        private void setMargin_Enter(object sender, EventArgs e)
+        {
+            if (sender is TextBox nud)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    nud.SelectAll();
+                }));
+            }
+        }
+
+        // ============================================================
         // 余白 数値変換ルーチン(ミリ→インチ)
         // ============================================================
         private int MmToHundredthsInch(decimal mm)
@@ -2082,5 +2111,26 @@ namespace MyView
         {
             ChangeZoom(-0.1);
         }
+
+        // ============================================================
+        // アイコンラベルの表示・非表示を切り替える
+        // ============================================================
+        private void btnIconLabel_Click(object sender, EventArgs e)
+        {
+            bool showText = !btnIconLabel.Checked;
+
+            foreach (ToolStripItem item in toolStrip1.Items)
+            {
+                if (item is ToolStripButton button)
+                {
+                    button.DisplayStyle = showText
+                        ? ToolStripItemDisplayStyle.ImageAndText
+                        : ToolStripItemDisplayStyle.Image;
+                }
+            }
+
+            btnIconLabel.Checked = showText;
+        }
+
     }
 }

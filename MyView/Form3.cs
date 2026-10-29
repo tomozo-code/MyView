@@ -1048,7 +1048,7 @@ namespace MyView
                 e.SuppressKeyPress = true;
                 return;
             }
-                        
+
             // Rキー → 右へ90°回転
             //if (e.Control && e.KeyCode == Keys.R)
             if (e.KeyCode == Keys.R)
@@ -1061,7 +1061,7 @@ namespace MyView
                 e.SuppressKeyPress = true;
                 return;
             }
-            
+
             // Vキー → 上下反転
             //if (e.Control && e.Shift && e.KeyCode == Keys.V)
             if (e.KeyCode == Keys.V)
@@ -1911,6 +1911,26 @@ namespace MyView
         private void flip_hBtn_Click(object sender, EventArgs e)
         {
             FlipHorizontallyImage();
+        }
+
+        // ============================================================
+        // アイコンラベルの表示・非表示を切り替える
+        // ============================================================
+        private void iconLabelBtn_Click(object sender, EventArgs e)
+        {
+            bool showText = !iconLabelBtn.Checked;
+
+            foreach (ToolStripItem item in toolStrip1.Items)
+            {
+                if (item is ToolStripButton button)
+                {
+                    button.DisplayStyle = showText
+                        ? ToolStripItemDisplayStyle.ImageAndText
+                        : ToolStripItemDisplayStyle.Image;
+                }
+            }
+
+            iconLabelBtn.Checked = showText;
         }
     }
 }
