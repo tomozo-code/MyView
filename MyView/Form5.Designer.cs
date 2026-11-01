@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form5));
             previewControl = new PrintPreviewControl();
             splitContainer1 = new SplitContainer();
@@ -57,6 +58,9 @@
             toolStripSeparator2 = new ToolStripSeparator();
             optionBtn = new ToolStripDropDownButton();
             iconLabelBtn = new ToolStripMenuItem();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -68,6 +72,7 @@
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             toolStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // previewControl
@@ -119,6 +124,8 @@
             btnHaichi.Text = "プレビュー";
             btnHaichi.UseVisualStyleBackColor = true;
             btnHaichi.Click += btnHaichi_Click;
+            btnHaichi.MouseEnter += Menu_MouseEnter;
+            btnHaichi.MouseLeave += Menu_MouseLeave;
             // 
             // groupBox4
             // 
@@ -151,6 +158,8 @@
             setMarginBottom.Enter += setMargin_Enter;
             setMarginBottom.KeyDown += setMargin_KeyDown;
             setMarginBottom.KeyPress += setMargin_KeyPress;
+            setMarginBottom.MouseEnter += Menu_MouseEnter;
+            setMarginBottom.MouseLeave += Menu_MouseLeave;
             setMarginBottom.Validating += setMargin_Validating;
             // 
             // setMarginTop
@@ -166,6 +175,8 @@
             setMarginTop.Enter += setMargin_Enter;
             setMarginTop.KeyDown += setMargin_KeyDown;
             setMarginTop.KeyPress += setMargin_KeyPress;
+            setMarginTop.MouseEnter += Menu_MouseEnter;
+            setMarginTop.MouseLeave += Menu_MouseLeave;
             setMarginTop.Validating += setMargin_Validating;
             // 
             // setMarginRight
@@ -181,6 +192,8 @@
             setMarginRight.Enter += setMargin_Enter;
             setMarginRight.KeyDown += setMargin_KeyDown;
             setMarginRight.KeyPress += setMargin_KeyPress;
+            setMarginRight.MouseEnter += Menu_MouseEnter;
+            setMarginRight.MouseLeave += Menu_MouseLeave;
             setMarginRight.Validating += setMargin_Validating;
             // 
             // setMarginLeft
@@ -196,6 +209,8 @@
             setMarginLeft.Enter += setMargin_Enter;
             setMarginLeft.KeyDown += setMargin_KeyDown;
             setMarginLeft.KeyPress += setMargin_KeyPress;
+            setMarginLeft.MouseEnter += Menu_MouseEnter;
+            setMarginLeft.MouseLeave += Menu_MouseLeave;
             setMarginLeft.Validating += setMargin_Validating;
             // 
             // label13
@@ -261,6 +276,8 @@
             setPrinterName.TabIndex = 2;
             setPrinterName.Tag = "プリンタを変更します。変更後プレビューが更新されます。";
             setPrinterName.SelectedIndexChanged += setPrinterName_SelectedIndexChanged;
+            setPrinterName.MouseEnter += Menu_MouseEnter;
+            setPrinterName.MouseLeave += Menu_MouseLeave;
             // 
             // label3
             // 
@@ -290,6 +307,8 @@
             setDirection.TabIndex = 4;
             setDirection.Tag = "用紙の向きを指定します。";
             setDirection.SelectedIndexChanged += setDirection_SelectedIndexChanged;
+            setDirection.MouseEnter += Menu_MouseEnter;
+            setDirection.MouseLeave += Menu_MouseLeave;
             // 
             // setPaper
             // 
@@ -302,6 +321,8 @@
             setPaper.TabIndex = 3;
             setPaper.Tag = "用紙サイズを指定します。";
             setPaper.SelectedIndexChanged += setPaper_SelectedIndexChanged;
+            setPaper.MouseEnter += Menu_MouseEnter;
+            setPaper.MouseLeave += Menu_MouseLeave;
             // 
             // label7
             // 
@@ -336,7 +357,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, closeBtn, toolStripSeparator2, optionBtn });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(141, 39);
+            toolStrip1.Size = new Size(172, 39);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
@@ -347,9 +368,12 @@
             btnPrint.ImageTransparentColor = Color.Magenta;
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(36, 36);
+            btnPrint.Tag = "画像を印刷します。(Ctrl+P)";
             btnPrint.Text = "印刷(&P)...";
-            btnPrint.ToolTipText = "印刷します。";
+            btnPrint.ToolTipText = "画像を印刷します。(Ctrl+P)";
             btnPrint.Click += btnPrint_Click;
+            btnPrint.MouseEnter += Menu_MouseEnter;
+            btnPrint.MouseLeave += Menu_MouseLeave;
             // 
             // toolStripSeparator1
             // 
@@ -364,10 +388,12 @@
             closeBtn.ImageTransparentColor = Color.Magenta;
             closeBtn.Name = "closeBtn";
             closeBtn.Size = new Size(36, 36);
-            closeBtn.Tag = "ウィンドウを閉じます。";
+            closeBtn.Tag = "ウィンドウを閉じます。(Esc)";
             closeBtn.Text = "閉じる(&X)";
-            closeBtn.ToolTipText = "閉じる(Esc)";
+            closeBtn.ToolTipText = "ウィンドウを閉じます。(Esc)";
             closeBtn.Click += closeBtn_Click;
+            closeBtn.MouseEnter += Menu_MouseEnter;
+            closeBtn.MouseLeave += Menu_MouseLeave;
             // 
             // toolStripSeparator2
             // 
@@ -383,22 +409,45 @@
             optionBtn.ImageTransparentColor = Color.Magenta;
             optionBtn.Name = "optionBtn";
             optionBtn.Size = new Size(45, 36);
+            optionBtn.Tag = "オプション";
             optionBtn.Text = "オプション";
             optionBtn.ToolTipText = "オプション";
+            optionBtn.MouseEnter += Menu_MouseEnter;
+            optionBtn.MouseLeave += Menu_MouseLeave;
             // 
             // iconLabelBtn
             // 
             iconLabelBtn.Name = "iconLabelBtn";
             iconLabelBtn.Size = new Size(232, 26);
+            iconLabelBtn.Tag = "アイコンラベルの表示・非表示を切り替えます。";
             iconLabelBtn.Text = "アイコンラベルを表示する";
             iconLabelBtn.ToolTipText = "アイコンラベルの表示・非表示を切り替えます。";
             iconLabelBtn.Click += iconLabelBtn_Click;
+            iconLabelBtn.MouseEnter += Menu_MouseEnter;
+            iconLabelBtn.MouseLeave += Menu_MouseLeave;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
+            statusStrip1.Location = new Point(0, 730);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(840, 26);
+            statusStrip1.TabIndex = 3;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(159, 21);
+            toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // Form5
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(840, 756);
+            Controls.Add(statusStrip1);
             Controls.Add(toolStripContainer1);
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -425,7 +474,10 @@
             toolStripContainer1.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -458,5 +510,8 @@
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripDropDownButton optionBtn;
         private ToolStripMenuItem iconLabelBtn;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolTip toolTip1;
     }
 }

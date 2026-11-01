@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 // --------------------------------------------------------
 // 画像ビューフォーム
@@ -152,8 +154,6 @@ namespace MyView
 
             toolStripContainer1.Dock = DockStyle.Fill;
 
-            panel1.Dock = DockStyle.Fill;
-
             menuStrip1.Visible = false;
 
             _imagePath = imagePath;
@@ -192,16 +192,20 @@ namespace MyView
         {
             // 印刷(ショートカットキー)右クリ用、メニュー用
             printBtn2.ShortcutKeys = Keys.Control | Keys.P;
-            printMenu.ShortcutKeys = Keys.Control | Keys.P;
+            //printMenu.ShortcutKeys = Keys.Control | Keys.P;
             // 保存(ショートカットキー)右クリ用、メニュー用
             saveBtn2.ShortcutKeys = Keys.Control | Keys.S;
-            saveasMenu.ShortcutKeys = Keys.Control | Keys.S;
+            //saveasMenu.ShortcutKeys = Keys.Control | Keys.S;
             // コピー(ショートカットキー)右クリ用、メニュー用
             copyBtn2.ShortcutKeys = Keys.Control | Keys.C;
-            copyMenu.ShortcutKeys = Keys.Control | Keys.C;
+            //copyMenu.ShortcutKeys = Keys.Control | Keys.C;
             // 貼り付け(ショートカットキー)右クリ用、メニュー用
             pasteBtn2.ShortcutKeys = Keys.Control | Keys.V;
-            pasteMenu.ShortcutKeys = Keys.Control | Keys.V;
+            //pasteMenu.ShortcutKeys = Keys.Control | Keys.V;
+            // 画像補正(ショートカットキー)右クリ用、メニュー用
+            imageEnhancementBtn2.ShortcutKeys = Keys.Control | Keys.I;
+            //imageEnhancementMenu.ShortcutKeys = Keys.Control | Keys.I;
+
             // 左へ回転(ショートカットキー)右クリ用、メニュー用
             //roolLeftBtn2.ShortcutKeys = Keys.Control | Keys.L;
             //roolLeftMenu.ShortcutKeys = Keys.Control | Keys.L;
@@ -323,6 +327,10 @@ namespace MyView
 
                 _image = image;
 
+                // 新しい画像では反転状態を解除
+                _flipHorizontal = false;
+                _flipVertical = false;
+
                 // フォルダ内の画像を表示している場合、名前を付けて保存を無効にする場合は「false」
                 //_isClipboardImage = false;
                 _isClipboardImage = true;
@@ -362,6 +370,34 @@ namespace MyView
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        // ============================================================
+        // 現在表示している画像を複製して取得
+        // ============================================================
+        public Bitmap? GetCurrentImageCopy()
+        {
+            if (_image == null)
+                return null;
+
+            // 現在の画像を複製
+            Bitmap bitmap = new Bitmap(_image);
+
+            // Form3で設定されている反転状態を反映
+            if (_flipHorizontal && _flipVertical)
+            {
+                bitmap.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+            }
+            else if (_flipHorizontal)
+            {
+                bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            }
+            else if (_flipVertical)
+            {
+                bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            }
+
+            return bitmap;
         }
 
         // ============================================================
@@ -1096,6 +1132,17 @@ namespace MyView
                 // 印刷プレビュー表示
                 printBtn.PerformClick();
 
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            // Ctrl + I → 画像補正
+            if (e.Control && e.KeyCode == Keys.I)
+            {
+                // 画像補正
+                imageEnhancementBtn.PerformClick();
+                                
                 e.Handled = true;
                 e.SuppressKeyPress = true;
                 return;
@@ -1922,9 +1969,18 @@ namespace MyView
 
             foreach (ToolStripItem item in toolStrip1.Items)
             {
+                // ボタン
                 if (item is ToolStripButton button)
                 {
                     button.DisplayStyle = showText
+                        ? ToolStripItemDisplayStyle.ImageAndText
+                        : ToolStripItemDisplayStyle.Image;
+                }
+
+                // ドロップダウンボタン
+                if (item is ToolStripDropDownButton dropdownbutton)
+                {
+                    dropdownbutton.DisplayStyle = showText
                         ? ToolStripItemDisplayStyle.ImageAndText
                         : ToolStripItemDisplayStyle.Image;
                 }
@@ -1932,5 +1988,464 @@ namespace MyView
 
             iconLabelBtn.Checked = showText;
         }
+
+        // ============================================================
+        // 画像補正をクリック
+        // ============================================================
+        private void imageEnhancementBtn_Click(object sender, EventArgs e)
+        {
+            // 現在の画像を取得
+            using Bitmap? originalImage = GetCurrentImageCopy();
+
+            if (originalImage == null)
+            {
+                MessageBox.Show(
+                    "表示する画像がありません。",
+                    "色彩補正",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // 選択範囲を画像上の座標に変換
+            Rectangle correctionRectangle =
+                GetSelectionImageRectangle(originalImage);
+
+            // 選択範囲が画像の外にある場合
+            if (correctionRectangle.Width <= 0 ||
+                correctionRectangle.Height <= 0)
+            {
+                MessageBox.Show(
+                    "有効な選択範囲がありません。",
+                    "色彩補正",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // 補正対象の範囲だけを切り出す
+            using Bitmap correctionImage =
+                CropImage(originalImage, correctionRectangle);
+
+            // Form6で色彩補正
+            using (var form6 = new Form6(correctionImage))
+            {
+                if (form6.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (form6.ResultImage != null)
+                    {
+                        // ------------------------------------------------
+                        // 元画像を複製する
+                        // 枠外はこの画像のまま残す
+                        // ------------------------------------------------
+                        using Bitmap resultImage = new Bitmap(originalImage);
+
+                        // ------------------------------------------------
+                        // 補正後の画像を元の位置に合成する
+                        // ------------------------------------------------
+                        using (Graphics g = Graphics.FromImage(resultImage))
+                        {
+                            g.DrawImage(
+                                form6.ResultImage,
+                                correctionRectangle);
+                        }
+
+                        // Form3の画像を更新
+                        SetCurrentImage(resultImage);
+                    }
+                }
+            }
+        }
+
+        // ============================================================
+        // 色彩補正をクリック
+        // ============================================================
+        private void colorCorrectionBtn_Click(object sender, EventArgs e)
+        {
+            // 現在の画像を取得
+            using Bitmap? originalImage = GetCurrentImageCopy();
+
+            if (originalImage == null)
+            {
+                MessageBox.Show(
+                    "表示する画像がありません。",
+                    "色彩補正",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // 選択範囲を画像上の座標に変換
+            Rectangle correctionRectangle =
+                GetSelectionImageRectangle(originalImage);
+
+            // 選択範囲が画像の外にある場合
+            if (correctionRectangle.Width <= 0 ||
+                correctionRectangle.Height <= 0)
+            {
+                MessageBox.Show(
+                    "有効な選択範囲がありません。",
+                    "色彩補正",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // 補正対象の範囲だけを切り出す
+            using Bitmap correctionImage =
+                CropImage(originalImage, correctionRectangle);
+
+            // Form6で色彩補正
+            using (var form6 = new Form6(correctionImage))
+            {
+                if (form6.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (form6.ResultImage != null)
+                    {
+                        // ------------------------------------------------
+                        // 元画像を複製する
+                        // 枠外はこの画像のまま残す
+                        // ------------------------------------------------
+                        using Bitmap resultImage = new Bitmap(originalImage);
+
+                        // ------------------------------------------------
+                        // 補正後の画像を元の位置に合成する
+                        // ------------------------------------------------
+                        using (Graphics g = Graphics.FromImage(resultImage))
+                        {
+                            g.DrawImage(
+                                form6.ResultImage,
+                                correctionRectangle);
+                        }
+
+                        // Form3の画像を更新
+                        SetCurrentImage(resultImage);
+                    }
+                }
+            }
+        }
+
+        // ============================================================
+        // 外部から渡された画像に差し替える
+        // ============================================================
+        public void SetCurrentImage(Bitmap newImage)
+        {
+            if (newImage == null)
+                return;
+
+            // GIFアニメーションを停止
+            if (_image != null)
+            {
+                if (ImageAnimator.CanAnimate(_image))
+                {
+                    ImageAnimator.StopAnimate(_image, PictureBoxAnimationHandler);
+                }
+
+                // 古い画像を解放
+                _image.Dispose();
+                _image = null;
+            }
+
+            // 新しい画像を自分で所有するために複製
+            _image = new Bitmap(newImage);
+
+            // 反転状態を解除
+            // GetCurrentImageCopy()で反転済みの画像を受け取るため
+            _flipHorizontal = false;
+            _flipVertical = false;
+
+            // 選択範囲を解除
+            _selectionRectangle = Rectangle.Empty;
+            _isSelecting = false;
+            _selectionClickCandidate = false;
+            _isResizingSelection = false;
+            _selectionHandle = SelectionHandle.None;
+
+            // 画像を画面に合わせて表示
+            FitImageToWindow();
+            CenterImage();
+
+            // タイトルとステータス表示
+            Text = "[補正済み画像] - 補正を反映したい場合は、名前を付けて保存";
+            viewStatusTxt.Text = "[補正済み画像] - 補正を反映したい場合は、名前を付けて保存";
+
+            // 再描画
+            pictureBox1.Invalidate();
+        }
+
+
+        // ============================================================
+        // 選択範囲を画像上の座標に変換
+        // 選択範囲がなければ画像全体を返す
+        // currentImageは反転済み画像なので、追加の反転変換は不要
+        // ============================================================
+        private Rectangle GetSelectionImageRectangle(Bitmap currentImage)
+        {
+            // 選択範囲がなければ画像全体
+            if (_selectionRectangle.IsEmpty ||
+                _selectionRectangle.Width < 1 ||
+                _selectionRectangle.Height < 1)
+            {
+                return new Rectangle(
+                    0, 0,
+                    currentImage.Width,
+                    currentImage.Height);
+            }
+
+            // 画面上の選択範囲を画像座標に変換
+            float left =
+                (_selectionRectangle.Left - _imageOffset.X) / _zoom;
+
+            float top =
+                (_selectionRectangle.Top - _imageOffset.Y) / _zoom;
+
+            float right =
+                (_selectionRectangle.Right - _imageOffset.X) / _zoom;
+
+            float bottom =
+                (_selectionRectangle.Bottom - _imageOffset.Y) / _zoom;
+
+            int x1 = (int)Math.Floor(left);
+            int y1 = (int)Math.Floor(top);
+            int x2 = (int)Math.Ceiling(right);
+            int y2 = (int)Math.Ceiling(bottom);
+
+            // 画像の範囲内に収める
+            x1 = Math.Clamp(x1, 0, currentImage.Width);
+            y1 = Math.Clamp(y1, 0, currentImage.Height);
+            x2 = Math.Clamp(x2, 0, currentImage.Width);
+            y2 = Math.Clamp(y2, 0, currentImage.Height);
+
+            return Rectangle.FromLTRB(x1, y1, x2, y2);
+        }
+
+
+        // ============================================================
+        // 指定範囲の画像を切り出す
+        // ============================================================
+        private Bitmap CropImage(Bitmap source, Rectangle rectangle)
+        {
+            Bitmap croppedImage = new Bitmap(
+                rectangle.Width,
+                rectangle.Height);
+
+            using (Graphics g = Graphics.FromImage(croppedImage))
+            {
+                g.DrawImage(
+                    source,
+                    new Rectangle(
+                        0,
+                        0,
+                        rectangle.Width,
+                        rectangle.Height),
+                    rectangle,
+                    GraphicsUnit.Pixel);
+            }
+
+            return croppedImage;
+        }
+
+        // ============================================================
+        // グレースケール変換を押したとき
+        // ============================================================
+        private void grayScaleBtn_Click(object sender, EventArgs e)
+        {
+            // グレースケールの共通処理
+            ProcessImagePixels(grayscale: true, red: false, green: false, blue: false);
+        }
+
+        // ============================================================
+        // ネガポジ反転(全チャンネル)
+        // ============================================================
+        private void allChannelsBtn_Click(object sender, EventArgs e)
+        {
+            // ネガポジ反転の共通処理
+            ProcessImagePixels(grayscale: false, red: true, green: true, blue: true);
+        }
+
+        // ============================================================
+        // ネガポジ反転(赤)
+        // ============================================================
+        private void redChannelBtn_Click(object sender, EventArgs e)
+        {
+            // ネガポジ反転の共通処理
+            ProcessImagePixels(grayscale: false, red: true, green: false, blue: false);
+        }
+
+        // ============================================================
+        // ネガポジ反転(緑)
+        // ============================================================
+        private void greenChannelBtn_Click(object sender, EventArgs e)
+        {
+            // ネガポジ反転の共通処理
+            ProcessImagePixels(grayscale: false, red: false, green: true, blue: false);
+        }
+
+        // ============================================================
+        // ネガポジ反転(青)
+        // ============================================================
+        private void blueChannelBtn_Click(object sender, EventArgs e)
+        {
+            // ネガポジ反転の共通処理
+            ProcessImagePixels(grayscale: false, red: false, green: false, blue: true);
+        }
+
+        // ============================================================
+        // グレースケール・ネガポジ反転の共通処理
+        //
+        // grayscale : グレースケール変換するか
+        // red       : 赤チャンネルを反転するか
+        // green     : 緑チャンネルを反転するか
+        // blue      : 青チャンネルを反転するか
+        // ============================================================
+        private void ProcessImagePixels(bool grayscale, bool red, bool green, bool blue)
+        {
+            using Bitmap? originalImage = GetCurrentImageCopy();
+
+            if (originalImage == null)
+            {
+                MessageBox.Show(
+                    "表示する画像がありません。",
+                    "画像変換",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // 選択範囲を取得（選択がなければ画像全体）
+            Rectangle processRectangle = GetSelectionImageRectangle(originalImage);
+
+            if (processRectangle.Width <= 0 ||
+                processRectangle.Height <= 0)
+            {
+                MessageBox.Show(
+                    "有効な選択範囲がありません。",
+                    "画像変換",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            // --------------------------------------------------------
+            // 32bit ARGB形式のBitmapを作成
+            //
+            // 元画像がJPEG・PNG・GIFなど、どの形式であっても
+            // LockBitsで扱いやすい形式に統一する。
+            // --------------------------------------------------------
+            using Bitmap resultImage = new Bitmap(originalImage.Width, originalImage.Height, PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(resultImage))
+            {
+                g.DrawImageUnscaled(originalImage, 0, 0);
+            }
+
+            Rectangle lockRectangle = new Rectangle(
+                0,
+                0,
+                resultImage.Width,
+                resultImage.Height);
+
+            BitmapData? bitmapData = null;
+
+            try
+            {
+                // ----------------------------------------------------
+                // 画像データをロック
+                // ----------------------------------------------------
+                bitmapData = resultImage.LockBits(lockRectangle, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+                int stride = bitmapData.Stride;
+
+                // 1行分のバイト数
+                int rowBytes = resultImage.Width * 4;
+
+                // 1行分の作業用バッファ
+                byte[] pixels = new byte[rowBytes];
+
+                // ----------------------------------------------------
+                // 選択範囲内だけを処理
+                // ----------------------------------------------------
+                for (int y = processRectangle.Top;
+                     y < processRectangle.Bottom;
+                     y++)
+                {
+                    // 現在の行の先頭アドレス
+                    IntPtr rowAddress = IntPtr.Add(
+                        bitmapData.Scan0,
+                        y * stride);
+
+                    // 1行分の画素データをまとめて取得
+                    Marshal.Copy(
+                        rowAddress,
+                        pixels,
+                        0,
+                        rowBytes);
+
+                    for (int x = processRectangle.Left;
+                         x < processRectangle.Right;
+                         x++)
+                    {
+                        int index = x * 4;
+
+                        // 32bit ARGB形式のメモリ上の並びは
+                        // B(青)・G(緑)・R(赤)・A(透明度)
+                        int b = pixels[index];
+                        int g = pixels[index + 1];
+                        int r = pixels[index + 2];
+
+                        if (grayscale)
+                        {
+                            // 人間の目の感度を考慮した輝度計算
+                            // Gray = 0.299R + 0.587G + 0.114B
+                            int gray = (int)(0.299 * r + 0.587 * g + 0.114 * b);
+
+                            pixels[index] = (byte)gray;
+                            pixels[index + 1] = (byte)gray;
+                            pixels[index + 2] = (byte)gray;
+                        }
+                        else
+                        {
+                            // 指定されたチャンネルだけ反転
+                            if (blue)
+                                pixels[index] = (byte)(255 - b);
+
+                            if (green)
+                                pixels[index + 1] = (byte)(255 - g);
+
+                            if (red)
+                                pixels[index + 2] = (byte)(255 - r);
+                        }
+
+                        // pixels[index + 3] は透明度なので変更しない
+                    }
+
+                    // 処理した1行分のデータを画像に戻す
+                    Marshal.Copy(
+                        pixels,
+                        0,
+                        rowAddress,
+                        rowBytes);
+                }
+            }
+            finally
+            {
+                // ロック解除
+                if (bitmapData != null)
+                {
+                    resultImage.UnlockBits(bitmapData);
+                }
+            }
+
+            // 変換結果を反映
+            SetCurrentImage(resultImage);
+        }
+
+
     }
 }

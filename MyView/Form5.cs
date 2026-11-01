@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 // --------------------------------------------------------
 // 画像単体の印刷プレビューフォーム
@@ -102,6 +103,8 @@ namespace MyView
             // 印刷ページの描画イベント
             _printDocument.PrintPage += PrintDocument_PrintPage;
 
+            toolStripStatusLabel1.Text = "画像を印刷します。";
+
             // 画像を読み込む
             if (image != null)
             {
@@ -159,6 +162,65 @@ namespace MyView
 
 
 
+        }
+
+        // ============================================================
+        // マウスONで説明 
+        // ============================================================
+        private void Menu_MouseEnter(object? sender, EventArgs e)
+        {
+            string? message = null;
+
+            // 通常のコントロール（Button, TextBox など）
+            if (sender is Control control)
+            {
+                Control? target = control;
+
+                // Tagが見つかるまで親をたどる
+                while (target != null)
+                {
+                    if (target.Tag != null)
+                    {
+                        message = target.Tag.ToString();
+                        break;
+                    }
+
+                    target = target.Parent;
+                }
+
+                // Tagが設定されていればToolTipをセット
+                if (!string.IsNullOrEmpty(message))
+                {
+                    toolTip1.SetToolTip(control, message);
+                }
+            }
+            // メニュー項目やツールバー項目（ToolStripMenuItem, ToolStripButton など）
+            else if (sender is ToolStripItem item)
+            {
+                if (item.Tag != null)
+                {
+                    message = item.Tag.ToString();
+                }
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    item.ToolTipText = message;
+                }
+            }
+
+            // ステータスバーへの表示更新
+            if (!string.IsNullOrEmpty(message))
+            {
+                toolStripStatusLabel1.Text = message;
+            }
+        }
+
+        // ============================================================
+        // マウス離脱 
+        // ============================================================
+        private void Menu_MouseLeave(object? sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = "画像を印刷します。";
         }
 
         // ============================================================
@@ -1267,6 +1329,14 @@ namespace MyView
                 if (item is ToolStripButton button)
                 {
                     button.DisplayStyle = showText
+                        ? ToolStripItemDisplayStyle.ImageAndText
+                        : ToolStripItemDisplayStyle.Image;
+                }
+
+                // ドロップダウンボタン
+                if (item is ToolStripDropDownButton dropdownbutton)
+                {
+                    dropdownbutton.DisplayStyle = showText
                         ? ToolStripItemDisplayStyle.ImageAndText
                         : ToolStripItemDisplayStyle.Image;
                 }

@@ -2065,6 +2065,13 @@ namespace MyView
         // ============================================================
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            // Esc → 閉じる
+            if (keyData == Keys.Escape)
+            {
+                Close();
+                return true;
+            }
+
             // Ctrl + P → 印刷
             if (keyData == (Keys.Control | Keys.P))
             {
@@ -2124,6 +2131,14 @@ namespace MyView
                 if (item is ToolStripButton button)
                 {
                     button.DisplayStyle = showText
+                        ? ToolStripItemDisplayStyle.ImageAndText
+                        : ToolStripItemDisplayStyle.Image;
+                }
+
+                // ドロップダウンボタン
+                if (item is ToolStripDropDownButton dropdownbutton)
+                {
+                    dropdownbutton.DisplayStyle = showText
                         ? ToolStripItemDisplayStyle.ImageAndText
                         : ToolStripItemDisplayStyle.Image;
                 }

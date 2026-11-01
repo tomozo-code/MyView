@@ -509,7 +509,7 @@
             statusStrip1.Location = new Point(0, 756);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(837, 26);
-            statusStrip1.TabIndex = 9;
+            statusStrip1.TabIndex = 0;
             statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
@@ -549,7 +549,7 @@
             splitContainer1.Size = new Size(669, 678);
             splitContainer1.SplitterDistance = 367;
             splitContainer1.SplitterWidth = 8;
-            splitContainer1.TabIndex = 11;
+            splitContainer1.TabIndex = 0;
             splitContainer1.TabStop = false;
             // 
             // panel1
@@ -567,7 +567,7 @@
             Pagelabel.Location = new Point(3, 5);
             Pagelabel.Name = "Pagelabel";
             Pagelabel.Size = new Size(288, 21);
-            Pagelabel.TabIndex = 2;
+            Pagelabel.TabIndex = 0;
             Pagelabel.Text = "ページ";
             Pagelabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -595,7 +595,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { btnPrint, toolStripSeparator1, btnPrintSet, btnPageSet, toolStripSeparator2, btnZoomIn, btnZoomOut, toolStripSeparator4, btnPrev, btnNext, toolStripSeparator3, btnClose, toolStripSeparator5, btnOption });
             toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(430, 39);
+            toolStrip1.Size = new Size(461, 39);
             toolStrip1.TabIndex = 0;
             // 
             // btnPrint
@@ -607,9 +607,9 @@
             btnPrint.ImageTransparentColor = Color.Magenta;
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(36, 36);
-            btnPrint.Tag = "印刷します。(Ctrl+P)";
+            btnPrint.Tag = "画像一覧を印刷します。(Ctrl+P)";
             btnPrint.Text = "印刷(&P)...";
-            btnPrint.ToolTipText = "印刷(Ctrl+P)";
+            btnPrint.ToolTipText = "画像一覧を印刷します。(Ctrl+P)";
             btnPrint.Click += btnPrint_Click;
             btnPrint.MouseEnter += Menu_MouseEnter;
             btnPrint.MouseLeave += Menu_MouseLeave;
@@ -630,7 +630,7 @@
             btnPrintSet.Size = new Size(36, 36);
             btnPrintSet.Tag = "プリンタ設定を行います。(Ctrl+R)";
             btnPrintSet.Text = "プリンタ設定(&R)...";
-            btnPrintSet.ToolTipText = "プリンタ設定(Ctrl+R)";
+            btnPrintSet.ToolTipText = "プリンタ設定を行います。(Ctrl+R)";
             btnPrintSet.Click += btnPrintSet_Click;
             btnPrintSet.MouseEnter += Menu_MouseEnter;
             btnPrintSet.MouseLeave += Menu_MouseLeave;
@@ -661,9 +661,9 @@
             btnZoomIn.ImageTransparentColor = Color.Magenta;
             btnZoomIn.Name = "btnZoomIn";
             btnZoomIn.Size = new Size(36, 36);
-            btnZoomIn.Tag = "印刷プレビューを拡大します。";
+            btnZoomIn.Tag = "印刷プレビューを拡大します。(Ctrl+ホイール上スクロール)";
             btnZoomIn.Text = "拡大";
-            btnZoomIn.ToolTipText = "印刷プレビューを拡大します。(Ctrl+上スクロール)";
+            btnZoomIn.ToolTipText = "印刷プレビューを拡大します。(Ctrl+ホイール上スクロール)";
             btnZoomIn.Click += btnZoomIn_Click;
             btnZoomIn.MouseEnter += Menu_MouseEnter;
             btnZoomIn.MouseLeave += Menu_MouseLeave;
@@ -676,9 +676,9 @@
             btnZoomOut.ImageTransparentColor = Color.Magenta;
             btnZoomOut.Name = "btnZoomOut";
             btnZoomOut.Size = new Size(36, 36);
-            btnZoomOut.Tag = "印刷プレビューを縮小します。";
+            btnZoomOut.Tag = "印刷プレビューを縮小します。(Ctrl+ホイール下スクロール)";
             btnZoomOut.Text = "縮小";
-            btnZoomOut.ToolTipText = "印刷プレビューを縮小します。(Ctrl+下スクロール)";
+            btnZoomOut.ToolTipText = "印刷プレビューを縮小します。(Ctrl+ホイール下スクロール)";
             btnZoomOut.Click += btnZoomOut_Click;
             btnZoomOut.MouseEnter += Menu_MouseEnter;
             btnZoomOut.MouseLeave += Menu_MouseLeave;
@@ -697,9 +697,9 @@
             btnPrev.ImageTransparentColor = Color.Magenta;
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(36, 36);
-            btnPrev.Tag = "前のページを表示します。";
+            btnPrev.Tag = "前のページを表示します。(ホイール上スクロール)";
             btnPrev.Text = "前ページ";
-            btnPrev.ToolTipText = "前のページを表示します。";
+            btnPrev.ToolTipText = "前のページを表示します。(ホイール上スクロール)";
             btnPrev.Click += btnPrev_Click;
             btnPrev.MouseEnter += Menu_MouseEnter;
             btnPrev.MouseLeave += Menu_MouseLeave;
@@ -713,9 +713,9 @@
             btnNext.ImageTransparentColor = Color.Magenta;
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(36, 36);
-            btnNext.Tag = "次のページを表示します。";
+            btnNext.Tag = "次のページを表示します。(ホイール下スクロール)";
             btnNext.Text = "次ページ";
-            btnNext.ToolTipText = "次のページを表示します。";
+            btnNext.ToolTipText = "次のページを表示します。(ホイール下スクロール)";
             btnNext.Click += btnNext_Click;
             btnNext.MouseEnter += Menu_MouseEnter;
             btnNext.MouseLeave += Menu_MouseLeave;
@@ -734,9 +734,9 @@
             btnClose.ImageTransparentColor = Color.Magenta;
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(36, 36);
-            btnClose.Tag = "一覧印刷を閉じます。";
+            btnClose.Tag = "一覧印刷を閉じます。(Esc)";
             btnClose.Text = "閉じる(&X)";
-            btnClose.ToolTipText = "一覧印刷を閉じます。";
+            btnClose.ToolTipText = "一覧印刷を閉じます。(Esc)";
             btnClose.Click += btnClose_Click;
             btnClose.MouseEnter += Menu_MouseEnter;
             btnClose.MouseLeave += Menu_MouseLeave;
@@ -758,14 +758,19 @@
             btnOption.Tag = "オプション";
             btnOption.Text = "オプション";
             btnOption.ToolTipText = "オプション";
+            btnOption.MouseEnter += Menu_MouseEnter;
+            btnOption.MouseLeave += Menu_MouseLeave;
             // 
             // btnIconLabel
             // 
             btnIconLabel.Name = "btnIconLabel";
             btnIconLabel.Size = new Size(232, 26);
+            btnIconLabel.Tag = "アイコンラベルの表示・非表示を切り替えます。";
             btnIconLabel.Text = "アイコンラベルを表示する";
             btnIconLabel.ToolTipText = "アイコンラベルの表示・非表示を切り替えます。";
             btnIconLabel.Click += btnIconLabel_Click;
+            btnIconLabel.MouseEnter += Menu_MouseEnter;
+            btnIconLabel.MouseLeave += Menu_MouseLeave;
             // 
             // Form4
             // 
