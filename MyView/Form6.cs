@@ -75,7 +75,7 @@ namespace MyView
             Sharpen
         }
 
-        // 現在選択されている画像効果
+        // 現在選択されている画像効果(ぼかし、シャープ)
         private ImageEffect _currentImageEffect = ImageEffect.None;
 
         private bool _isUpdatingTreeView = false;
@@ -100,8 +100,8 @@ namespace MyView
             splitContainer1.SplitterDistance = 250;
             splitContainer1.Panel1MinSize = 200;
 
-            splitContainer2.SplitterDistance = 250;
-            splitContainer2.Panel1MinSize = 100;
+            splitContainer2.SplitterDistance = 350;
+            splitContainer2.Panel1MinSize = 200;
 
             treeView1.Dock = DockStyle.Fill;
             treeView1.ExpandAll();
@@ -118,6 +118,8 @@ namespace MyView
             noisePanel.Dock = DockStyle.Fill;
             // 輪郭抽出
             ContourExPanel.Dock = DockStyle.Fill;
+            // モザイク
+            mosaicPanel.Dock = DockStyle.Fill;
 
 
             splitContainer2.Dock = DockStyle.Fill;
@@ -270,11 +272,8 @@ namespace MyView
             // 色彩補正
             ColorCorrectionReset();
 
-            // 色調加工
-            ColorFilterReset();
-
             // 画像効果
-            ImageEffectReset();
+            ResetAllEffects();
 
             // 設定パネルをすべて非表示にする
             UpdateEffectSettingsPanel(null);
@@ -359,11 +358,8 @@ namespace MyView
         // ============================================================
         private void colorFilterResetBtn_Click(object sender, EventArgs e)
         {
-            // セピア、グレースケール、モノクローム、ネガポジを初期化(リセット)
-            ColorFilterReset();
-
-            // ぼかし、シャープ、エンボスを初期化(リセット)
-            ImageEffectReset();
+            // 画像効果を初期化（リセット）
+            ResetAllEffects();
 
             // 色調フィルターに応じてモノクローム設定を有効・無効にする
             UpdateFilterSettings();
@@ -373,10 +369,11 @@ namespace MyView
         }
 
         // ============================================================
-        // セピア、グレースケール、モノクローム、ネガポジを初期化(リセット)
+        // 画像効果を初期化（リセット）
         // ============================================================
-        private void ColorFilterReset()
+        private void ResetAllEffects()
         {
+            // 色調加工
             // 色調加工のTreeViewチェックを解除
             ResetTreeViewChecks("色調加工");
 
@@ -390,19 +387,9 @@ namespace MyView
             // ネガポジ反転の対象
             _negativeChannel = NegativeChannel.All;
 
-            // モノクローム設定を無効化
-            UpdateFilterSettings();
-        }
-
-        // ============================================================
-        // ぼかし、シャープ、エンボスを初期化(リセット)
-        // ============================================================
-        private void ImageEffectReset()
-        {
-            // 基本補正のTreeViewチェックを解除
+            // 画像効果
+            // 基本補正・輪郭・質感のTreeViewチェックを解除
             ResetTreeViewChecks("基本補正");
-
-            // エンボスのTreeViewチェックも解除
             ResetTreeViewChecks("輪郭・質感");
 
             // ぼかし
@@ -426,8 +413,18 @@ namespace MyView
             ContourExBar.Value = 0;
             ContourExTxt.Text = "0";
 
+            // モザイク
+            mosaicBar.Value = 0;
+            mosaicTxt.Text = "0";
+
             // 画像効果の選択状態
             _currentImageEffect = ImageEffect.None;
+
+            // 設定パネルを更新
+            UpdateFilterSettings();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
         }
 
 
@@ -455,11 +452,11 @@ namespace MyView
         }
 
         // ============================================================
-        // リセットボタンを押したとき
+        // オールリセットボタンを押したとき
         // ============================================================
         private void ResetBtn_Click(object sender, EventArgs e)
         {
-            // 色彩補正とフィルターを初期状態に戻す
+            // 色彩補正と画像効果を初期状態に戻す
             SetupComponents();
 
             // プレビューを更新
@@ -844,10 +841,7 @@ namespace MyView
         // ============================================================
         private static byte ClampByte(double value)
         {
-            return (byte)Math.Clamp(
-                (int)Math.Round(value),
-                0,
-                255);
+            return (byte)Math.Clamp((int)Math.Round(value), 0, 255);
         }
 
 
@@ -919,6 +913,16 @@ namespace MyView
                     current.Dispose();
                     current = next;
                 }
+
+                // 5.モザイク
+                if (IsMosaicEnabled() && mosaicBar.Value > 0)
+                {
+                    Bitmap next = ApplyMosaic(current, mosaicBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
+
 
                 // 最終画像を返す
                 Bitmap result = current;
@@ -1495,6 +1499,203 @@ namespace MyView
         }
 
         // ============================================================
+        // TreeViewでモザイクが有効になっているか確認
+        // ============================================================
+        private bool IsMosaicEnabled()
+        {
+            TreeNode? parentNode = treeView1.Nodes
+                .Cast<TreeNode>()
+                .FirstOrDefault(node => node.Text == "加工・変形");
+
+            if (parentNode == null)
+                return false;
+
+            TreeNode? mosaicNode = parentNode.Nodes
+                .Cast<TreeNode>()
+                .FirstOrDefault(node => node.Text == "モザイク");
+
+            return mosaicNode?.Checked == true;
+        }
+
+        // ============================================================
+        // モザイク処理
+        // strength : 0～99
+        // ============================================================
+        private Bitmap ApplyMosaic(Bitmap input, int strength)
+        {
+            strength = Math.Clamp(strength, 0, 99);
+
+            if (strength == 0)
+                return new Bitmap(input);
+
+            int width = input.Width;
+            int height = input.Height;
+
+            // スライダー値からブロックサイズを計算
+            // 1～99 → 2～50ピクセル
+            int blockSize = 2 + (int)Math.Round(strength * 48.0 / 99.0);
+
+            // 元画像を32bit形式に変換
+            Bitmap source = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(source))
+            {
+                g.DrawImage(input, 0, 0, width, height);
+            }
+
+            Bitmap result = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            Rectangle rect = new Rectangle(0, 0, width, height);
+
+            BitmapData? sourceData = null;
+            BitmapData? resultData = null;
+
+            try
+            {
+                sourceData = source.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                resultData = result.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                int sourceStride = sourceData.Stride;
+                int resultStride = resultData.Stride;
+
+                int sourceRowSize = Math.Abs(sourceStride);
+                int resultRowSize = Math.Abs(resultStride);
+
+                byte[] sourceBytes =
+                    new byte[sourceRowSize * height];
+
+                byte[] resultBytes =
+                    new byte[resultRowSize * height];
+
+                // 元画像を配列にコピー
+                for (int y = 0; y < height; y++)
+                {
+                    IntPtr row = IntPtr.Add(
+                        sourceData.Scan0,
+                        y * sourceStride);
+
+                    Marshal.Copy(
+                        row,
+                        sourceBytes,
+                        y * sourceRowSize,
+                        sourceRowSize);
+                }
+
+                // ブロック単位で処理
+                for (int blockY = 0; blockY < height; blockY += blockSize)
+                {
+                    for (int blockX = 0; blockX < width; blockX += blockSize)
+                    {
+                        // ブロックの終端
+                        int endX = Math.Min(blockX + blockSize, width);
+                        int endY = Math.Min(blockY + blockSize, height);
+
+                        long sumB = 0;
+                        long sumG = 0;
+                        long sumR = 0;
+
+                        int pixelCount = 0;
+
+                        // ----------------------------------------
+                        // ① ブロック内のRGB合計を計算
+                        // ----------------------------------------
+                        for (int y = blockY; y < endY; y++)
+                        {
+                            int rowOffset = y * sourceRowSize;
+
+                            for (int x = blockX; x < endX; x++)
+                            {
+                                int index = rowOffset + x * 4;
+
+                                // BGRA形式
+                                sumB += sourceBytes[index];
+                                sumG += sourceBytes[index + 1];
+                                sumR += sourceBytes[index + 2];
+
+                                pixelCount++;
+                            }
+                        }
+
+                        // ブロック内の平均色
+                        byte averageB = (byte)(sumB / pixelCount);
+                        byte averageG = (byte)(sumG / pixelCount);
+                        byte averageR = (byte)(sumR / pixelCount);
+
+                        // ----------------------------------------
+                        // ② ブロック全体を平均色で塗りつぶす
+                        // ----------------------------------------
+                        for (int y = blockY; y < endY; y++)
+                        {
+                            int sourceRowOffset = y * sourceRowSize;
+                            int resultRowOffset = y * resultRowSize;
+
+                            for (int x = blockX; x < endX; x++)
+                            {
+                                int sourceIndex =
+                                    sourceRowOffset + x * 4;
+
+                                int resultIndex =
+                                    resultRowOffset + x * 4;
+
+                                resultBytes[resultIndex] = averageB;
+                                resultBytes[resultIndex + 1] = averageG;
+                                resultBytes[resultIndex + 2] = averageR;
+
+                                // 透明度は元画像を維持
+                                resultBytes[resultIndex + 3] =
+                                    sourceBytes[sourceIndex + 3];
+                            }
+                        }
+                    }
+                }
+
+                // 結果をBitmapへコピー
+                for (int y = 0; y < height; y++)
+                {
+                    IntPtr row = IntPtr.Add(
+                        resultData.Scan0,
+                        y * resultStride);
+
+                    Marshal.Copy(
+                        resultBytes,
+                        y * resultRowSize,
+                        row,
+                        resultRowSize);
+                }
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+            finally
+            {
+                if (sourceData != null)
+                    source.UnlockBits(sourceData);
+
+                if (resultData != null)
+                    result.UnlockBits(resultData);
+
+                source.Dispose();
+            }
+
+            return result;
+        }
+
+        // ============================================================
         // TreeViewでノイズが有効になっているか確認
         // ============================================================
         private bool IsNoiseEnabled()
@@ -1983,12 +2184,20 @@ namespace MyView
                     UpdateCorrectionPreview);
 
             }
-            // 輪郭中sy痛
+            // 輪郭抽出
             else if (textBox == ContourExTxt)
             {
                 ApplyIntegerInput(
                     ContourExTxt,
                     ContourExBar,
+                    UpdateCorrectionPreview);
+            }
+            // モザイク
+            else if (textBox == mosaicTxt)
+            {
+                ApplyIntegerInput(
+                    mosaicTxt,
+                    mosaicBar,
                     UpdateCorrectionPreview);
             }
 
@@ -2277,6 +2486,7 @@ namespace MyView
             embossPanel.Visible = false;
             noisePanel.Visible = false;
             ContourExPanel.Visible = false;
+            mosaicPanel.Visible = false;
 
 
             if (selectedNode == null)
@@ -2311,6 +2521,11 @@ namespace MyView
             else if (selectedNode.Text == "輪郭抽出" && selectedNode.Checked)
             {
                 ContourExPanel.Visible = true;
+            }
+            // モザイクが選択され、チェックされている場合
+            else if (selectedNode.Text == "モザイク" && selectedNode.Checked)
+            {
+                mosaicPanel.Visible = true;
             }
 
         }
@@ -2450,6 +2665,17 @@ namespace MyView
                     ContourExTxt.Text = "0";
                 }
             }
+            // モザイク
+            else if (selectedNode.Text == "モザイク")
+            {
+                if (!selectedNode.Checked)
+                {
+                    // モザイクOFF
+                    mosaicBar.Value = 0;
+                    mosaicTxt.Text = "0";
+                }
+
+            }
 
             UpdateCorrectionPreview();
 
@@ -2467,10 +2693,25 @@ namespace MyView
             UpdateCorrectionPreview();
         }
 
+        // ============================================================
+        // 輪郭抽出のスライダー
+        // ============================================================
         private void ContourExBar_Scroll(object sender, EventArgs e)
         {
             // 数値表示を更新
             ContourExTxt.Text = ContourExBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // モザイクのスライダー
+        // ============================================================
+        private void mosaicBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            mosaicTxt.Text = mosaicBar.Value.ToString();
 
             // プレビューを更新
             UpdateCorrectionPreview();

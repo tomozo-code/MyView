@@ -92,6 +92,10 @@
             tabPage2 = new TabPage();
             splitContainer2 = new SplitContainer();
             treeView1 = new TreeView();
+            mosaicPanel = new Panel();
+            mosaicGroup = new GroupBox();
+            mosaicTxt = new TextBox();
+            mosaicBar = new TrackBar();
             ContourExPanel = new Panel();
             ContourExGroup = new GroupBox();
             ContourExTxt = new TextBox();
@@ -144,6 +148,9 @@
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            mosaicPanel.SuspendLayout();
+            mosaicGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)mosaicBar).BeginInit();
             ContourExPanel.SuspendLayout();
             ContourExGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ContourExBar).BeginInit();
@@ -506,7 +513,7 @@
             tabControl1.Location = new Point(12, 15);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1077, 472);
+            tabControl1.Size = new Size(1077, 444);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -518,7 +525,7 @@
             tabPage1.Location = new Point(4, 30);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1069, 438);
+            tabPage1.Size = new Size(1069, 410);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "色彩補正";
             // 
@@ -592,7 +599,7 @@
             // 
             panel3.Controls.Add(colorCorrectionResetBtn);
             panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(3, 390);
+            panel3.Location = new Point(3, 362);
             panel3.Name = "panel3";
             panel3.Size = new Size(1063, 45);
             panel3.TabIndex = 23;
@@ -619,7 +626,7 @@
             tabPage2.Location = new Point(4, 30);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1069, 438);
+            tabPage2.Size = new Size(1069, 410);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "画像効果";
             // 
@@ -637,6 +644,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            splitContainer2.Panel2.Controls.Add(mosaicPanel);
             splitContainer2.Panel2.Controls.Add(ContourExPanel);
             splitContainer2.Panel2.Controls.Add(noisePanel);
             splitContainer2.Panel2.Controls.Add(embossPanel);
@@ -705,16 +713,64 @@
             treeNode24.Name = "ノード17";
             treeNode24.Text = "アート表現";
             treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode11, treeNode15, treeNode18, treeNode20, treeNode24 });
-            treeView1.Size = new Size(85, 294);
+            treeView1.Size = new Size(104, 294);
             treeView1.TabIndex = 6;
             treeView1.BeforeCheck += treeView1_BeforeCheck;
             treeView1.AfterCheck += treeView1_AfterCheck;
             treeView1.AfterSelect += treeView1_AfterSelect;
             // 
+            // mosaicPanel
+            // 
+            mosaicPanel.Controls.Add(mosaicGroup);
+            mosaicPanel.Location = new Point(464, 8);
+            mosaicPanel.Name = "mosaicPanel";
+            mosaicPanel.Size = new Size(200, 180);
+            mosaicPanel.TabIndex = 9;
+            mosaicPanel.Visible = false;
+            // 
+            // mosaicGroup
+            // 
+            mosaicGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mosaicGroup.Controls.Add(mosaicTxt);
+            mosaicGroup.Controls.Add(mosaicBar);
+            mosaicGroup.Location = new Point(16, 14);
+            mosaicGroup.Name = "mosaicGroup";
+            mosaicGroup.Size = new Size(160, 70);
+            mosaicGroup.TabIndex = 1;
+            mosaicGroup.TabStop = false;
+            mosaicGroup.Text = "モザイク";
+            // 
+            // mosaicTxt
+            // 
+            mosaicTxt.Location = new Point(19, 28);
+            mosaicTxt.Name = "mosaicTxt";
+            mosaicTxt.Size = new Size(53, 29);
+            mosaicTxt.TabIndex = 9;
+            mosaicTxt.Tag = "モザイク(範囲：0～99)";
+            mosaicTxt.TextAlign = HorizontalAlignment.Right;
+            mosaicTxt.Click += allSelect_Click;
+            mosaicTxt.Enter += allSelect_Enter;
+            mosaicTxt.KeyDown += NumericTextBox_KeyDown;
+            mosaicTxt.MouseEnter += Control_MouseEnter;
+            mosaicTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // mosaicBar
+            // 
+            mosaicBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mosaicBar.AutoSize = false;
+            mosaicBar.Location = new Point(78, 28);
+            mosaicBar.Maximum = 99;
+            mosaicBar.Name = "mosaicBar";
+            mosaicBar.Size = new Size(76, 30);
+            mosaicBar.TabIndex = 8;
+            mosaicBar.Tag = "モザイク(範囲：0～99)";
+            mosaicBar.TickStyle = TickStyle.None;
+            mosaicBar.Scroll += mosaicBar_Scroll;
+            // 
             // ContourExPanel
             // 
             ContourExPanel.Controls.Add(ContourExGroup);
-            ContourExPanel.Location = new Point(428, 211);
+            ContourExPanel.Location = new Point(242, 211);
             ContourExPanel.Name = "ContourExPanel";
             ContourExPanel.Size = new Size(200, 180);
             ContourExPanel.TabIndex = 8;
@@ -762,7 +818,7 @@
             // noisePanel
             // 
             noisePanel.Controls.Add(noiseGroup);
-            noisePanel.Location = new Point(428, 8);
+            noisePanel.Location = new Point(242, 8);
             noisePanel.Name = "noisePanel";
             noisePanel.Size = new Size(200, 180);
             noisePanel.TabIndex = 7;
@@ -811,7 +867,7 @@
             // 
             embossPanel.AutoScroll = true;
             embossPanel.Controls.Add(embossGroup);
-            embossPanel.Location = new Point(222, 8);
+            embossPanel.Location = new Point(111, 8);
             embossPanel.Name = "embossPanel";
             embossPanel.Size = new Size(200, 180);
             embossPanel.TabIndex = 3;
@@ -926,7 +982,7 @@
             // 
             sharpPanel.Controls.Add(textBox2);
             sharpPanel.Controls.Add(sharpGroup);
-            sharpPanel.Location = new Point(222, 211);
+            sharpPanel.Location = new Point(111, 211);
             sharpPanel.Name = "sharpPanel";
             sharpPanel.Size = new Size(200, 180);
             sharpPanel.TabIndex = 3;
@@ -1060,7 +1116,7 @@
             textBox3.Location = new Point(18, 20);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
-            textBox3.Size = new Size(799, 22);
+            textBox3.Size = new Size(771, 22);
             textBox3.TabIndex = 5;
             textBox3.Text = "設定項目はありません。";
             textBox3.WordWrap = false;
@@ -1184,6 +1240,10 @@
             splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            mosaicPanel.ResumeLayout(false);
+            mosaicGroup.ResumeLayout(false);
+            mosaicGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)mosaicBar).EndInit();
             ContourExPanel.ResumeLayout(false);
             ContourExGroup.ResumeLayout(false);
             ContourExGroup.PerformLayout();
@@ -1296,5 +1356,9 @@
         private GroupBox ContourExGroup;
         private TextBox ContourExTxt;
         private TrackBar ContourExBar;
+        private Panel mosaicPanel;
+        private GroupBox mosaicGroup;
+        private TextBox mosaicTxt;
+        private TrackBar mosaicBar;
     }
 }
