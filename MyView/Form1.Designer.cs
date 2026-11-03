@@ -282,7 +282,7 @@
             printMenu.Image = (Image)resources.GetObject("printMenu.Image");
             printMenu.ImageScaling = ToolStripItemImageScaling.None;
             printMenu.Name = "printMenu";
-            printMenu.Size = new Size(188, 38);
+            printMenu.Size = new Size(196, 38);
             printMenu.Text = "一覧印刷(&P)...";
             printMenu.ToolTipText = "一覧印刷のプレビューを表示します。";
             printMenu.Click += printMenu_Click;
@@ -292,7 +292,7 @@
             exitMenu.Image = (Image)resources.GetObject("exitMenu.Image");
             exitMenu.ImageScaling = ToolStripItemImageScaling.None;
             exitMenu.Name = "exitMenu";
-            exitMenu.Size = new Size(188, 38);
+            exitMenu.Size = new Size(196, 38);
             exitMenu.Text = "終了(&X)";
             exitMenu.ToolTipText = "一覧帖を終了します。";
             exitMenu.Click += exitMenu_Click;
@@ -329,6 +329,7 @@
             foldertreeMenu.Size = new Size(196, 38);
             foldertreeMenu.Text = "フォルダツリー(&F)";
             foldertreeMenu.ToolTipText = "フォルダツリーの表示・非表示を切り替えます。";
+            foldertreeMenu.Click += foldertreeMenu_Click;
             // 
             // infoboxMenu
             // 
@@ -340,6 +341,7 @@
             infoboxMenu.Size = new Size(196, 38);
             infoboxMenu.Text = "情報ボックス(&I)";
             infoboxMenu.ToolTipText = "情報ボックスの表示・非表示を切り替えます。";
+            infoboxMenu.Click += infoboxMenu_Click;
             // 
             // toolStripSeparator2
             // 

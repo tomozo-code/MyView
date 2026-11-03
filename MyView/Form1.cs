@@ -156,6 +156,9 @@ namespace MyView
             this.MinimumSize = new Size(400, 400);
             this.Text = "ともさんの画像一覧帖";
 
+            // Form1でKeyDownを拾えるように
+            this.KeyPreview = true;
+
             // ログ
             logTxt.Dock = DockStyle.Fill;
             logTxt.ReadOnly = true;
@@ -2388,6 +2391,5 @@ namespace MyView
 
             layoutSaved = false;
         }
-
     }
 }

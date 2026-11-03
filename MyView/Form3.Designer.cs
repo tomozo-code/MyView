@@ -50,6 +50,7 @@
             toolStripSeparator10 = new ToolStripSeparator();
             flip_vBtn2 = new ToolStripMenuItem();
             flip_hBtn2 = new ToolStripMenuItem();
+            toolStripSeparator21 = new ToolStripSeparator();
             closeBtn2 = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             viewStatusTxt = new ToolStripStatusLabel();
@@ -127,9 +128,9 @@
             // conTxtMenu1
             // 
             conTxtMenu1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator12, printBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, imageEnhancementBtn2, toolStripSeparator19, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, flip_vBtn2, flip_hBtn2, closeBtn2 });
+            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator12, printBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, imageEnhancementBtn2, toolStripSeparator19, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, flip_vBtn2, flip_hBtn2, toolStripSeparator21, closeBtn2 });
             conTxtMenu1.Name = "conTxtMenu1";
-            conTxtMenu1.Size = new Size(223, 502);
+            conTxtMenu1.Size = new Size(223, 508);
             conTxtMenu1.Opening += conTxtMenu1_Opening;
             // 
             // saveBtn2
@@ -198,7 +199,7 @@
             imageEnhancementBtn2.ImageScaling = ToolStripItemImageScaling.None;
             imageEnhancementBtn2.Name = "imageEnhancementBtn2";
             imageEnhancementBtn2.Size = new Size(222, 38);
-            imageEnhancementBtn2.Text = "画像補正";
+            imageEnhancementBtn2.Text = "画像補正...";
             imageEnhancementBtn2.ToolTipText = "画像補正";
             imageEnhancementBtn2.Click += imageEnhancementBtn_Click;
             // 
@@ -276,6 +277,11 @@
             flip_hBtn2.Text = "左右反転";
             flip_hBtn2.ToolTipText = "左右反転(H)";
             flip_hBtn2.Click += flip_hBtn_Click;
+            // 
+            // toolStripSeparator21
+            // 
+            toolStripSeparator21.Name = "toolStripSeparator21";
+            toolStripSeparator21.Size = new Size(219, 6);
             // 
             // closeBtn2
             // 
@@ -702,7 +708,7 @@
             zoomInMenu.Image = (Image)resources.GetObject("zoomInMenu.Image");
             zoomInMenu.ImageScaling = ToolStripItemImageScaling.None;
             zoomInMenu.Name = "zoomInMenu";
-            zoomInMenu.Size = new Size(196, 38);
+            zoomInMenu.Size = new Size(128, 38);
             zoomInMenu.Text = "拡大";
             zoomInMenu.Click += zoomInBtn_Click;
             // 
@@ -711,7 +717,7 @@
             zoomOutMenu.Image = (Image)resources.GetObject("zoomOutMenu.Image");
             zoomOutMenu.ImageScaling = ToolStripItemImageScaling.None;
             zoomOutMenu.Name = "zoomOutMenu";
-            zoomOutMenu.Size = new Size(196, 38);
+            zoomOutMenu.Size = new Size(128, 38);
             zoomOutMenu.Text = "縮小";
             zoomOutMenu.Click += zoomOutBtn_Click;
             // 
@@ -820,5 +826,6 @@
         private ToolStripSeparator toolStripSeparator20;
         private ToolStripButton imageEnhancementBtn;
         private ToolStripMenuItem imageEnhancementMenu;
+        private ToolStripSeparator toolStripSeparator21;
     }
 }

@@ -34,11 +34,11 @@
             TreeNode treeNode3 = new TreeNode("基本補正", new TreeNode[] { treeNode1, treeNode2 });
             TreeNode treeNode4 = new TreeNode("セピア");
             TreeNode treeNode5 = new TreeNode("グレースケール");
-            TreeNode treeNode6 = new TreeNode("ネガポジ反転(全チャンネル)");
-            TreeNode treeNode7 = new TreeNode("ネガポジ反転(赤(R))");
-            TreeNode treeNode8 = new TreeNode("ネガポジ反転(緑(G))");
-            TreeNode treeNode9 = new TreeNode("ネガポジ反転(青(B))");
-            TreeNode treeNode10 = new TreeNode("モノクローム");
+            TreeNode treeNode6 = new TreeNode("モノクローム");
+            TreeNode treeNode7 = new TreeNode("ネガポジ反転(全チャンネル)");
+            TreeNode treeNode8 = new TreeNode("ネガポジ反転(赤(R))");
+            TreeNode treeNode9 = new TreeNode("ネガポジ反転(緑(G))");
+            TreeNode treeNode10 = new TreeNode("ネガポジ反転(青(B))");
             TreeNode treeNode11 = new TreeNode("色調加工", new TreeNode[] { treeNode4, treeNode5, treeNode6, treeNode7, treeNode8, treeNode9, treeNode10 });
             TreeNode treeNode12 = new TreeNode("エンボス");
             TreeNode treeNode13 = new TreeNode("ノイズ");
@@ -92,38 +92,93 @@
             tabPage2 = new TabPage();
             splitContainer2 = new SplitContainer();
             treeView1 = new TreeView();
+            pencilPanel = new Panel();
+            pencilHintTxt = new TextBox();
+            pencilGroup = new GroupBox();
+            pencilTxt = new TextBox();
+            pencilBar = new TrackBar();
+            negaPosiGreenPanel = new Panel();
+            negaPosiGreenHintTxt = new TextBox();
+            negaPosiGreenGroup = new GroupBox();
+            label14 = new Label();
+            negaPosiBluePanel = new Panel();
+            negaPosiBlueHintTxt = new TextBox();
+            negaPosiBlueGroup = new GroupBox();
+            label15 = new Label();
+            negaPosiRedPanel = new Panel();
+            negaPosiRedHintTxt = new TextBox();
+            negaPosiRedGroup = new GroupBox();
+            label13 = new Label();
+            negaPosiAllPanel = new Panel();
+            negaPosiAllHintTxt = new TextBox();
+            negaPosiAllGroup = new GroupBox();
+            label12 = new Label();
+            grayscalePanel = new Panel();
+            grayscaleHintTxt = new TextBox();
+            grayscaleGroup = new GroupBox();
+            label11 = new Label();
+            sepiaPanel = new Panel();
+            sepiaHintTxt = new TextBox();
+            sepiaGroup = new GroupBox();
+            sepiaTxt = new TextBox();
+            sepiaBar = new TrackBar();
+            pixelPanel = new Panel();
+            pixelHintTxt = new TextBox();
+            pixelGroup = new GroupBox();
+            pixelTxt = new TextBox();
+            pixelBar = new TrackBar();
+            oilpaintingPanel = new Panel();
+            oilpaintingHintTxt = new TextBox();
+            oilpaintingGroup = new GroupBox();
+            oilpaintingTxt = new TextBox();
+            oilpaintingBar = new TrackBar();
+            watercolorPanel = new Panel();
+            watercolorHintTxt = new TextBox();
+            watercolorGroup = new GroupBox();
+            watercolorTxt = new TextBox();
+            watercolorBar = new TrackBar();
+            dimmingPanel = new Panel();
+            dimmingHintTxt = new TextBox();
+            dimmingGroup = new GroupBox();
+            dimmingTxt = new TextBox();
+            dimmingBar = new TrackBar();
             mosaicPanel = new Panel();
+            mosaicHintTxt = new TextBox();
             mosaicGroup = new GroupBox();
             mosaicTxt = new TextBox();
             mosaicBar = new TrackBar();
             ContourExPanel = new Panel();
+            ContourExHintTxt = new TextBox();
             ContourExGroup = new GroupBox();
             ContourExTxt = new TextBox();
             ContourExBar = new TrackBar();
             noisePanel = new Panel();
+            noiseHintTxt = new TextBox();
             noiseGroup = new GroupBox();
             noiseTxt = new TextBox();
             noiseBar = new TrackBar();
             embossPanel = new Panel();
+            embossHintTxt = new TextBox();
             embossGroup = new GroupBox();
             embossCheck = new CheckBox();
             embossTxt = new TextBox();
             embossBar = new TrackBar();
             monochromePanel = new Panel();
-            groupBox2 = new GroupBox();
+            monochromeHintTxt = new TextBox();
+            monochromeGroup = new GroupBox();
             monochromeTxt = new TextBox();
             monochromeBar = new TrackBar();
             sharpPanel = new Panel();
-            textBox2 = new TextBox();
+            sharpHintTxt = new TextBox();
             sharpGroup = new GroupBox();
             sharpTxt = new TextBox();
             sharpBar = new TrackBar();
             blurPanel = new Panel();
-            textBox1 = new TextBox();
+            blurHintTxt = new TextBox();
             blurGroup = new GroupBox();
             blurTxt = new TextBox();
             blurBar = new TrackBar();
-            textBox3 = new TextBox();
+            explanationTxt = new TextBox();
             panel5 = new Panel();
             colorFilterResetBtn = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -148,6 +203,34 @@
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            pencilPanel.SuspendLayout();
+            pencilGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pencilBar).BeginInit();
+            negaPosiGreenPanel.SuspendLayout();
+            negaPosiGreenGroup.SuspendLayout();
+            negaPosiBluePanel.SuspendLayout();
+            negaPosiBlueGroup.SuspendLayout();
+            negaPosiRedPanel.SuspendLayout();
+            negaPosiRedGroup.SuspendLayout();
+            negaPosiAllPanel.SuspendLayout();
+            negaPosiAllGroup.SuspendLayout();
+            grayscalePanel.SuspendLayout();
+            grayscaleGroup.SuspendLayout();
+            sepiaPanel.SuspendLayout();
+            sepiaGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)sepiaBar).BeginInit();
+            pixelPanel.SuspendLayout();
+            pixelGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pixelBar).BeginInit();
+            oilpaintingPanel.SuspendLayout();
+            oilpaintingGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)oilpaintingBar).BeginInit();
+            watercolorPanel.SuspendLayout();
+            watercolorGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)watercolorBar).BeginInit();
+            dimmingPanel.SuspendLayout();
+            dimmingGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dimmingBar).BeginInit();
             mosaicPanel.SuspendLayout();
             mosaicGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mosaicBar).BeginInit();
@@ -161,7 +244,7 @@
             embossGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)embossBar).BeginInit();
             monochromePanel.SuspendLayout();
-            groupBox2.SuspendLayout();
+            monochromeGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)monochromeBar).BeginInit();
             sharpPanel.SuspendLayout();
             sharpGroup.SuspendLayout();
@@ -183,9 +266,9 @@
             // 
             statusStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
-            statusStrip1.Location = new Point(0, 724);
+            statusStrip1.Location = new Point(0, 762);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1251, 26);
+            statusStrip1.Size = new Size(2251, 26);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -201,9 +284,9 @@
             panel1.Controls.Add(ResetBtn);
             panel1.Controls.Add(OkBtn);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 669);
+            panel1.Location = new Point(0, 707);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1251, 55);
+            panel1.Size = new Size(2251, 55);
             panel1.TabIndex = 1;
             // 
             // CancelBtn
@@ -267,7 +350,7 @@
             BrightnessBar.Maximum = 255;
             BrightnessBar.Minimum = -255;
             BrightnessBar.Name = "BrightnessBar";
-            BrightnessBar.Size = new Size(870, 30);
+            BrightnessBar.Size = new Size(1870, 30);
             BrightnessBar.TabIndex = 2;
             BrightnessBar.Tag = "明るさ(範囲：-255～255)";
             BrightnessBar.TickStyle = TickStyle.None;
@@ -324,7 +407,7 @@
             ColorBalanceBar_B.Maximum = 255;
             ColorBalanceBar_B.Minimum = -255;
             ColorBalanceBar_B.Name = "ColorBalanceBar_B";
-            ColorBalanceBar_B.Size = new Size(870, 30);
+            ColorBalanceBar_B.Size = new Size(1870, 30);
             ColorBalanceBar_B.TabIndex = 11;
             ColorBalanceBar_B.Tag = "青(B)バランス(範囲：-255～255)";
             ColorBalanceBar_B.TickStyle = TickStyle.None;
@@ -354,7 +437,7 @@
             ColorBalanceBar_G.Maximum = 255;
             ColorBalanceBar_G.Minimum = -255;
             ColorBalanceBar_G.Name = "ColorBalanceBar_G";
-            ColorBalanceBar_G.Size = new Size(870, 30);
+            ColorBalanceBar_G.Size = new Size(1870, 30);
             ColorBalanceBar_G.TabIndex = 8;
             ColorBalanceBar_G.Tag = "緑(G)バランス(範囲：-255～255)";
             ColorBalanceBar_G.TickStyle = TickStyle.None;
@@ -384,7 +467,7 @@
             ColorBalanceBar_R.Maximum = 255;
             ColorBalanceBar_R.Minimum = -255;
             ColorBalanceBar_R.Name = "ColorBalanceBar_R";
-            ColorBalanceBar_R.Size = new Size(870, 30);
+            ColorBalanceBar_R.Size = new Size(1870, 30);
             ColorBalanceBar_R.TabIndex = 5;
             ColorBalanceBar_R.Tag = "赤(R)バランス(範囲：-255～255)";
             ColorBalanceBar_R.TickStyle = TickStyle.None;
@@ -414,7 +497,7 @@
             contrastBar.Maximum = 127;
             contrastBar.Minimum = -127;
             contrastBar.Name = "contrastBar";
-            contrastBar.Size = new Size(870, 30);
+            contrastBar.Size = new Size(1870, 30);
             contrastBar.TabIndex = 14;
             contrastBar.Tag = "コントラスト(範囲：-127～127)";
             contrastBar.TickStyle = TickStyle.None;
@@ -444,7 +527,7 @@
             GammaCorrectionBar.Maximum = 699;
             GammaCorrectionBar.Minimum = 1;
             GammaCorrectionBar.Name = "GammaCorrectionBar";
-            GammaCorrectionBar.Size = new Size(870, 30);
+            GammaCorrectionBar.Size = new Size(1870, 30);
             GammaCorrectionBar.TabIndex = 17;
             GammaCorrectionBar.Tag = "ガンマ補正(範囲：0.01～6.99)";
             GammaCorrectionBar.TickStyle = TickStyle.None;
@@ -475,7 +558,7 @@
             SaturationBar.Maximum = 255;
             SaturationBar.Minimum = -255;
             SaturationBar.Name = "SaturationBar";
-            SaturationBar.Size = new Size(870, 30);
+            SaturationBar.Size = new Size(1870, 30);
             SaturationBar.TabIndex = 20;
             SaturationBar.Tag = "彩度(範囲：-255～255)";
             SaturationBar.TickStyle = TickStyle.None;
@@ -489,7 +572,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(3, 0);
             label4.Name = "label4";
-            label4.Size = new Size(381, 20);
+            label4.Size = new Size(881, 20);
             label4.TabIndex = 0;
             label4.Text = "オリジナル画像";
             label4.TextAlign = ContentAlignment.MiddleCenter;
@@ -498,9 +581,9 @@
             // 
             label5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label5.AutoSize = true;
-            label5.Location = new Point(390, 0);
+            label5.Location = new Point(890, 0);
             label5.Name = "label5";
-            label5.Size = new Size(381, 20);
+            label5.Size = new Size(881, 20);
             label5.TabIndex = 1;
             label5.Text = "補正画像";
             label5.TextAlign = ContentAlignment.MiddleCenter;
@@ -513,7 +596,7 @@
             tabControl1.Location = new Point(12, 15);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1077, 444);
+            tabControl1.Size = new Size(2077, 460);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -525,7 +608,7 @@
             tabPage1.Location = new Point(4, 30);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1069, 410);
+            tabPage1.Size = new Size(2069, 426);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "色彩補正";
             // 
@@ -556,7 +639,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(3, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1063, 340);
+            panel2.Size = new Size(2063, 340);
             panel2.TabIndex = 22;
             // 
             // label6
@@ -599,9 +682,9 @@
             // 
             panel3.Controls.Add(colorCorrectionResetBtn);
             panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(3, 362);
+            panel3.Location = new Point(3, 378);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1063, 45);
+            panel3.Size = new Size(2063, 45);
             panel3.TabIndex = 23;
             // 
             // colorCorrectionResetBtn
@@ -626,7 +709,7 @@
             tabPage2.Location = new Point(4, 30);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1069, 410);
+            tabPage2.Size = new Size(2069, 426);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "画像効果";
             // 
@@ -644,6 +727,17 @@
             // 
             // splitContainer2.Panel2
             // 
+            splitContainer2.Panel2.Controls.Add(pencilPanel);
+            splitContainer2.Panel2.Controls.Add(negaPosiGreenPanel);
+            splitContainer2.Panel2.Controls.Add(negaPosiBluePanel);
+            splitContainer2.Panel2.Controls.Add(negaPosiRedPanel);
+            splitContainer2.Panel2.Controls.Add(negaPosiAllPanel);
+            splitContainer2.Panel2.Controls.Add(grayscalePanel);
+            splitContainer2.Panel2.Controls.Add(sepiaPanel);
+            splitContainer2.Panel2.Controls.Add(pixelPanel);
+            splitContainer2.Panel2.Controls.Add(oilpaintingPanel);
+            splitContainer2.Panel2.Controls.Add(watercolorPanel);
+            splitContainer2.Panel2.Controls.Add(dimmingPanel);
             splitContainer2.Panel2.Controls.Add(mosaicPanel);
             splitContainer2.Panel2.Controls.Add(ContourExPanel);
             splitContainer2.Panel2.Controls.Add(noisePanel);
@@ -651,10 +745,10 @@
             splitContainer2.Panel2.Controls.Add(monochromePanel);
             splitContainer2.Panel2.Controls.Add(sharpPanel);
             splitContainer2.Panel2.Controls.Add(blurPanel);
-            splitContainer2.Panel2.Controls.Add(textBox3);
+            splitContainer2.Panel2.Controls.Add(explanationTxt);
             splitContainer2.Panel2.Cursor = Cursors.Default;
-            splitContainer2.Size = new Size(1043, 416);
-            splitContainer2.SplitterDistance = 117;
+            splitContainer2.Size = new Size(1943, 440);
+            splitContainer2.SplitterDistance = 143;
             splitContainer2.SplitterWidth = 8;
             splitContainer2.TabIndex = 7;
             // 
@@ -674,16 +768,16 @@
             treeNode4.Text = "セピア";
             treeNode5.Name = "ノード5";
             treeNode5.Text = "グレースケール";
-            treeNode6.Name = "ノード6";
-            treeNode6.Text = "ネガポジ反転(全チャンネル)";
-            treeNode7.Name = "ノード7";
-            treeNode7.Text = "ネガポジ反転(赤(R))";
-            treeNode8.Name = "ノード8";
-            treeNode8.Text = "ネガポジ反転(緑(G))";
-            treeNode9.Name = "ノード9";
-            treeNode9.Text = "ネガポジ反転(青(B))";
-            treeNode10.Name = "ノード10";
-            treeNode10.Text = "モノクローム";
+            treeNode6.Name = "ノード10";
+            treeNode6.Text = "モノクローム";
+            treeNode7.Name = "ノード6";
+            treeNode7.Text = "ネガポジ反転(全チャンネル)";
+            treeNode8.Name = "ノード7";
+            treeNode8.Text = "ネガポジ反転(赤(R))";
+            treeNode9.Name = "ノード8";
+            treeNode9.Text = "ネガポジ反転(緑(G))";
+            treeNode10.Name = "ノード9";
+            treeNode10.Text = "ネガポジ反転(青(B))";
             treeNode11.Name = "ノード2";
             treeNode11.Text = "色調加工";
             treeNode12.Name = "ノード12";
@@ -718,15 +812,635 @@
             treeView1.BeforeCheck += treeView1_BeforeCheck;
             treeView1.AfterCheck += treeView1_AfterCheck;
             treeView1.AfterSelect += treeView1_AfterSelect;
+            treeView1.NodeMouseClick += treeView1_NodeMouseClick;
+            // 
+            // pencilPanel
+            // 
+            pencilPanel.Controls.Add(pencilHintTxt);
+            pencilPanel.Controls.Add(pencilGroup);
+            pencilPanel.Location = new Point(794, 236);
+            pencilPanel.Name = "pencilPanel";
+            pencilPanel.Size = new Size(200, 180);
+            pencilPanel.TabIndex = 9;
+            pencilPanel.Visible = false;
+            // 
+            // pencilHintTxt
+            // 
+            pencilHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pencilHintTxt.BackColor = SystemColors.Control;
+            pencilHintTxt.BorderStyle = BorderStyle.None;
+            pencilHintTxt.Location = new Point(16, 91);
+            pencilHintTxt.Multiline = true;
+            pencilHintTxt.Name = "pencilHintTxt";
+            pencilHintTxt.ReadOnly = true;
+            pencilHintTxt.ScrollBars = ScrollBars.Both;
+            pencilHintTxt.Size = new Size(160, 63);
+            pencilHintTxt.TabIndex = 5;
+            pencilHintTxt.Text = "鉛筆で書いたような画像に変換します。\r\n強度の目安は、\r\n・0：元画像のまま\r\n・30：元画像を残した弱めの鉛筆画\r\n・60：鉛筆画らしさが強くなる\r\n・99：鉛筆画の結果をほぼそのまま表示";
+            // 
+            // pencilGroup
+            // 
+            pencilGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pencilGroup.Controls.Add(pencilTxt);
+            pencilGroup.Controls.Add(pencilBar);
+            pencilGroup.Location = new Point(16, 14);
+            pencilGroup.Name = "pencilGroup";
+            pencilGroup.Size = new Size(160, 70);
+            pencilGroup.TabIndex = 1;
+            pencilGroup.TabStop = false;
+            pencilGroup.Text = "鉛筆画風";
+            // 
+            // pencilTxt
+            // 
+            pencilTxt.Location = new Point(19, 28);
+            pencilTxt.Name = "pencilTxt";
+            pencilTxt.Size = new Size(53, 29);
+            pencilTxt.TabIndex = 9;
+            pencilTxt.Tag = "鉛筆画風(範囲：0～99)";
+            pencilTxt.TextAlign = HorizontalAlignment.Right;
+            pencilTxt.Click += allSelect_Click;
+            pencilTxt.Enter += allSelect_Enter;
+            pencilTxt.KeyDown += NumericTextBox_KeyDown;
+            pencilTxt.MouseEnter += Control_MouseEnter;
+            pencilTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // pencilBar
+            // 
+            pencilBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pencilBar.AutoSize = false;
+            pencilBar.Location = new Point(78, 28);
+            pencilBar.Maximum = 99;
+            pencilBar.Name = "pencilBar";
+            pencilBar.Size = new Size(76, 30);
+            pencilBar.TabIndex = 8;
+            pencilBar.Tag = "鉛筆画風(範囲：0～99)";
+            pencilBar.TickStyle = TickStyle.None;
+            pencilBar.Scroll += pencilBar_Scroll;
+            pencilBar.MouseEnter += Control_MouseEnter;
+            pencilBar.MouseLeave += Control_MouseLeave;
+            // 
+            // negaPosiGreenPanel
+            // 
+            negaPosiGreenPanel.Controls.Add(negaPosiGreenHintTxt);
+            negaPosiGreenPanel.Controls.Add(negaPosiGreenGroup);
+            negaPosiGreenPanel.Location = new Point(746, 236);
+            negaPosiGreenPanel.Name = "negaPosiGreenPanel";
+            negaPosiGreenPanel.Size = new Size(200, 180);
+            negaPosiGreenPanel.TabIndex = 6;
+            // 
+            // negaPosiGreenHintTxt
+            // 
+            negaPosiGreenHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiGreenHintTxt.BackColor = SystemColors.Control;
+            negaPosiGreenHintTxt.BorderStyle = BorderStyle.None;
+            negaPosiGreenHintTxt.Location = new Point(16, 90);
+            negaPosiGreenHintTxt.Multiline = true;
+            negaPosiGreenHintTxt.Name = "negaPosiGreenHintTxt";
+            negaPosiGreenHintTxt.ReadOnly = true;
+            negaPosiGreenHintTxt.ScrollBars = ScrollBars.Both;
+            negaPosiGreenHintTxt.Size = new Size(160, 63);
+            negaPosiGreenHintTxt.TabIndex = 6;
+            negaPosiGreenHintTxt.Text = "緑(G)成分の値のみを反転します。\r\n緑みの強い部分が弱まり、緑みの少ない部分に緑が加わります。\r\n色調加工は同時設定不可です。";
+            // 
+            // negaPosiGreenGroup
+            // 
+            negaPosiGreenGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiGreenGroup.Controls.Add(label14);
+            negaPosiGreenGroup.Location = new Point(16, 14);
+            negaPosiGreenGroup.Name = "negaPosiGreenGroup";
+            negaPosiGreenGroup.Size = new Size(170, 70);
+            negaPosiGreenGroup.TabIndex = 3;
+            negaPosiGreenGroup.TabStop = false;
+            negaPosiGreenGroup.Text = "ネガポジ反転(緑(G))";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(22, 33);
+            label14.Name = "label14";
+            label14.Size = new Size(161, 21);
+            label14.TabIndex = 0;
+            label14.Text = "設定項目はありません。";
+            // 
+            // negaPosiBluePanel
+            // 
+            negaPosiBluePanel.Controls.Add(negaPosiBlueHintTxt);
+            negaPosiBluePanel.Controls.Add(negaPosiBlueGroup);
+            negaPosiBluePanel.Location = new Point(794, 42);
+            negaPosiBluePanel.Name = "negaPosiBluePanel";
+            negaPosiBluePanel.Size = new Size(200, 180);
+            negaPosiBluePanel.TabIndex = 6;
+            // 
+            // negaPosiBlueHintTxt
+            // 
+            negaPosiBlueHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiBlueHintTxt.BackColor = SystemColors.Control;
+            negaPosiBlueHintTxt.BorderStyle = BorderStyle.None;
+            negaPosiBlueHintTxt.Location = new Point(16, 90);
+            negaPosiBlueHintTxt.Multiline = true;
+            negaPosiBlueHintTxt.Name = "negaPosiBlueHintTxt";
+            negaPosiBlueHintTxt.ReadOnly = true;
+            negaPosiBlueHintTxt.ScrollBars = ScrollBars.Both;
+            negaPosiBlueHintTxt.Size = new Size(160, 63);
+            negaPosiBlueHintTxt.TabIndex = 6;
+            negaPosiBlueHintTxt.Text = "青(B)成分の値のみを反転します。\r\n青みの強い部分が弱まり、青みの少ない部分に青が加わります。\r\n色調加工は同時設定不可です。";
+            // 
+            // negaPosiBlueGroup
+            // 
+            negaPosiBlueGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiBlueGroup.Controls.Add(label15);
+            negaPosiBlueGroup.Location = new Point(16, 14);
+            negaPosiBlueGroup.Name = "negaPosiBlueGroup";
+            negaPosiBlueGroup.Size = new Size(170, 70);
+            negaPosiBlueGroup.TabIndex = 3;
+            negaPosiBlueGroup.TabStop = false;
+            negaPosiBlueGroup.Text = "ネガポジ反転(青(B))";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(22, 33);
+            label15.Name = "label15";
+            label15.Size = new Size(161, 21);
+            label15.TabIndex = 0;
+            label15.Text = "設定項目はありません。";
+            // 
+            // negaPosiRedPanel
+            // 
+            negaPosiRedPanel.Controls.Add(negaPosiRedHintTxt);
+            negaPosiRedPanel.Controls.Add(negaPosiRedGroup);
+            negaPosiRedPanel.Location = new Point(746, 42);
+            negaPosiRedPanel.Name = "negaPosiRedPanel";
+            negaPosiRedPanel.Size = new Size(200, 180);
+            negaPosiRedPanel.TabIndex = 6;
+            // 
+            // negaPosiRedHintTxt
+            // 
+            negaPosiRedHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiRedHintTxt.BackColor = SystemColors.Control;
+            negaPosiRedHintTxt.BorderStyle = BorderStyle.None;
+            negaPosiRedHintTxt.Location = new Point(16, 90);
+            negaPosiRedHintTxt.Multiline = true;
+            negaPosiRedHintTxt.Name = "negaPosiRedHintTxt";
+            negaPosiRedHintTxt.ReadOnly = true;
+            negaPosiRedHintTxt.ScrollBars = ScrollBars.Both;
+            negaPosiRedHintTxt.Size = new Size(160, 63);
+            negaPosiRedHintTxt.TabIndex = 6;
+            negaPosiRedHintTxt.Text = "赤(R)成分の値のみを反転します。\r\n赤みの強い部分が弱まり、赤みの少ない部分に赤が加わります。\r\n色調加工は同時設定不可です。";
+            // 
+            // negaPosiRedGroup
+            // 
+            negaPosiRedGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiRedGroup.Controls.Add(label13);
+            negaPosiRedGroup.Location = new Point(16, 14);
+            negaPosiRedGroup.Name = "negaPosiRedGroup";
+            negaPosiRedGroup.Size = new Size(170, 70);
+            negaPosiRedGroup.TabIndex = 3;
+            negaPosiRedGroup.TabStop = false;
+            negaPosiRedGroup.Text = "ネガポジ反転(赤(R))";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(22, 33);
+            label13.Name = "label13";
+            label13.Size = new Size(161, 21);
+            label13.TabIndex = 0;
+            label13.Text = "設定項目はありません。";
+            // 
+            // negaPosiAllPanel
+            // 
+            negaPosiAllPanel.Controls.Add(negaPosiAllHintTxt);
+            negaPosiAllPanel.Controls.Add(negaPosiAllGroup);
+            negaPosiAllPanel.Location = new Point(684, 236);
+            negaPosiAllPanel.Name = "negaPosiAllPanel";
+            negaPosiAllPanel.Size = new Size(200, 180);
+            negaPosiAllPanel.TabIndex = 6;
+            // 
+            // negaPosiAllHintTxt
+            // 
+            negaPosiAllHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiAllHintTxt.BackColor = SystemColors.Control;
+            negaPosiAllHintTxt.BorderStyle = BorderStyle.None;
+            negaPosiAllHintTxt.Location = new Point(16, 90);
+            negaPosiAllHintTxt.Multiline = true;
+            negaPosiAllHintTxt.Name = "negaPosiAllHintTxt";
+            negaPosiAllHintTxt.ReadOnly = true;
+            negaPosiAllHintTxt.ScrollBars = ScrollBars.Both;
+            negaPosiAllHintTxt.Size = new Size(160, 63);
+            negaPosiAllHintTxt.TabIndex = 6;
+            negaPosiAllHintTxt.Text = "RGB各成分の値を反転します。\r\n明るい部分が暗くなり、暗い部分が明るくなります。\r\nネガフィルムのような状態になります。\r\n色調加工は同時設定不可です。";
+            // 
+            // negaPosiAllGroup
+            // 
+            negaPosiAllGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            negaPosiAllGroup.Controls.Add(label12);
+            negaPosiAllGroup.Location = new Point(16, 14);
+            negaPosiAllGroup.Name = "negaPosiAllGroup";
+            negaPosiAllGroup.Size = new Size(170, 70);
+            negaPosiAllGroup.TabIndex = 3;
+            negaPosiAllGroup.TabStop = false;
+            negaPosiAllGroup.Text = "ネガポジ反転(全チャンネル)";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(22, 33);
+            label12.Name = "label12";
+            label12.Size = new Size(161, 21);
+            label12.TabIndex = 0;
+            label12.Text = "設定項目はありません。";
+            // 
+            // grayscalePanel
+            // 
+            grayscalePanel.Controls.Add(grayscaleHintTxt);
+            grayscalePanel.Controls.Add(grayscaleGroup);
+            grayscalePanel.Location = new Point(684, 42);
+            grayscalePanel.Name = "grayscalePanel";
+            grayscalePanel.Size = new Size(200, 180);
+            grayscalePanel.TabIndex = 6;
+            // 
+            // grayscaleHintTxt
+            // 
+            grayscaleHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grayscaleHintTxt.BackColor = SystemColors.Control;
+            grayscaleHintTxt.BorderStyle = BorderStyle.None;
+            grayscaleHintTxt.Location = new Point(16, 90);
+            grayscaleHintTxt.Multiline = true;
+            grayscaleHintTxt.Name = "grayscaleHintTxt";
+            grayscaleHintTxt.ReadOnly = true;
+            grayscaleHintTxt.ScrollBars = ScrollBars.Both;
+            grayscaleHintTxt.Size = new Size(160, 63);
+            grayscaleHintTxt.TabIndex = 6;
+            grayscaleHintTxt.Text = "256階調の灰色で表現されます。\r\nRGBの各成分を同じ輝度に置き換えて色をなくします。\r\n色調加工は同時設定不可です。";
+            // 
+            // grayscaleGroup
+            // 
+            grayscaleGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grayscaleGroup.Controls.Add(label11);
+            grayscaleGroup.Location = new Point(16, 14);
+            grayscaleGroup.Name = "grayscaleGroup";
+            grayscaleGroup.Size = new Size(170, 70);
+            grayscaleGroup.TabIndex = 3;
+            grayscaleGroup.TabStop = false;
+            grayscaleGroup.Text = "グレースケール";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(22, 33);
+            label11.Name = "label11";
+            label11.Size = new Size(161, 21);
+            label11.TabIndex = 0;
+            label11.Text = "設定項目はありません。";
+            // 
+            // sepiaPanel
+            // 
+            sepiaPanel.Controls.Add(sepiaHintTxt);
+            sepiaPanel.Controls.Add(sepiaGroup);
+            sepiaPanel.Location = new Point(501, 236);
+            sepiaPanel.Name = "sepiaPanel";
+            sepiaPanel.Size = new Size(200, 180);
+            sepiaPanel.TabIndex = 6;
+            // 
+            // sepiaHintTxt
+            // 
+            sepiaHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            sepiaHintTxt.BackColor = SystemColors.Control;
+            sepiaHintTxt.BorderStyle = BorderStyle.None;
+            sepiaHintTxt.Location = new Point(16, 90);
+            sepiaHintTxt.Multiline = true;
+            sepiaHintTxt.Name = "sepiaHintTxt";
+            sepiaHintTxt.ReadOnly = true;
+            sepiaHintTxt.ScrollBars = ScrollBars.Both;
+            sepiaHintTxt.Size = new Size(160, 63);
+            sepiaHintTxt.TabIndex = 6;
+            sepiaHintTxt.Text = "赤茶色系の色調に変換します。\r\n古い写真のようなレトロな雰囲気になります。\r\n・強度0：元画像をそのまま表示\r\n・強度50：元画像50％＋セピア画像50％\r\n・強度99：ほぼ完全なセピア画像\r\n色調加工は同時設定不可です。";
+            // 
+            // sepiaGroup
+            // 
+            sepiaGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            sepiaGroup.Controls.Add(sepiaTxt);
+            sepiaGroup.Controls.Add(sepiaBar);
+            sepiaGroup.Location = new Point(16, 14);
+            sepiaGroup.Name = "sepiaGroup";
+            sepiaGroup.Size = new Size(170, 70);
+            sepiaGroup.TabIndex = 3;
+            sepiaGroup.TabStop = false;
+            sepiaGroup.Text = "セピア";
+            // 
+            // sepiaTxt
+            // 
+            sepiaTxt.Location = new Point(19, 28);
+            sepiaTxt.Name = "sepiaTxt";
+            sepiaTxt.Size = new Size(53, 29);
+            sepiaTxt.TabIndex = 9;
+            sepiaTxt.Tag = "セピア(範囲：0～99)";
+            sepiaTxt.TextAlign = HorizontalAlignment.Right;
+            sepiaTxt.Click += allSelect_Click;
+            sepiaTxt.Enter += allSelect_Enter;
+            sepiaTxt.KeyDown += NumericTextBox_KeyDown;
+            sepiaTxt.MouseEnter += Control_MouseEnter;
+            sepiaTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // sepiaBar
+            // 
+            sepiaBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            sepiaBar.AutoSize = false;
+            sepiaBar.Location = new Point(78, 28);
+            sepiaBar.Maximum = 99;
+            sepiaBar.Name = "sepiaBar";
+            sepiaBar.Size = new Size(76, 30);
+            sepiaBar.TabIndex = 8;
+            sepiaBar.Tag = "セピア(範囲：0～99)";
+            sepiaBar.TickStyle = TickStyle.None;
+            sepiaBar.Scroll += sepiaBar_Scroll;
+            sepiaBar.MouseEnter += Control_MouseEnter;
+            sepiaBar.MouseLeave += Control_MouseLeave;
+            // 
+            // pixelPanel
+            // 
+            pixelPanel.Controls.Add(pixelHintTxt);
+            pixelPanel.Controls.Add(pixelGroup);
+            pixelPanel.Location = new Point(380, 236);
+            pixelPanel.Name = "pixelPanel";
+            pixelPanel.Size = new Size(200, 180);
+            pixelPanel.TabIndex = 9;
+            pixelPanel.Visible = false;
+            // 
+            // pixelHintTxt
+            // 
+            pixelHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pixelHintTxt.BackColor = SystemColors.Control;
+            pixelHintTxt.BorderStyle = BorderStyle.None;
+            pixelHintTxt.Location = new Point(16, 90);
+            pixelHintTxt.Multiline = true;
+            pixelHintTxt.Name = "pixelHintTxt";
+            pixelHintTxt.ReadOnly = true;
+            pixelHintTxt.ScrollBars = ScrollBars.Both;
+            pixelHintTxt.Size = new Size(160, 39);
+            pixelHintTxt.TabIndex = 5;
+            pixelHintTxt.Text = "画像を一旦小さな解像度に縮小し、再び拡大して表示します。\r\nドット絵やレトロゲームのような見た目になります。";
+            // 
+            // pixelGroup
+            // 
+            pixelGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pixelGroup.Controls.Add(pixelTxt);
+            pixelGroup.Controls.Add(pixelBar);
+            pixelGroup.Location = new Point(16, 14);
+            pixelGroup.Name = "pixelGroup";
+            pixelGroup.Size = new Size(160, 70);
+            pixelGroup.TabIndex = 1;
+            pixelGroup.TabStop = false;
+            pixelGroup.Text = "ピクセル化";
+            // 
+            // pixelTxt
+            // 
+            pixelTxt.Location = new Point(19, 28);
+            pixelTxt.Name = "pixelTxt";
+            pixelTxt.Size = new Size(53, 29);
+            pixelTxt.TabIndex = 9;
+            pixelTxt.Tag = "ピクセル化(範囲：0～255)";
+            pixelTxt.TextAlign = HorizontalAlignment.Right;
+            pixelTxt.Click += allSelect_Click;
+            pixelTxt.Enter += allSelect_Enter;
+            pixelTxt.KeyDown += NumericTextBox_KeyDown;
+            pixelTxt.MouseEnter += Control_MouseEnter;
+            pixelTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // pixelBar
+            // 
+            pixelBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pixelBar.AutoSize = false;
+            pixelBar.Location = new Point(78, 28);
+            pixelBar.Maximum = 255;
+            pixelBar.Name = "pixelBar";
+            pixelBar.Size = new Size(76, 30);
+            pixelBar.TabIndex = 8;
+            pixelBar.Tag = "ピクセル化(範囲：0～255)";
+            pixelBar.TickStyle = TickStyle.None;
+            pixelBar.Scroll += pixelBar_Scroll;
+            pixelBar.MouseEnter += Control_MouseEnter;
+            pixelBar.MouseLeave += Control_MouseLeave;
+            // 
+            // oilpaintingPanel
+            // 
+            oilpaintingPanel.Controls.Add(oilpaintingHintTxt);
+            oilpaintingPanel.Controls.Add(oilpaintingGroup);
+            oilpaintingPanel.Location = new Point(1012, 237);
+            oilpaintingPanel.Name = "oilpaintingPanel";
+            oilpaintingPanel.Size = new Size(200, 180);
+            oilpaintingPanel.TabIndex = 9;
+            oilpaintingPanel.Visible = false;
+            // 
+            // oilpaintingHintTxt
+            // 
+            oilpaintingHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            oilpaintingHintTxt.BackColor = SystemColors.Control;
+            oilpaintingHintTxt.BorderStyle = BorderStyle.None;
+            oilpaintingHintTxt.Location = new Point(16, 91);
+            oilpaintingHintTxt.Multiline = true;
+            oilpaintingHintTxt.Name = "oilpaintingHintTxt";
+            oilpaintingHintTxt.ReadOnly = true;
+            oilpaintingHintTxt.ScrollBars = ScrollBars.Both;
+            oilpaintingHintTxt.Size = new Size(160, 63);
+            oilpaintingHintTxt.TabIndex = 5;
+            oilpaintingHintTxt.Text = "油絵風に加工します。\r\n強度を大きくすると、かすれた加工になります。";
+            // 
+            // oilpaintingGroup
+            // 
+            oilpaintingGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            oilpaintingGroup.Controls.Add(oilpaintingTxt);
+            oilpaintingGroup.Controls.Add(oilpaintingBar);
+            oilpaintingGroup.Location = new Point(16, 14);
+            oilpaintingGroup.Name = "oilpaintingGroup";
+            oilpaintingGroup.Size = new Size(160, 70);
+            oilpaintingGroup.TabIndex = 1;
+            oilpaintingGroup.TabStop = false;
+            oilpaintingGroup.Text = "油絵風";
+            // 
+            // oilpaintingTxt
+            // 
+            oilpaintingTxt.Location = new Point(19, 28);
+            oilpaintingTxt.Name = "oilpaintingTxt";
+            oilpaintingTxt.Size = new Size(53, 29);
+            oilpaintingTxt.TabIndex = 9;
+            oilpaintingTxt.Tag = "油絵風(範囲：0～255)";
+            oilpaintingTxt.TextAlign = HorizontalAlignment.Right;
+            oilpaintingTxt.Click += allSelect_Click;
+            oilpaintingTxt.Enter += allSelect_Enter;
+            oilpaintingTxt.KeyDown += NumericTextBox_KeyDown;
+            oilpaintingTxt.MouseEnter += Control_MouseEnter;
+            oilpaintingTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // oilpaintingBar
+            // 
+            oilpaintingBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            oilpaintingBar.AutoSize = false;
+            oilpaintingBar.Location = new Point(78, 28);
+            oilpaintingBar.Maximum = 255;
+            oilpaintingBar.Name = "oilpaintingBar";
+            oilpaintingBar.Size = new Size(76, 30);
+            oilpaintingBar.TabIndex = 8;
+            oilpaintingBar.Tag = "油絵風(範囲：0～255)";
+            oilpaintingBar.TickStyle = TickStyle.None;
+            oilpaintingBar.Scroll += oilpaintingBar_Scroll;
+            oilpaintingBar.MouseEnter += Control_MouseEnter;
+            oilpaintingBar.MouseLeave += Control_MouseLeave;
+            // 
+            // watercolorPanel
+            // 
+            watercolorPanel.Controls.Add(watercolorHintTxt);
+            watercolorPanel.Controls.Add(watercolorGroup);
+            watercolorPanel.Location = new Point(1012, 42);
+            watercolorPanel.Name = "watercolorPanel";
+            watercolorPanel.Size = new Size(200, 180);
+            watercolorPanel.TabIndex = 9;
+            watercolorPanel.Visible = false;
+            // 
+            // watercolorHintTxt
+            // 
+            watercolorHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            watercolorHintTxt.BackColor = SystemColors.Control;
+            watercolorHintTxt.BorderStyle = BorderStyle.None;
+            watercolorHintTxt.Location = new Point(16, 91);
+            watercolorHintTxt.Multiline = true;
+            watercolorHintTxt.Name = "watercolorHintTxt";
+            watercolorHintTxt.ReadOnly = true;
+            watercolorHintTxt.ScrollBars = ScrollBars.Both;
+            watercolorHintTxt.Size = new Size(160, 63);
+            watercolorHintTxt.TabIndex = 5;
+            watercolorHintTxt.Text = "水彩画風に加工します。\r\n強度を大きくすると、ポスタリゼーション的な加工になります。";
+            // 
+            // watercolorGroup
+            // 
+            watercolorGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            watercolorGroup.Controls.Add(watercolorTxt);
+            watercolorGroup.Controls.Add(watercolorBar);
+            watercolorGroup.Location = new Point(16, 14);
+            watercolorGroup.Name = "watercolorGroup";
+            watercolorGroup.Size = new Size(160, 70);
+            watercolorGroup.TabIndex = 1;
+            watercolorGroup.TabStop = false;
+            watercolorGroup.Text = "水彩画風";
+            // 
+            // watercolorTxt
+            // 
+            watercolorTxt.Location = new Point(19, 28);
+            watercolorTxt.Name = "watercolorTxt";
+            watercolorTxt.Size = new Size(53, 29);
+            watercolorTxt.TabIndex = 9;
+            watercolorTxt.Tag = "水彩画風(範囲：0～255)";
+            watercolorTxt.TextAlign = HorizontalAlignment.Right;
+            watercolorTxt.Click += allSelect_Click;
+            watercolorTxt.Enter += allSelect_Enter;
+            watercolorTxt.KeyDown += NumericTextBox_KeyDown;
+            watercolorTxt.MouseEnter += Control_MouseEnter;
+            watercolorTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // watercolorBar
+            // 
+            watercolorBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            watercolorBar.AutoSize = false;
+            watercolorBar.Location = new Point(78, 28);
+            watercolorBar.Maximum = 255;
+            watercolorBar.Name = "watercolorBar";
+            watercolorBar.Size = new Size(76, 30);
+            watercolorBar.TabIndex = 8;
+            watercolorBar.Tag = "水彩画風(範囲：0～255)";
+            watercolorBar.TickStyle = TickStyle.None;
+            watercolorBar.Scroll += watercolorBar_Scroll;
+            watercolorBar.MouseEnter += Control_MouseEnter;
+            watercolorBar.MouseLeave += Control_MouseLeave;
+            // 
+            // dimmingPanel
+            // 
+            dimmingPanel.Controls.Add(dimmingHintTxt);
+            dimmingPanel.Controls.Add(dimmingGroup);
+            dimmingPanel.Location = new Point(500, 42);
+            dimmingPanel.Name = "dimmingPanel";
+            dimmingPanel.Size = new Size(200, 180);
+            dimmingPanel.TabIndex = 9;
+            dimmingPanel.Visible = false;
+            // 
+            // dimmingHintTxt
+            // 
+            dimmingHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dimmingHintTxt.BackColor = SystemColors.Control;
+            dimmingHintTxt.BorderStyle = BorderStyle.None;
+            dimmingHintTxt.Location = new Point(16, 91);
+            dimmingHintTxt.Multiline = true;
+            dimmingHintTxt.Name = "dimmingHintTxt";
+            dimmingHintTxt.ReadOnly = true;
+            dimmingHintTxt.ScrollBars = ScrollBars.Both;
+            dimmingHintTxt.Size = new Size(160, 63);
+            dimmingHintTxt.TabIndex = 5;
+            dimmingHintTxt.Text = "画像の中心部分を明るいままにして、四隅や外周に向かうほど暗くします。";
+            // 
+            // dimmingGroup
+            // 
+            dimmingGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dimmingGroup.Controls.Add(dimmingTxt);
+            dimmingGroup.Controls.Add(dimmingBar);
+            dimmingGroup.Location = new Point(16, 14);
+            dimmingGroup.Name = "dimmingGroup";
+            dimmingGroup.Size = new Size(160, 70);
+            dimmingGroup.TabIndex = 1;
+            dimmingGroup.TabStop = false;
+            dimmingGroup.Text = "周辺減光";
+            // 
+            // dimmingTxt
+            // 
+            dimmingTxt.Location = new Point(19, 28);
+            dimmingTxt.Name = "dimmingTxt";
+            dimmingTxt.Size = new Size(53, 29);
+            dimmingTxt.TabIndex = 9;
+            dimmingTxt.Tag = "周辺減光(範囲：0～255)";
+            dimmingTxt.TextAlign = HorizontalAlignment.Right;
+            dimmingTxt.Click += allSelect_Click;
+            dimmingTxt.Enter += allSelect_Enter;
+            dimmingTxt.KeyDown += NumericTextBox_KeyDown;
+            dimmingTxt.MouseEnter += Control_MouseEnter;
+            dimmingTxt.MouseLeave += Control_MouseLeave;
+            // 
+            // dimmingBar
+            // 
+            dimmingBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dimmingBar.AutoSize = false;
+            dimmingBar.Location = new Point(78, 28);
+            dimmingBar.Maximum = 255;
+            dimmingBar.Name = "dimmingBar";
+            dimmingBar.Size = new Size(76, 30);
+            dimmingBar.TabIndex = 8;
+            dimmingBar.Tag = "周辺減光(範囲：0～255)";
+            dimmingBar.TickStyle = TickStyle.None;
+            dimmingBar.Scroll += dimmingBar_Scroll;
+            dimmingBar.MouseEnter += Control_MouseEnter;
+            dimmingBar.MouseLeave += Control_MouseLeave;
             // 
             // mosaicPanel
             // 
+            mosaicPanel.Controls.Add(mosaicHintTxt);
             mosaicPanel.Controls.Add(mosaicGroup);
-            mosaicPanel.Location = new Point(464, 8);
+            mosaicPanel.Location = new Point(380, 42);
             mosaicPanel.Name = "mosaicPanel";
             mosaicPanel.Size = new Size(200, 180);
             mosaicPanel.TabIndex = 9;
             mosaicPanel.Visible = false;
+            // 
+            // mosaicHintTxt
+            // 
+            mosaicHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mosaicHintTxt.BackColor = SystemColors.Control;
+            mosaicHintTxt.BorderStyle = BorderStyle.None;
+            mosaicHintTxt.Location = new Point(16, 102);
+            mosaicHintTxt.Multiline = true;
+            mosaicHintTxt.Name = "mosaicHintTxt";
+            mosaicHintTxt.ReadOnly = true;
+            mosaicHintTxt.ScrollBars = ScrollBars.Both;
+            mosaicHintTxt.Size = new Size(160, 39);
+            mosaicHintTxt.TabIndex = 5;
+            mosaicHintTxt.Text = "一定範囲の画素をまとめ、その範囲を代表する色で塗ります。\r\n四角いブロックが並んだようなります。";
             // 
             // mosaicGroup
             // 
@@ -746,7 +1460,7 @@
             mosaicTxt.Name = "mosaicTxt";
             mosaicTxt.Size = new Size(53, 29);
             mosaicTxt.TabIndex = 9;
-            mosaicTxt.Tag = "モザイク(範囲：0～99)";
+            mosaicTxt.Tag = "モザイク(範囲：0～255)";
             mosaicTxt.TextAlign = HorizontalAlignment.Right;
             mosaicTxt.Click += allSelect_Click;
             mosaicTxt.Enter += allSelect_Enter;
@@ -759,29 +1473,46 @@
             mosaicBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             mosaicBar.AutoSize = false;
             mosaicBar.Location = new Point(78, 28);
-            mosaicBar.Maximum = 99;
+            mosaicBar.Maximum = 255;
             mosaicBar.Name = "mosaicBar";
             mosaicBar.Size = new Size(76, 30);
             mosaicBar.TabIndex = 8;
-            mosaicBar.Tag = "モザイク(範囲：0～99)";
+            mosaicBar.Tag = "モザイク(範囲：0～255)";
             mosaicBar.TickStyle = TickStyle.None;
             mosaicBar.Scroll += mosaicBar_Scroll;
+            mosaicBar.MouseEnter += Control_MouseEnter;
+            mosaicBar.MouseLeave += Control_MouseLeave;
             // 
             // ContourExPanel
             // 
+            ContourExPanel.Controls.Add(ContourExHintTxt);
             ContourExPanel.Controls.Add(ContourExGroup);
-            ContourExPanel.Location = new Point(242, 211);
+            ContourExPanel.Location = new Point(256, 236);
             ContourExPanel.Name = "ContourExPanel";
             ContourExPanel.Size = new Size(200, 180);
             ContourExPanel.TabIndex = 8;
             ContourExPanel.Visible = false;
+            // 
+            // ContourExHintTxt
+            // 
+            ContourExHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            ContourExHintTxt.BackColor = SystemColors.Control;
+            ContourExHintTxt.BorderStyle = BorderStyle.None;
+            ContourExHintTxt.Location = new Point(16, 90);
+            ContourExHintTxt.Multiline = true;
+            ContourExHintTxt.Name = "ContourExHintTxt";
+            ContourExHintTxt.ReadOnly = true;
+            ContourExHintTxt.ScrollBars = ScrollBars.Both;
+            ContourExHintTxt.Size = new Size(160, 39);
+            ContourExHintTxt.TabIndex = 5;
+            ContourExHintTxt.Text = "輪郭そのもの(周辺の画素との明暗差)を検出し、境界が強調された線画のようになります。";
             // 
             // ContourExGroup
             // 
             ContourExGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             ContourExGroup.Controls.Add(ContourExTxt);
             ContourExGroup.Controls.Add(ContourExBar);
-            ContourExGroup.Location = new Point(16, 15);
+            ContourExGroup.Location = new Point(16, 14);
             ContourExGroup.Name = "ContourExGroup";
             ContourExGroup.Size = new Size(160, 70);
             ContourExGroup.TabIndex = 1;
@@ -794,7 +1525,7 @@
             ContourExTxt.Name = "ContourExTxt";
             ContourExTxt.Size = new Size(53, 29);
             ContourExTxt.TabIndex = 9;
-            ContourExTxt.Tag = "輪郭抽出(範囲：0～99)";
+            ContourExTxt.Tag = "輪郭抽出(範囲：0～255)";
             ContourExTxt.TextAlign = HorizontalAlignment.Right;
             ContourExTxt.Click += allSelect_Click;
             ContourExTxt.Enter += allSelect_Enter;
@@ -807,22 +1538,39 @@
             ContourExBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             ContourExBar.AutoSize = false;
             ContourExBar.Location = new Point(78, 28);
-            ContourExBar.Maximum = 99;
+            ContourExBar.Maximum = 255;
             ContourExBar.Name = "ContourExBar";
             ContourExBar.Size = new Size(76, 30);
             ContourExBar.TabIndex = 8;
-            ContourExBar.Tag = "輪郭抽出(範囲：0～99)";
+            ContourExBar.Tag = "輪郭抽出(範囲：0～255)";
             ContourExBar.TickStyle = TickStyle.None;
             ContourExBar.Scroll += ContourExBar_Scroll;
+            ContourExBar.MouseEnter += Control_MouseEnter;
+            ContourExBar.MouseLeave += Control_MouseLeave;
             // 
             // noisePanel
             // 
+            noisePanel.Controls.Add(noiseHintTxt);
             noisePanel.Controls.Add(noiseGroup);
-            noisePanel.Location = new Point(242, 8);
+            noisePanel.Location = new Point(256, 42);
             noisePanel.Name = "noisePanel";
             noisePanel.Size = new Size(200, 180);
             noisePanel.TabIndex = 7;
             noisePanel.Visible = false;
+            // 
+            // noiseHintTxt
+            // 
+            noiseHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            noiseHintTxt.BackColor = SystemColors.Control;
+            noiseHintTxt.BorderStyle = BorderStyle.None;
+            noiseHintTxt.Location = new Point(16, 102);
+            noiseHintTxt.Multiline = true;
+            noiseHintTxt.Name = "noiseHintTxt";
+            noiseHintTxt.ReadOnly = true;
+            noiseHintTxt.ScrollBars = ScrollBars.Both;
+            noiseHintTxt.Size = new Size(160, 39);
+            noiseHintTxt.TabIndex = 5;
+            noiseHintTxt.Text = "画像にランダムな明るさや色の変化を加えます。\r\n粒状感が生まれ、ざらざらした質感になります。";
             // 
             // noiseGroup
             // 
@@ -842,7 +1590,7 @@
             noiseTxt.Name = "noiseTxt";
             noiseTxt.Size = new Size(53, 29);
             noiseTxt.TabIndex = 9;
-            noiseTxt.Tag = "ノイズ(範囲：0～99)";
+            noiseTxt.Tag = "ノイズ(範囲：0～255)";
             noiseTxt.TextAlign = HorizontalAlignment.Right;
             noiseTxt.Click += allSelect_Click;
             noiseTxt.Enter += allSelect_Enter;
@@ -855,23 +1603,40 @@
             noiseBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             noiseBar.AutoSize = false;
             noiseBar.Location = new Point(78, 28);
-            noiseBar.Maximum = 99;
+            noiseBar.Maximum = 255;
             noiseBar.Name = "noiseBar";
             noiseBar.Size = new Size(76, 30);
             noiseBar.TabIndex = 8;
-            noiseBar.Tag = "ノイズ(範囲：0～99)";
+            noiseBar.Tag = "ノイズ(範囲：0～255)";
             noiseBar.TickStyle = TickStyle.None;
             noiseBar.Scroll += noiseBar_Scroll;
+            noiseBar.MouseEnter += Control_MouseEnter;
+            noiseBar.MouseLeave += Control_MouseLeave;
             // 
             // embossPanel
             // 
             embossPanel.AutoScroll = true;
+            embossPanel.Controls.Add(embossHintTxt);
             embossPanel.Controls.Add(embossGroup);
-            embossPanel.Location = new Point(111, 8);
+            embossPanel.Location = new Point(125, 42);
             embossPanel.Name = "embossPanel";
             embossPanel.Size = new Size(200, 180);
             embossPanel.TabIndex = 3;
             embossPanel.Visible = false;
+            // 
+            // embossHintTxt
+            // 
+            embossHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            embossHintTxt.BackColor = SystemColors.Control;
+            embossHintTxt.BorderStyle = BorderStyle.None;
+            embossHintTxt.Location = new Point(16, 126);
+            embossHintTxt.Multiline = true;
+            embossHintTxt.Name = "embossHintTxt";
+            embossHintTxt.ReadOnly = true;
+            embossHintTxt.ScrollBars = ScrollBars.Both;
+            embossHintTxt.Size = new Size(160, 39);
+            embossHintTxt.TabIndex = 5;
+            embossHintTxt.Text = "周辺画素の明暗差から凹凸を表現し、輪郭に明暗を付けて立体的にします。\r\n強度を上げると凹凸が大きくなります。\r\n凹凸反転にチェックを入れることで、凹凸が反転します。";
             // 
             // embossGroup
             // 
@@ -881,7 +1646,7 @@
             embossGroup.Controls.Add(embossBar);
             embossGroup.Location = new Point(16, 14);
             embossGroup.Name = "embossGroup";
-            embossGroup.Size = new Size(170, 121);
+            embossGroup.Size = new Size(170, 103);
             embossGroup.TabIndex = 9;
             embossGroup.TabStop = false;
             embossGroup.Text = "エンボス";
@@ -889,7 +1654,7 @@
             // embossCheck
             // 
             embossCheck.AutoSize = true;
-            embossCheck.Location = new Point(27, 76);
+            embossCheck.Location = new Point(27, 69);
             embossCheck.Name = "embossCheck";
             embossCheck.Size = new Size(93, 25);
             embossCheck.TabIndex = 8;
@@ -899,11 +1664,11 @@
             // 
             // embossTxt
             // 
-            embossTxt.Location = new Point(18, 34);
+            embossTxt.Location = new Point(19, 28);
             embossTxt.Name = "embossTxt";
             embossTxt.Size = new Size(53, 29);
             embossTxt.TabIndex = 7;
-            embossTxt.Tag = "エンボス(範囲：0～99)";
+            embossTxt.Tag = "エンボス(範囲：0～255)";
             embossTxt.TextAlign = HorizontalAlignment.Right;
             embossTxt.Click += allSelect_Click;
             embossTxt.Enter += allSelect_Enter;
@@ -915,12 +1680,12 @@
             // 
             embossBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             embossBar.AutoSize = false;
-            embossBar.Location = new Point(77, 34);
-            embossBar.Maximum = 99;
+            embossBar.Location = new Point(78, 28);
+            embossBar.Maximum = 255;
             embossBar.Name = "embossBar";
             embossBar.Size = new Size(87, 30);
             embossBar.TabIndex = 5;
-            embossBar.Tag = "エンボス(範囲：0～99)";
+            embossBar.Tag = "エンボス(範囲：0～255)";
             embossBar.TickStyle = TickStyle.None;
             embossBar.Scroll += embossBar_Scroll;
             embossBar.MouseEnter += Control_MouseEnter;
@@ -928,23 +1693,38 @@
             // 
             // monochromePanel
             // 
-            monochromePanel.Controls.Add(groupBox2);
-            monochromePanel.Location = new Point(6, 8);
+            monochromePanel.Controls.Add(monochromeHintTxt);
+            monochromePanel.Controls.Add(monochromeGroup);
+            monochromePanel.Location = new Point(6, 42);
             monochromePanel.Name = "monochromePanel";
             monochromePanel.Size = new Size(200, 180);
             monochromePanel.TabIndex = 6;
             // 
-            // groupBox2
+            // monochromeHintTxt
             // 
-            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(monochromeTxt);
-            groupBox2.Controls.Add(monochromeBar);
-            groupBox2.Location = new Point(16, 14);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(170, 70);
-            groupBox2.TabIndex = 3;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "モノクローム";
+            monochromeHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            monochromeHintTxt.BackColor = SystemColors.Control;
+            monochromeHintTxt.BorderStyle = BorderStyle.None;
+            monochromeHintTxt.Location = new Point(16, 102);
+            monochromeHintTxt.Multiline = true;
+            monochromeHintTxt.Name = "monochromeHintTxt";
+            monochromeHintTxt.ReadOnly = true;
+            monochromeHintTxt.ScrollBars = ScrollBars.Both;
+            monochromeHintTxt.Size = new Size(160, 63);
+            monochromeHintTxt.TabIndex = 5;
+            monochromeHintTxt.Text = "白黒の2階調で表現されます。\r\n輝度がしきい値以上なら白(255)、輝度がしきい値未満なら黒(0)に変換します。\r\n色調加工は同時設定不可です。\r\n";
+            // 
+            // monochromeGroup
+            // 
+            monochromeGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            monochromeGroup.Controls.Add(monochromeTxt);
+            monochromeGroup.Controls.Add(monochromeBar);
+            monochromeGroup.Location = new Point(16, 14);
+            monochromeGroup.Name = "monochromeGroup";
+            monochromeGroup.Size = new Size(170, 70);
+            monochromeGroup.TabIndex = 3;
+            monochromeGroup.TabStop = false;
+            monochromeGroup.Text = "モノクローム";
             // 
             // monochromeTxt
             // 
@@ -980,27 +1760,27 @@
             // 
             // sharpPanel
             // 
-            sharpPanel.Controls.Add(textBox2);
+            sharpPanel.Controls.Add(sharpHintTxt);
             sharpPanel.Controls.Add(sharpGroup);
-            sharpPanel.Location = new Point(111, 211);
+            sharpPanel.Location = new Point(125, 236);
             sharpPanel.Name = "sharpPanel";
             sharpPanel.Size = new Size(200, 180);
             sharpPanel.TabIndex = 3;
             sharpPanel.Visible = false;
             // 
-            // textBox2
+            // sharpHintTxt
             // 
-            textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.BackColor = SystemColors.Control;
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Location = new Point(16, 112);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.ScrollBars = ScrollBars.Both;
-            textBox2.Size = new Size(160, 63);
-            textBox2.TabIndex = 5;
-            textBox2.Text = "「ぼかし」を選択すると、「シャープ」設定は初期化されます。(「シャープ」と「ぼかし」は同時設定不可)";
+            sharpHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            sharpHintTxt.BackColor = SystemColors.Control;
+            sharpHintTxt.BorderStyle = BorderStyle.None;
+            sharpHintTxt.Location = new Point(16, 112);
+            sharpHintTxt.Multiline = true;
+            sharpHintTxt.Name = "sharpHintTxt";
+            sharpHintTxt.ReadOnly = true;
+            sharpHintTxt.ScrollBars = ScrollBars.Both;
+            sharpHintTxt.Size = new Size(160, 63);
+            sharpHintTxt.TabIndex = 5;
+            sharpHintTxt.Text = "輪郭部分の明暗差を強調して、細部をくっきり見せます。\r\nピントが甘く見える画像の補正、細部の視認性向上。\r\n「ぼかし」を選択すると、「シャープ」設定は初期化されます。\r\n「シャープ」と「ぼかし」は同時設定不可です。";
             // 
             // sharpGroup
             // 
@@ -1009,18 +1789,18 @@
             sharpGroup.Controls.Add(sharpBar);
             sharpGroup.Location = new Point(16, 14);
             sharpGroup.Name = "sharpGroup";
-            sharpGroup.Size = new Size(170, 92);
+            sharpGroup.Size = new Size(170, 70);
             sharpGroup.TabIndex = 2;
             sharpGroup.TabStop = false;
             sharpGroup.Text = "シャープ";
             // 
             // sharpTxt
             // 
-            sharpTxt.Location = new Point(27, 34);
+            sharpTxt.Location = new Point(19, 28);
             sharpTxt.Name = "sharpTxt";
             sharpTxt.Size = new Size(53, 29);
             sharpTxt.TabIndex = 4;
-            sharpTxt.Tag = "シャープ(範囲：0～99)";
+            sharpTxt.Tag = "シャープ(範囲：0～255)";
             sharpTxt.TextAlign = HorizontalAlignment.Right;
             sharpTxt.Click += allSelect_Click;
             sharpTxt.Enter += allSelect_Enter;
@@ -1032,12 +1812,12 @@
             // 
             sharpBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             sharpBar.AutoSize = false;
-            sharpBar.Location = new Point(86, 34);
-            sharpBar.Maximum = 99;
+            sharpBar.Location = new Point(78, 28);
+            sharpBar.Maximum = 255;
             sharpBar.Name = "sharpBar";
             sharpBar.Size = new Size(78, 30);
             sharpBar.TabIndex = 5;
-            sharpBar.Tag = "シャープ(範囲：0～99)";
+            sharpBar.Tag = "シャープ(範囲：0～255)";
             sharpBar.TickStyle = TickStyle.None;
             sharpBar.Scroll += sharpBar_Scroll;
             sharpBar.MouseEnter += Control_MouseEnter;
@@ -1045,27 +1825,27 @@
             // 
             // blurPanel
             // 
-            blurPanel.Controls.Add(textBox1);
+            blurPanel.Controls.Add(blurHintTxt);
             blurPanel.Controls.Add(blurGroup);
-            blurPanel.Location = new Point(6, 212);
+            blurPanel.Location = new Point(6, 237);
             blurPanel.Name = "blurPanel";
             blurPanel.Size = new Size(200, 180);
             blurPanel.TabIndex = 1;
             blurPanel.Visible = false;
             // 
-            // textBox1
+            // blurHintTxt
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.BackColor = SystemColors.Control;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Location = new Point(18, 114);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.ScrollBars = ScrollBars.Both;
-            textBox1.Size = new Size(160, 63);
-            textBox1.TabIndex = 4;
-            textBox1.Text = "「シャープ」を選択すると、「ぼかし」設定は初期化されます。(「ぼかし」と「シャープ」は同時設定不可)";
+            blurHintTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            blurHintTxt.BackColor = SystemColors.Control;
+            blurHintTxt.BorderStyle = BorderStyle.None;
+            blurHintTxt.Location = new Point(18, 114);
+            blurHintTxt.Multiline = true;
+            blurHintTxt.Name = "blurHintTxt";
+            blurHintTxt.ReadOnly = true;
+            blurHintTxt.ScrollBars = ScrollBars.Both;
+            blurHintTxt.Size = new Size(160, 63);
+            blurHintTxt.TabIndex = 4;
+            blurHintTxt.Text = "周辺の画素を平均化するなどして、細部や輪郭を滑らかにします。\r\n強度を上げると輪郭が不鮮明になります。(いわゆる、ピンボケのような状態)\r\n「シャープ」を選択すると、「ぼかし」設定は初期化されます。\r\n「ぼかし」と「シャープ」は同時設定不可です。";
             // 
             // blurGroup
             // 
@@ -1074,18 +1854,18 @@
             blurGroup.Controls.Add(blurBar);
             blurGroup.Location = new Point(16, 14);
             blurGroup.Name = "blurGroup";
-            blurGroup.Size = new Size(170, 92);
+            blurGroup.Size = new Size(170, 70);
             blurGroup.TabIndex = 3;
             blurGroup.TabStop = false;
             blurGroup.Text = "ぼかし";
             // 
             // blurTxt
             // 
-            blurTxt.Location = new Point(19, 35);
+            blurTxt.Location = new Point(19, 28);
             blurTxt.Name = "blurTxt";
             blurTxt.Size = new Size(53, 29);
             blurTxt.TabIndex = 1;
-            blurTxt.Tag = "ぼかし(範囲：0～99)";
+            blurTxt.Tag = "ぼかし(範囲：0～255)";
             blurTxt.TextAlign = HorizontalAlignment.Right;
             blurTxt.Click += allSelect_Click;
             blurTxt.Enter += allSelect_Enter;
@@ -1097,37 +1877,38 @@
             // 
             blurBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             blurBar.AutoSize = false;
-            blurBar.Location = new Point(78, 35);
-            blurBar.Maximum = 99;
+            blurBar.Location = new Point(78, 28);
+            blurBar.Maximum = 255;
             blurBar.Name = "blurBar";
             blurBar.Size = new Size(86, 30);
             blurBar.TabIndex = 2;
-            blurBar.Tag = "ぼかし(範囲：0～99)";
+            blurBar.Tag = "ぼかし(範囲：0～255)";
             blurBar.TickStyle = TickStyle.None;
             blurBar.Scroll += blurBar_Scroll;
             blurBar.MouseEnter += Control_MouseEnter;
             blurBar.MouseLeave += Control_MouseLeave;
             // 
-            // textBox3
+            // explanationTxt
             // 
-            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox3.BackColor = SystemColors.Control;
-            textBox3.BorderStyle = BorderStyle.None;
-            textBox3.Location = new Point(18, 20);
-            textBox3.Name = "textBox3";
-            textBox3.ReadOnly = true;
-            textBox3.Size = new Size(771, 22);
-            textBox3.TabIndex = 5;
-            textBox3.Text = "設定項目はありません。";
-            textBox3.WordWrap = false;
+            explanationTxt.BackColor = SystemColors.Control;
+            explanationTxt.BorderStyle = BorderStyle.None;
+            explanationTxt.Location = new Point(24, 17);
+            explanationTxt.Multiline = true;
+            explanationTxt.Name = "explanationTxt";
+            explanationTxt.ReadOnly = true;
+            explanationTxt.Size = new Size(514, 22);
+            explanationTxt.TabIndex = 5;
+            explanationTxt.Text = "設定項目はありません。";
+            explanationTxt.Visible = false;
+            explanationTxt.WordWrap = false;
             // 
             // panel5
             // 
             panel5.Controls.Add(colorFilterResetBtn);
             panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(3, 425);
+            panel5.Location = new Point(3, 449);
             panel5.Name = "panel5";
-            panel5.Size = new Size(1046, 45);
+            panel5.Size = new Size(2046, 45);
             panel5.TabIndex = 5;
             // 
             // colorFilterResetBtn
@@ -1158,16 +1939,16 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(774, 92);
+            tableLayoutPanel1.Size = new Size(1774, 92);
             tableLayoutPanel1.TabIndex = 8;
             // 
             // pictureBox2
             // 
             pictureBox2.BackColor = SystemColors.WindowFrame;
             pictureBox2.Dock = DockStyle.Fill;
-            pictureBox2.Location = new Point(390, 23);
+            pictureBox2.Location = new Point(890, 23);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(381, 66);
+            pictureBox2.Size = new Size(881, 66);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 4;
             pictureBox2.TabStop = false;
@@ -1178,7 +1959,7 @@
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Location = new Point(3, 23);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(381, 66);
+            pictureBox1.Size = new Size(881, 66);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
@@ -1200,8 +1981,8 @@
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Panel2.Cursor = Cursors.Default;
-            splitContainer1.Size = new Size(1121, 662);
-            splitContainer1.SplitterDistance = 120;
+            splitContainer1.Size = new Size(2121, 700);
+            splitContainer1.SplitterDistance = 126;
             splitContainer1.SplitterWidth = 8;
             splitContainer1.TabIndex = 0;
             // 
@@ -1209,7 +1990,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1251, 750);
+            ClientSize = new Size(2251, 788);
             Controls.Add(splitContainer1);
             Controls.Add(panel1);
             Controls.Add(statusStrip1);
@@ -1240,25 +2021,80 @@
             splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            pencilPanel.ResumeLayout(false);
+            pencilPanel.PerformLayout();
+            pencilGroup.ResumeLayout(false);
+            pencilGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pencilBar).EndInit();
+            negaPosiGreenPanel.ResumeLayout(false);
+            negaPosiGreenPanel.PerformLayout();
+            negaPosiGreenGroup.ResumeLayout(false);
+            negaPosiGreenGroup.PerformLayout();
+            negaPosiBluePanel.ResumeLayout(false);
+            negaPosiBluePanel.PerformLayout();
+            negaPosiBlueGroup.ResumeLayout(false);
+            negaPosiBlueGroup.PerformLayout();
+            negaPosiRedPanel.ResumeLayout(false);
+            negaPosiRedPanel.PerformLayout();
+            negaPosiRedGroup.ResumeLayout(false);
+            negaPosiRedGroup.PerformLayout();
+            negaPosiAllPanel.ResumeLayout(false);
+            negaPosiAllPanel.PerformLayout();
+            negaPosiAllGroup.ResumeLayout(false);
+            negaPosiAllGroup.PerformLayout();
+            grayscalePanel.ResumeLayout(false);
+            grayscalePanel.PerformLayout();
+            grayscaleGroup.ResumeLayout(false);
+            grayscaleGroup.PerformLayout();
+            sepiaPanel.ResumeLayout(false);
+            sepiaPanel.PerformLayout();
+            sepiaGroup.ResumeLayout(false);
+            sepiaGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)sepiaBar).EndInit();
+            pixelPanel.ResumeLayout(false);
+            pixelPanel.PerformLayout();
+            pixelGroup.ResumeLayout(false);
+            pixelGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pixelBar).EndInit();
+            oilpaintingPanel.ResumeLayout(false);
+            oilpaintingPanel.PerformLayout();
+            oilpaintingGroup.ResumeLayout(false);
+            oilpaintingGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)oilpaintingBar).EndInit();
+            watercolorPanel.ResumeLayout(false);
+            watercolorPanel.PerformLayout();
+            watercolorGroup.ResumeLayout(false);
+            watercolorGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)watercolorBar).EndInit();
+            dimmingPanel.ResumeLayout(false);
+            dimmingPanel.PerformLayout();
+            dimmingGroup.ResumeLayout(false);
+            dimmingGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dimmingBar).EndInit();
             mosaicPanel.ResumeLayout(false);
+            mosaicPanel.PerformLayout();
             mosaicGroup.ResumeLayout(false);
             mosaicGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)mosaicBar).EndInit();
             ContourExPanel.ResumeLayout(false);
+            ContourExPanel.PerformLayout();
             ContourExGroup.ResumeLayout(false);
             ContourExGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ContourExBar).EndInit();
             noisePanel.ResumeLayout(false);
+            noisePanel.PerformLayout();
             noiseGroup.ResumeLayout(false);
             noiseGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)noiseBar).EndInit();
             embossPanel.ResumeLayout(false);
+            embossPanel.PerformLayout();
             embossGroup.ResumeLayout(false);
             embossGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)embossBar).EndInit();
             monochromePanel.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
+            monochromePanel.PerformLayout();
+            monochromeGroup.ResumeLayout(false);
+            monochromeGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)monochromeBar).EndInit();
             sharpPanel.ResumeLayout(false);
             sharpPanel.PerformLayout();
@@ -1323,7 +2159,7 @@
         private Button colorFilterResetBtn;
         private TextBox blurTxt;
         private TrackBar blurBar;
-        private GroupBox groupBox2;
+        private GroupBox monochromeGroup;
         private TextBox sharpTxt;
         private TrackBar sharpBar;
         private TableLayoutPanel tableLayoutPanel1;
@@ -1343,9 +2179,9 @@
         private GroupBox blurGroup;
         private GroupBox sharpGroup;
         private Panel sharpPanel;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox blurHintTxt;
+        private TextBox sharpHintTxt;
+        private TextBox explanationTxt;
         private Panel monochromePanel;
         private GroupBox embossGroup;
         private Panel noisePanel;
@@ -1360,5 +2196,60 @@
         private GroupBox mosaicGroup;
         private TextBox mosaicTxt;
         private TrackBar mosaicBar;
+        private Panel pixelPanel;
+        private GroupBox pixelGroup;
+        private TextBox pixelTxt;
+        private TrackBar pixelBar;
+        private Panel dimmingPanel;
+        private GroupBox dimmingGroup;
+        private TextBox dimmingTxt;
+        private TrackBar dimmingBar;
+        private TextBox dimmingHintTxt;
+        private Panel sepiaPanel;
+        private TextBox sepiaHintTxt;
+        private GroupBox sepiaGroup;
+        private Panel grayscalePanel;
+        private TextBox grayscaleHintTxt;
+        private GroupBox grayscaleGroup;
+        private Label label11;
+        private Panel negaPosiAllPanel;
+        private TextBox negaPosiAllHintTxt;
+        private GroupBox negaPosiAllGroup;
+        private Label label12;
+        private Panel negaPosiRedPanel;
+        private TextBox negaPosiRedHintTxt;
+        private GroupBox negaPosiRedGroup;
+        private Label label13;
+        private Panel negaPosiGreenPanel;
+        private TextBox negaPosiGreenHintTxt;
+        private GroupBox negaPosiGreenGroup;
+        private Label label14;
+        private Panel negaPosiBluePanel;
+        private TextBox negaPosiBlueHintTxt;
+        private GroupBox negaPosiBlueGroup;
+        private Label label15;
+        private TextBox monochromeHintTxt;
+        private TextBox embossHintTxt;
+        private TextBox noiseHintTxt;
+        private TextBox ContourExHintTxt;
+        private TextBox mosaicHintTxt;
+        private TextBox pixelHintTxt;
+        private Panel pencilPanel;
+        private TextBox pencilHintTxt;
+        private GroupBox pencilGroup;
+        private TextBox pencilTxt;
+        private TrackBar pencilBar;
+        private Panel watercolorPanel;
+        private TextBox watercolorHintTxt;
+        private GroupBox watercolorGroup;
+        private TextBox watercolorTxt;
+        private TrackBar watercolorBar;
+        private Panel oilpaintingPanel;
+        private TextBox oilpaintingHintTxt;
+        private GroupBox oilpaintingGroup;
+        private TextBox oilpaintingTxt;
+        private TrackBar oilpaintingBar;
+        private TextBox sepiaTxt;
+        private TrackBar sepiaBar;
     }
 }

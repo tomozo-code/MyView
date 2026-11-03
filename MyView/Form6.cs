@@ -80,6 +80,9 @@ namespace MyView
 
         private bool _isUpdatingTreeView = false;
 
+        // セピア強度（0～99）
+        private int _sepiaStrength = 99;
+
         // ============================================================
         // コンストラクタ
         // ============================================================
@@ -108,18 +111,76 @@ namespace MyView
 
             // ぼかしパネル
             blurPanel.Dock = DockStyle.Fill;
+            blurGroup.Dock = DockStyle.Top;
+            blurHintTxt.Dock = DockStyle.Fill;
             // シャープパネル
             sharpPanel.Dock = DockStyle.Fill;
+            sharpGroup.Dock = DockStyle.Top;
+            sharpHintTxt.Dock = DockStyle.Top;
+            // セピア
+            sepiaPanel.Dock = DockStyle.Fill;
+            sepiaGroup.Dock = DockStyle.Top;
+            sepiaHintTxt.Dock = DockStyle.Fill;
+            // グレースケール
+            grayscalePanel.Dock = DockStyle.Fill;
+            grayscaleGroup.Dock = DockStyle.Top;
+            grayscaleHintTxt.Dock = DockStyle.Fill;
+            // ネガポジ反転(全チャンネル)
+            negaPosiAllPanel.Dock = DockStyle.Fill;
+            negaPosiAllGroup.Dock = DockStyle.Top;
+            negaPosiAllHintTxt.Dock = DockStyle.Fill;
+            // ネガポジ反転(赤(R))
+            negaPosiRedPanel.Dock = DockStyle.Fill;
+            negaPosiRedGroup.Dock = DockStyle.Top;
+            negaPosiRedHintTxt.Dock = DockStyle.Fill;
+            // ネガポジ反転(緑(G))
+            negaPosiGreenPanel.Dock = DockStyle.Fill;
+            negaPosiGreenGroup.Dock = DockStyle.Top;
+            negaPosiGreenHintTxt.Dock = DockStyle.Fill;
+            // ネガポジ反転(青(B))
+            negaPosiBluePanel.Dock = DockStyle.Fill;
+            negaPosiBlueGroup.Dock = DockStyle.Top;
+            negaPosiBlueHintTxt.Dock = DockStyle.Fill;
             // モノクロームパネル
             monochromePanel.Dock = DockStyle.Fill;
+            monochromeGroup.Dock = DockStyle.Top;
+            monochromeHintTxt.Dock = DockStyle.Fill;
             // エンボスパネル
             embossPanel.Dock = DockStyle.Fill;
+            embossGroup.Dock = DockStyle.Top;
+            embossHintTxt.Dock = DockStyle.Fill;
             // ノイズパネル
             noisePanel.Dock = DockStyle.Fill;
+            noiseGroup.Dock = DockStyle.Top;
+            noiseHintTxt.Dock = DockStyle.Fill;
             // 輪郭抽出
             ContourExPanel.Dock = DockStyle.Fill;
+            ContourExGroup.Dock = DockStyle.Top;
+            ContourExHintTxt.Dock = DockStyle.Fill;
             // モザイク
             mosaicPanel.Dock = DockStyle.Fill;
+            mosaicGroup.Dock = DockStyle.Top;
+            mosaicHintTxt.Dock = DockStyle.Fill;
+            // ピクセル化
+            pixelPanel.Dock = DockStyle.Fill;
+            pixelGroup.Dock = DockStyle.Top;
+            pixelHintTxt.Dock = DockStyle.Fill;
+            // 周辺減光
+            dimmingPanel.Dock = DockStyle.Fill;
+            dimmingGroup.Dock = DockStyle.Top;
+            dimmingHintTxt.Dock = DockStyle.Fill;
+            // 鉛筆画風
+            pencilPanel.Dock = DockStyle.Fill;
+            pencilGroup.Dock = DockStyle.Top;
+            pencilHintTxt.Dock = DockStyle.Fill;
+            // 水彩画風
+            watercolorPanel.Dock = DockStyle.Fill;
+            watercolorGroup.Dock = DockStyle.Top;
+            watercolorHintTxt.Dock = DockStyle.Fill;
+            // 油絵風
+            oilpaintingPanel.Dock = DockStyle.Fill;
+            oilpaintingGroup.Dock = DockStyle.Top;
+            oilpaintingHintTxt.Dock = DockStyle.Fill;
 
 
             splitContainer2.Dock = DockStyle.Fill;
@@ -377,6 +438,10 @@ namespace MyView
             // 色調加工のTreeViewチェックを解除
             ResetTreeViewChecks("色調加工");
 
+            // セピア
+            sepiaBar.Value = 99;
+            sepiaTxt.Text = "99";
+
             // モノクロームのしきい値
             monochromeBar.Value = 128;
             monochromeTxt.Text = "128";
@@ -388,34 +453,65 @@ namespace MyView
             _negativeChannel = NegativeChannel.All;
 
             // 画像効果
-            // 基本補正・輪郭・質感のTreeViewチェックを解除
+            // 基本補正のTreeViewチェックを解除
             ResetTreeViewChecks("基本補正");
-            ResetTreeViewChecks("輪郭・質感");
 
             // ぼかし
-            blurBar.Value = 0;
-            blurTxt.Text = "0";
+            blurBar.Value = 10;
+            blurTxt.Text = "10";
 
             // シャープ
-            sharpBar.Value = 0;
-            sharpTxt.Text = "0";
+            sharpBar.Value = 99;
+            sharpTxt.Text = "99";
+
+            // 輪郭・質感のTreeViewチェックを解除
+            ResetTreeViewChecks("輪郭・質感");
 
             // エンボス
-            embossBar.Value = 0;
-            embossTxt.Text = "0";
-            embossCheck.Checked = false;
+            embossBar.Value = 30;
+            embossTxt.Text = "30";
+            //embossCheck.Checked = false;
 
             // ノイズ
-            noiseBar.Value = 0;
-            noiseTxt.Text = "0";
+            noiseBar.Value = 99;
+            noiseTxt.Text = "99";
 
             // 輪郭抽出
-            ContourExBar.Value = 0;
-            ContourExTxt.Text = "0";
+            ContourExBar.Value =50;
+            ContourExTxt.Text = "50";
+
+            // 加工・変形のTreeViewチェックを解除
+            ResetTreeViewChecks("加工・変形");
 
             // モザイク
-            mosaicBar.Value = 0;
-            mosaicTxt.Text = "0";
+            mosaicBar.Value = 10;
+            mosaicTxt.Text = "10";
+
+            // ピクセル化
+            pixelBar.Value = 10;
+            pixelTxt.Text = "10";
+
+            // 光・レンズのTreeViewチェックを解除
+            ResetTreeViewChecks("光・レンズ");
+
+            // 周辺減光
+            dimmingBar.Value = 100;
+            dimmingTxt.Text = "100";
+
+            // アート表現のTreeViewチェックを解除
+            ResetTreeViewChecks("アート表現");
+
+            // 鉛筆画風
+            pencilBar.Value = 99;
+            pencilTxt.Text = "99";
+
+            // 水彩画風
+            watercolorBar.Value = 50;
+            watercolorTxt.Text = "50";
+
+            // 油絵風
+            oilpaintingBar.Value = 50;
+            oilpaintingTxt.Text = "50";
 
             // 画像効果の選択状態
             _currentImageEffect = ImageEffect.None;
@@ -645,17 +741,11 @@ namespace MyView
 
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr sourceRow =
-                        IntPtr.Add(sourceData.Scan0, y * sourceStride);
+                    IntPtr sourceRow = IntPtr.Add(sourceData.Scan0, y * sourceStride);
 
-                    IntPtr resultRow =
-                        IntPtr.Add(resultData.Scan0, y * resultStride);
+                    IntPtr resultRow = IntPtr.Add(resultData.Scan0, y * resultStride);
 
-                    Marshal.Copy(
-                        sourceRow,
-                        sourceBytes,
-                        0,
-                        sourceBytes.Length);
+                    Marshal.Copy(sourceRow, sourceBytes, 0, sourceBytes.Length);
 
                     for (int x = 0; x < width; x++)
                     {
@@ -699,14 +789,11 @@ namespace MyView
                             0.587 * g +
                             0.114 * b;
 
-                        r = luminance +
-                            (r - luminance) * saturationFactor;
+                        r = luminance + (r - luminance) * saturationFactor;
 
-                        g = luminance +
-                            (g - luminance) * saturationFactor;
+                        g = luminance + (g - luminance) * saturationFactor;
 
-                        b = luminance +
-                            (b - luminance) * saturationFactor;
+                        b = luminance + (b - luminance) * saturationFactor;
 
                         // B. 色調フィルター
                         switch (_currentFilter)
@@ -718,14 +805,44 @@ namespace MyView
                             // セピア
                             case ColorFilter.Sepia:
                                 {
+                                    // セピア変換前のRGBを保存
+                                    double originalR = r;
+                                    double originalG = g;
+                                    double originalB = b;
+
+                                    // セピア色に変換
                                     double sepiaR =
-                                        0.393 * r + 0.769 * g + 0.189 * b;
+                                        0.393 * originalR +
+                                        0.769 * originalG +
+                                        0.189 * originalB;
 
                                     double sepiaG =
-                                        0.349 * r + 0.686 * g + 0.168 * b;
+                                        0.349 * originalR +
+                                        0.686 * originalG +
+                                        0.168 * originalB;
 
                                     double sepiaB =
-                                        0.272 * r + 0.534 * g + 0.131 * b;
+                                        0.272 * originalR +
+                                        0.534 * originalG +
+                                        0.131 * originalB;
+
+                                    // 強度に応じて元画像とセピア画像を合成
+                                    double ratio = Math.Clamp(_sepiaStrength, 0, 99) / 99.0;
+
+                                    r = originalR * (1.0 - ratio) + sepiaR * ratio;
+                                    g = originalG * (1.0 - ratio) + sepiaG * ratio;
+                                    b = originalB * (1.0 - ratio) + sepiaB * ratio;
+
+                                    break;
+                                }
+                            /*
+                            case ColorFilter.Sepia:
+                                {
+                                    double sepiaR = 0.393 * r + 0.769 * g + 0.189 * b;
+
+                                    double sepiaG = 0.349 * r + 0.686 * g + 0.168 * b;
+
+                                    double sepiaB = 0.272 * r + 0.534 * g + 0.131 * b;
 
                                     r = sepiaR;
                                     g = sepiaG;
@@ -733,8 +850,9 @@ namespace MyView
 
                                     break;
                                 }
+                            */
 
-                            // グレースケール
+                            // グレースケール(RGBから輝度を計算 256階調の灰色)
                             case ColorFilter.Grayscale:
                                 {
                                     double gray =
@@ -752,11 +870,14 @@ namespace MyView
                             // モノクローム
                             case ColorFilter.Monochrome:
                                 {
+                                    // グレースケール(RGBから輝度を計算 256階調の灰色)に変換して
                                     double gray =
                                         0.299 * r +
                                         0.587 * g +
                                         0.114 * b;
-
+                                    // 白黒の2階調に変換
+                                    // 輝度がしきい値以上なら白（255）、輝度がしきい値未満なら黒（0）
+                                    // つまり、途中の灰色はすべて白か黒に振り分けられる
                                     byte mono =
                                         gray >= monochromeThreshold
                                             ? (byte)255
@@ -804,11 +925,7 @@ namespace MyView
                         resultBytes[index + 3] = alpha;
                     }
 
-                    Marshal.Copy(
-                        resultBytes,
-                        0,
-                        resultRow,
-                        resultBytes.Length);
+                    Marshal.Copy(resultBytes, 0, resultRow, resultBytes.Length);
                 }
             }
             finally
@@ -852,10 +969,7 @@ namespace MyView
         private Bitmap ApplyImageEffect(Bitmap input)
         {
             // まず入力画像を複製
-            Bitmap current = new Bitmap(
-                input.Width,
-                input.Height,
-                PixelFormat.Format32bppArgb);
+            Bitmap current = new Bitmap(input.Width, input.Height, PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(current))
             {
@@ -865,19 +979,16 @@ namespace MyView
             try
             {
                 // 1. ぼかし、またはシャープを適用
-                if (_currentImageEffect == ImageEffect.Blur &&
-                    blurBar.Value > 0)
+                if (_currentImageEffect == ImageEffect.Blur && blurBar.Value > 0)
                 {
-                    double sigma =
-                        0.1 + (blurBar.Value / 99.0) * 83.9;
+                    double sigma = 0.1 + (blurBar.Value / 255.0) * 83.9;
 
                     Bitmap next = ApplyFastGaussianBlur(current, sigma);
 
                     current.Dispose();
                     current = next;
                 }
-                else if (_currentImageEffect == ImageEffect.Sharpen &&
-                         sharpBar.Value > 0)
+                else if (_currentImageEffect == ImageEffect.Sharpen && sharpBar.Value > 0)
                 {
                     Bitmap next = ApplySharpen(current, sharpBar.Value);
 
@@ -885,8 +996,8 @@ namespace MyView
                     current = next;
                 }
 
-                // 2. エンボスを適用
-                if (embossBar.Value > 0)
+                // 2. エンボス
+                if (IsEffectEnabled("輪郭・質感", "エンボス") && embossBar.Value > 0)
                 {
                     Bitmap next = ApplyEmboss(current, embossBar.Value);
 
@@ -894,8 +1005,8 @@ namespace MyView
                     current = next;
                 }
 
-                // 3. ノイズを適用
-                if (IsNoiseEnabled() && noiseBar.Value > 0)
+                // 3. ノイズ
+                if (IsEffectEnabled("輪郭・質感", "ノイズ") && noiseBar.Value > 0)
                 {
                     Bitmap next = ApplyNoise(current, noiseBar.Value);
 
@@ -904,7 +1015,7 @@ namespace MyView
                 }
 
                 // 4. 輪郭抽出
-                if (IsContourExEnabled() && ContourExBar.Value > 0)
+                if (IsEffectEnabled("輪郭・質感", "輪郭抽出") && ContourExBar.Value > 0)
                 {
                     Bitmap next = ApplyContourExtraction(
                         current,
@@ -915,7 +1026,7 @@ namespace MyView
                 }
 
                 // 5.モザイク
-                if (IsMosaicEnabled() && mosaicBar.Value > 0)
+                if (IsEffectEnabled("加工・変形", "モザイク") && mosaicBar.Value > 0)
                 {
                     Bitmap next = ApplyMosaic(current, mosaicBar.Value);
 
@@ -923,6 +1034,50 @@ namespace MyView
                     current = next;
                 }
 
+                // 6. ピクセル化
+                if (IsEffectEnabled("加工・変形", "ピクセル化") && pixelBar.Value > 0)
+                {
+                    Bitmap next = ApplyPixelation(current, pixelBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
+
+                // 7.周辺減光
+                if (IsEffectEnabled("光・レンズ", "周辺減光") && dimmingBar.Value > 0)
+                {
+                    Bitmap next = ApplyVignette(current, dimmingBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
+
+                // 8. 鉛筆画風
+                if (IsEffectEnabled("アート表現", "鉛筆画風") && pencilBar.Value > 0)
+                {
+                    Bitmap next = ApplyPencilSketch(current, pencilBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
+
+                // 9. 水彩画風
+                if (IsEffectEnabled("アート表現", "水彩画風") && watercolorBar.Value > 0)
+                {
+                    Bitmap next = ApplyWatercolor(current, watercolorBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
+
+                // 10. 油絵風
+                if (IsEffectEnabled("アート表現", "油絵風") && oilpaintingBar.Value > 0)
+                {
+                    Bitmap next = Applyoilpainting(current, oilpaintingBar.Value);
+
+                    current.Dispose();
+                    current = next;
+                }
 
                 // 最終画像を返す
                 Bitmap result = current;
@@ -969,15 +1124,9 @@ namespace MyView
             {
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        sourceData.Scan0,
-                        y * sourceData.Stride);
+                    IntPtr row = IntPtr.Add(sourceData.Scan0, y * sourceData.Stride);
 
-                    Marshal.Copy(
-                        row,
-                        sourceBytes,
-                        y * stride,
-                        stride);
+                    Marshal.Copy(row, sourceBytes, y * stride, stride);
                 }
             }
             finally
@@ -990,9 +1139,7 @@ namespace MyView
             byte[] tempBytes = new byte[length];
             byte[] resultBytes = new byte[length];
 
-            // ----------------------------------------
             // ボックスブラーを3回繰り返す
-            // ----------------------------------------
             for (int pass = 0; pass < 3; pass++)
             {
                 // 横方向
@@ -1021,10 +1168,7 @@ namespace MyView
             }
 
             // 結果画像を作成
-            Bitmap result = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             BitmapData resultData = result.LockBits(
                 rect,
@@ -1035,15 +1179,9 @@ namespace MyView
             {
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        resultData.Scan0,
-                        y * resultData.Stride);
+                    IntPtr row = IntPtr.Add(resultData.Scan0, y * resultData.Stride);
 
-                    Marshal.Copy(
-                        currentBytes,
-                        y * stride,
-                        row,
-                        stride);
+                    Marshal.Copy(currentBytes, y * stride, row, stride);
                 }
             }
             catch
@@ -1101,10 +1239,7 @@ namespace MyView
 
                     // 次の画素へ移動するため、
                     // 左端の画素を合計から引く
-                    int removeX = Math.Clamp(
-                        x - radius,
-                        0,
-                        width - 1);
+                    int removeX = Math.Clamp(x - radius, 0, width - 1);
 
                     int removeIndex = rowOffset + removeX * 4;
 
@@ -1113,10 +1248,7 @@ namespace MyView
                     sumR -= source[removeIndex + 2];
 
                     // 右端の画素を合計に加える
-                    int addX = Math.Clamp(
-                        x + radius + 1,
-                        0,
-                        width - 1);
+                    int addX = Math.Clamp(x + radius + 1, 0, width - 1);
 
                     int addIndex = rowOffset + addX * 4;
 
@@ -1194,10 +1326,7 @@ namespace MyView
             int width = input.Width;
             int height = input.Height;
 
-            Bitmap result = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             Rectangle rect = new Rectangle(0, 0, width, height);
 
@@ -1206,15 +1335,9 @@ namespace MyView
 
             try
             {
-                sourceData = input.LockBits(
-                    rect,
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
+                sourceData = input.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                resultData = result.LockBits(
-                    rect,
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppArgb);
+                resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
                 int sourceStride = sourceData.Stride;
                 int resultStride = resultData.Stride;
@@ -1229,15 +1352,9 @@ namespace MyView
                 // 元画像を配列にコピー
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        sourceData.Scan0,
-                        y * sourceStride);
+                    IntPtr row = IntPtr.Add(sourceData.Scan0, y * sourceStride);
 
-                    Marshal.Copy(
-                        row,
-                        sourceBytes,
-                        y * sourceRowSize,
-                        sourceRowSize);
+                    Marshal.Copy(row, sourceBytes, y * sourceRowSize, sourceRowSize);
                 }
 
                 // 横方向のぼかし
@@ -1264,12 +1381,10 @@ namespace MyView
                                 sourceBytes[centerIndex + c] * 2 +
                                 sourceBytes[rightIndex + c];
 
-                            horizontalBytes[outputIndex + c] =
-                                (byte)((value + 2) / 4);
+                            horizontalBytes[outputIndex + c] = (byte)((value + 2) / 4);
                         }
 
-                        horizontalBytes[outputIndex + 3] =
-                            sourceBytes[centerIndex + 3];
+                        horizontalBytes[outputIndex + 3] = sourceBytes[centerIndex + 3];
                     }
                 }
 
@@ -1308,31 +1423,22 @@ namespace MyView
                             double blurred = blurredValue / 4.0;
                             double original = sourceBytes[centerIndex + c];
 
-                            double output =
-                                original +
-                                (original - blurred) * sharpAmount;
+                            double output = original + (original - blurred) * sharpAmount;
 
                             resultBytes[outputIndex + c] = ClampByte(output);
                         }
 
                         // Alpha値は元画像を維持
-                        resultBytes[outputIndex + 3] =
-                            sourceBytes[centerIndex + 3];
+                        resultBytes[outputIndex + 3] = sourceBytes[centerIndex + 3];
                     }
                 }
 
                 // 結果をBitmapへコピー
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        resultData.Scan0,
-                        y * resultStride);
+                    IntPtr row = IntPtr.Add(resultData.Scan0, y * resultStride);
 
-                    Marshal.Copy(
-                        resultBytes,
-                        y * resultRowSize,
-                        row,
-                        resultRowSize);
+                    Marshal.Copy(resultBytes, y * resultRowSize, row, resultRowSize);
                 }
             }
             catch
@@ -1355,11 +1461,11 @@ namespace MyView
 
         // ============================================================
         // エンボス（浮き彫り）
-        // strength : 0～99
+        // strength : 0～255
         // ============================================================
         private Bitmap ApplyEmboss(Bitmap input, int strength)
         {
-            strength = Math.Clamp(strength, 0, 99);
+            strength = Math.Clamp(strength, 0, 255);
 
             if (strength == 0)
                 return new Bitmap(input);
@@ -1367,20 +1473,14 @@ namespace MyView
             int width = input.Width;
             int height = input.Height;
 
-            Bitmap source = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap source = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(source))
             {
                 g.DrawImage(input, 0, 0, width, height);
             }
 
-            Bitmap result = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             BitmapData? sourceData = null;
             BitmapData? resultData = null;
@@ -1389,30 +1489,18 @@ namespace MyView
             {
                 Rectangle rect = new Rectangle(0, 0, width, height);
 
-                sourceData = source.LockBits(
-                    rect,
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
+                sourceData = source.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                resultData = result.LockBits(
-                    rect,
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppArgb);
+                resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
                 int sourceStride = sourceData.Stride;
                 int resultStride = resultData.Stride;
 
-                byte[] sourceBytes =
-                    new byte[Math.Abs(sourceStride) * height];
+                byte[] sourceBytes = new byte[Math.Abs(sourceStride) * height];
 
-                byte[] resultBytes =
-                    new byte[Math.Abs(resultStride) * height];
+                byte[] resultBytes = new byte[Math.Abs(resultStride) * height];
 
-                Marshal.Copy(
-                    sourceData.Scan0,
-                    sourceBytes,
-                    0,
-                    sourceBytes.Length);
+                Marshal.Copy(sourceData.Scan0, sourceBytes, 0, sourceBytes.Length);
 
                 // 凹凸の反転
                 double direction = embossCheck.Checked ? -1.0 : 1.0;
@@ -1449,9 +1537,7 @@ namespace MyView
                         double bottom = GetLuminance(x, y + 1);
                         double bottomRight = GetLuminance(x + 1, y + 1);
 
-                        double edge =
-                            -topLeft - top - left
-                            + right + bottom + bottomRight;
+                        double edge = -topLeft - top - left + right + bottom + bottomRight;
 
                         // 凹凸の反転
                         //double direction = embossCheck.Checked ? -1.0 : 1.0;
@@ -1473,11 +1559,7 @@ namespace MyView
                     }
                 }
 
-                Marshal.Copy(
-                    resultBytes,
-                    0,
-                    resultData.Scan0,
-                    resultBytes.Length);
+                Marshal.Copy(resultBytes, 0, resultData.Scan0, resultBytes.Length);
             }
             catch
             {
@@ -1499,31 +1581,31 @@ namespace MyView
         }
 
         // ============================================================
-        // TreeViewでモザイクが有効になっているか確認
+        // TreeViewの指定した効果が有効になっているか確認
         // ============================================================
-        private bool IsMosaicEnabled()
+        private bool IsEffectEnabled(string parentText, string effectText)
         {
             TreeNode? parentNode = treeView1.Nodes
                 .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "加工・変形");
+                .FirstOrDefault(node => node.Text == parentText);
 
             if (parentNode == null)
                 return false;
 
-            TreeNode? mosaicNode = parentNode.Nodes
+            TreeNode? effectNode = parentNode.Nodes
                 .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "モザイク");
+                .FirstOrDefault(node => node.Text == effectText);
 
-            return mosaicNode?.Checked == true;
+            return effectNode?.Checked == true;
         }
 
         // ============================================================
         // モザイク処理
-        // strength : 0～99
+        // strength : 0～255
         // ============================================================
         private Bitmap ApplyMosaic(Bitmap input, int strength)
         {
-            strength = Math.Clamp(strength, 0, 99);
+            strength = Math.Clamp(strength, 0, 255);
 
             if (strength == 0)
                 return new Bitmap(input);
@@ -1536,20 +1618,14 @@ namespace MyView
             int blockSize = 2 + (int)Math.Round(strength * 48.0 / 99.0);
 
             // 元画像を32bit形式に変換
-            Bitmap source = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap source = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(source))
             {
                 g.DrawImage(input, 0, 0, width, height);
             }
 
-            Bitmap result = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             Rectangle rect = new Rectangle(0, 0, width, height);
 
@@ -1558,15 +1634,9 @@ namespace MyView
 
             try
             {
-                sourceData = source.LockBits(
-                    rect,
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
+                sourceData = source.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                resultData = result.LockBits(
-                    rect,
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppArgb);
+                resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
                 int sourceStride = sourceData.Stride;
                 int resultStride = resultData.Stride;
@@ -1574,24 +1644,16 @@ namespace MyView
                 int sourceRowSize = Math.Abs(sourceStride);
                 int resultRowSize = Math.Abs(resultStride);
 
-                byte[] sourceBytes =
-                    new byte[sourceRowSize * height];
+                byte[] sourceBytes = new byte[sourceRowSize * height];
 
-                byte[] resultBytes =
-                    new byte[resultRowSize * height];
+                byte[] resultBytes = new byte[resultRowSize * height];
 
                 // 元画像を配列にコピー
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        sourceData.Scan0,
-                        y * sourceStride);
+                    IntPtr row = IntPtr.Add(sourceData.Scan0, y * sourceStride);
 
-                    Marshal.Copy(
-                        row,
-                        sourceBytes,
-                        y * sourceRowSize,
-                        sourceRowSize);
+                    Marshal.Copy(row, sourceBytes, y * sourceRowSize, sourceRowSize);
                 }
 
                 // ブロック単位で処理
@@ -1609,9 +1671,7 @@ namespace MyView
 
                         int pixelCount = 0;
 
-                        // ----------------------------------------
                         // ① ブロック内のRGB合計を計算
-                        // ----------------------------------------
                         for (int y = blockY; y < endY; y++)
                         {
                             int rowOffset = y * sourceRowSize;
@@ -1634,9 +1694,7 @@ namespace MyView
                         byte averageG = (byte)(sumG / pixelCount);
                         byte averageR = (byte)(sumR / pixelCount);
 
-                        // ----------------------------------------
                         // ② ブロック全体を平均色で塗りつぶす
-                        // ----------------------------------------
                         for (int y = blockY; y < endY; y++)
                         {
                             int sourceRowOffset = y * sourceRowSize;
@@ -1665,15 +1723,9 @@ namespace MyView
                 // 結果をBitmapへコピー
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        resultData.Scan0,
-                        y * resultStride);
+                    IntPtr row = IntPtr.Add(resultData.Scan0, y * resultStride);
 
-                    Marshal.Copy(
-                        resultBytes,
-                        y * resultRowSize,
-                        row,
-                        resultRowSize);
+                    Marshal.Copy(resultBytes, y * resultRowSize, row, resultRowSize);
                 }
             }
             catch
@@ -1696,31 +1748,12 @@ namespace MyView
         }
 
         // ============================================================
-        // TreeViewでノイズが有効になっているか確認
+        // ピクセル化
+        // strength : 0～255
         // ============================================================
-        private bool IsNoiseEnabled()
+        private Bitmap ApplyPixelation(Bitmap input, int strength)
         {
-            TreeNode? parentNode = treeView1.Nodes
-                .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "輪郭・質感");
-
-            if (parentNode == null)
-                return false;
-
-            TreeNode? noiseNode = parentNode.Nodes
-                .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "ノイズ");
-
-            return noiseNode?.Checked == true;
-        }
-
-        // ============================================================
-        // ノイズ処理（白黒の粒状ノイズ）
-        // strength : 0～99
-        // ============================================================
-        private Bitmap ApplyNoise(Bitmap input, int strength)
-        {
-            strength = Math.Clamp(strength, 0, 99);
+            strength = Math.Clamp(strength, 0, 255);
 
             if (strength == 0)
                 return new Bitmap(input);
@@ -1728,10 +1761,76 @@ namespace MyView
             int width = input.Width;
             int height = input.Height;
 
-            Bitmap result = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            // 強度から縮小率を決定
+            // 強度が大きいほど縮小画像が小さくなる
+            int blockSize = 1 + (int)Math.Round(strength * 49.0 / 99.0);
+
+            int smallWidth = Math.Max(1, (int)Math.Ceiling(width / (double)blockSize));
+
+            int smallHeight = Math.Max(1, (int)Math.Ceiling(height / (double)blockSize));
+
+            Bitmap small = new Bitmap(smallWidth, smallHeight, PixelFormat.Format32bppArgb);
+
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            try
+            {
+                // ① 元画像を縮小する
+                using (Graphics g = Graphics.FromImage(small))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+
+                    g.DrawImage(
+                        input,
+                        new Rectangle(0, 0, smallWidth, smallHeight),
+                        new Rectangle(0, 0, width, height),
+                        GraphicsUnit.Pixel);
+                }
+
+                // ② 縮小画像を元の大きさに拡大する
+                using (Graphics g = Graphics.FromImage(result))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+
+                    g.DrawImage(
+                        small,
+                        new Rectangle(0, 0, width, height),
+                        new Rectangle(0, 0, smallWidth, smallHeight),
+                        GraphicsUnit.Pixel);
+                }
+
+                return result;
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+            finally
+            {
+                small.Dispose();
+            }
+        }
+
+        // ============================================================
+        // ノイズ処理（白黒の粒状ノイズ）
+        // strength : 0～255
+        // ============================================================
+        private Bitmap ApplyNoise(Bitmap input, int strength)
+        {
+            strength = Math.Clamp(strength, 0, 255);
+
+            if (strength == 0)
+                return new Bitmap(input);
+
+            int width = input.Width;
+            int height = input.Height;
+
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             Rectangle rect = new Rectangle(0, 0, width, height);
 
@@ -1740,15 +1839,9 @@ namespace MyView
 
             try
             {
-                sourceData = input.LockBits(
-                    rect,
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
+                sourceData = input.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                resultData = result.LockBits(
-                    rect,
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppArgb);
+                resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
                 int sourceStride = sourceData.Stride;
                 int resultStride = resultData.Stride;
@@ -1761,13 +1854,9 @@ namespace MyView
 
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr sourcePtr = IntPtr.Add(
-                        sourceData.Scan0,
-                        y * sourceStride);
+                    IntPtr sourcePtr = IntPtr.Add(sourceData.Scan0, y * sourceStride);
 
-                    IntPtr resultPtr = IntPtr.Add(
-                        resultData.Scan0,
-                        y * resultStride);
+                    IntPtr resultPtr = IntPtr.Add(resultData.Scan0, y * resultStride);
 
                     Marshal.Copy(
                         sourcePtr,
@@ -1780,29 +1869,20 @@ namespace MyView
                         int index = x * 4;
 
                         // -strength ～ +strength の範囲でノイズを生成
-                        int noise = random.Next(
-                            -strength,
-                            strength + 1);
+                        int noise = random.Next(-strength, strength + 1);
 
                         // RGBに同じ値を加える（白黒ノイズ）
-                        resultRow[index] = ClampByte(
-                            sourceRow[index] + noise);
+                        resultRow[index] = ClampByte(sourceRow[index] + noise);
 
-                        resultRow[index + 1] = ClampByte(
-                            sourceRow[index + 1] + noise);
+                        resultRow[index + 1] = ClampByte(sourceRow[index + 1] + noise);
 
-                        resultRow[index + 2] = ClampByte(
-                            sourceRow[index + 2] + noise);
+                        resultRow[index + 2] = ClampByte(sourceRow[index + 2] + noise);
 
                         // 透明度は元画像を維持
                         resultRow[index + 3] = sourceRow[index + 3];
                     }
 
-                    Marshal.Copy(
-                        resultRow,
-                        0,
-                        resultPtr,
-                        resultRow.Length);
+                    Marshal.Copy(resultRow, 0, resultPtr, resultRow.Length);
                 }
             }
             catch
@@ -1823,31 +1903,12 @@ namespace MyView
         }
 
         // ============================================================
-        // TreeViewで輪郭抽出が有効になっているか確認
+        // 周辺減光
+        // strength : 0～255
         // ============================================================
-        private bool IsContourExEnabled()
+        private Bitmap ApplyVignette(Bitmap input, int strength)
         {
-            TreeNode? parentNode = treeView1.Nodes
-                .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "輪郭・質感");
-
-            if (parentNode == null)
-                return false;
-
-            TreeNode? contourNode = parentNode.Nodes
-                .Cast<TreeNode>()
-                .FirstOrDefault(node => node.Text == "輪郭抽出");
-
-            return contourNode?.Checked == true;
-        }
-
-        // ============================================================
-        // 輪郭抽出（Sobelフィルター）
-        // strength : 0～99
-        // ============================================================
-        private Bitmap ApplyContourExtraction(Bitmap input, int strength)
-        {
-            strength = Math.Clamp(strength, 0, 99);
+            strength = Math.Clamp(strength, 0, 255);
 
             if (strength == 0)
                 return new Bitmap(input);
@@ -1855,10 +1916,7 @@ namespace MyView
             int width = input.Width;
             int height = input.Height;
 
-            Bitmap source = new Bitmap(
-                width,
-                height,
-                PixelFormat.Format32bppArgb);
+            Bitmap source = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(source))
             {
@@ -1908,6 +1966,135 @@ namespace MyView
                         sourceBytes,
                         y * sourceRowSize,
                         sourceRowSize);
+                }
+
+                // 画像中心
+                double centerX = (width - 1) / 2.0;
+                double centerY = (height - 1) / 2.0;
+
+                // 中心から四隅までの最大距離
+                double maxDistance = Math.Sqrt(
+                    centerX * centerX +
+                    centerY * centerY);
+
+                // 周辺減光の強さ
+                double amount = strength / 99.0 * 0.85;
+
+                for (int y = 0; y < height; y++)
+                {
+                    int sourceRowOffset = y * sourceRowSize;
+                    int resultRowOffset = y * resultRowSize;
+
+                    for (int x = 0; x < width; x++)
+                    {
+                        int sourceIndex = sourceRowOffset + x * 4;
+                        int resultIndex = resultRowOffset + x * 4;
+
+                        // 中心からの距離を0～1に正規化
+                        double dx = (x - centerX) / maxDistance;
+                        double dy = (y - centerY) / maxDistance;
+
+                        double distance = Math.Sqrt(dx * dx + dy * dy);
+
+                        // 中心から離れるほど暗くする
+                        double vignette = distance * distance;
+
+                        double factor = 1.0 - amount * vignette;
+
+                        factor = Math.Clamp(factor, 0.0, 1.0);
+
+                        // BGRA形式
+                        resultBytes[resultIndex] =
+                            ClampByte(sourceBytes[sourceIndex] * factor);
+
+                        resultBytes[resultIndex + 1] =
+                            ClampByte(sourceBytes[sourceIndex + 1] * factor);
+
+                        resultBytes[resultIndex + 2] =
+                            ClampByte(sourceBytes[sourceIndex + 2] * factor);
+
+                        // 透明度は元画像を維持
+                        resultBytes[resultIndex + 3] =
+                            sourceBytes[sourceIndex + 3];
+                    }
+                }
+
+                // 結果をBitmapへコピー
+                for (int y = 0; y < height; y++)
+                {
+                    IntPtr row = IntPtr.Add(resultData.Scan0, y * resultStride);
+
+                    Marshal.Copy(resultBytes, y * resultRowSize, row, resultRowSize);
+                }
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+            finally
+            {
+                if (sourceData != null)
+                    source.UnlockBits(sourceData);
+
+                if (resultData != null)
+                    result.UnlockBits(resultData);
+
+                source.Dispose();
+            }
+
+            return result;
+        }
+
+        // ============================================================
+        // 輪郭抽出（Sobelフィルター）
+        // strength : 0～255
+        // ============================================================
+        private Bitmap ApplyContourExtraction(Bitmap input, int strength)
+        {
+            strength = Math.Clamp(strength, 0, 255);
+
+            if (strength == 0)
+                return new Bitmap(input);
+
+            int width = input.Width;
+            int height = input.Height;
+
+            Bitmap source = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(source))
+            {
+                g.DrawImage(input, 0, 0, width, height);
+            }
+
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            Rectangle rect = new Rectangle(0, 0, width, height);
+
+            BitmapData? sourceData = null;
+            BitmapData? resultData = null;
+
+            try
+            {
+                sourceData = source.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+                resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+                int sourceStride = sourceData.Stride;
+                int resultStride = resultData.Stride;
+
+                int sourceRowSize = Math.Abs(sourceStride);
+                int resultRowSize = Math.Abs(resultStride);
+
+                byte[] sourceBytes = new byte[sourceRowSize * height];
+                byte[] resultBytes = new byte[resultRowSize * height];
+
+                // 元画像を配列にコピー
+                for (int y = 0; y < height; y++)
+                {
+                    IntPtr row = IntPtr.Add(sourceData.Scan0, y * sourceStride);
+
+                    Marshal.Copy(row, sourceBytes, y * sourceRowSize, sourceRowSize);
                 }
 
                 // 輝度を取得する
@@ -1956,8 +2143,7 @@ namespace MyView
                             + bl + 2.0 * bc + br;
 
                         // 輪郭の強さを計算
-                        double magnitude = Math.Sqrt(
-                            gx * gx + gy * gy);
+                        double magnitude = Math.Sqrt(gx * gx + gy * gy);
 
                         // 輪郭の強さを元画像に反映
                         double edgeAmount = magnitude * amount * 0.5;
@@ -1966,33 +2152,23 @@ namespace MyView
                         int resultIndex = y * resultRowSize + x * 4;
 
                         // 輪郭部分を暗くする
-                        resultBytes[resultIndex] = ClampByte(
-                            sourceBytes[sourceIndex] - edgeAmount);
+                        resultBytes[resultIndex] = ClampByte(sourceBytes[sourceIndex] - edgeAmount);
 
-                        resultBytes[resultIndex + 1] = ClampByte(
-                            sourceBytes[sourceIndex + 1] - edgeAmount);
+                        resultBytes[resultIndex + 1] = ClampByte(sourceBytes[sourceIndex + 1] - edgeAmount);
 
-                        resultBytes[resultIndex + 2] = ClampByte(
-                            sourceBytes[sourceIndex + 2] - edgeAmount);
+                        resultBytes[resultIndex + 2] = ClampByte(sourceBytes[sourceIndex + 2] - edgeAmount);
 
                         // 透明度は元画像を維持
-                        resultBytes[resultIndex + 3] =
-                            sourceBytes[sourceIndex + 3];
+                        resultBytes[resultIndex + 3] = sourceBytes[sourceIndex + 3];
                     }
                 }
 
                 // 結果をBitmapへコピー
                 for (int y = 0; y < height; y++)
                 {
-                    IntPtr row = IntPtr.Add(
-                        resultData.Scan0,
-                        y * resultStride);
+                    IntPtr row = IntPtr.Add(resultData.Scan0, y * resultStride);
 
-                    Marshal.Copy(
-                        resultBytes,
-                        y * resultRowSize,
-                        row,
-                        resultRowSize);
+                    Marshal.Copy(resultBytes, y * resultRowSize, row, resultRowSize);
                 }
             }
             catch
@@ -2015,6 +2191,963 @@ namespace MyView
         }
 
         // ============================================================
+        // 鉛筆画風の画像を作成する
+        // strength : 0～99
+        // ============================================================
+        private Bitmap ApplyPencilSketch(Bitmap input, int strength)
+        {
+            // 効果の強さを0～99に制限
+            strength = Math.Clamp(strength, 0, 99);
+
+            // 効果が0なら元画像のコピーを返す
+            if (strength == 0)
+            {
+                return new Bitmap(input);
+            }
+
+            int width = input.Width;
+            int height = input.Height;
+
+            // 画像を32bit ARGB形式に統一する
+            Bitmap source = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(source))
+            {
+                g.DrawImage(input, 0, 0, width, height);
+            }
+
+            Bitmap gray = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            Bitmap inverted = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            try
+            {
+                // 1. グレースケール化(色を取り除き、明暗情報にする)
+                Rectangle rect = new Rectangle(0, 0, width, height);
+
+                BitmapData sourceData = source.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData grayData = gray.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                try
+                {
+                    int sourceStride = sourceData.Stride;
+                    int grayStride = grayData.Stride;
+
+                    byte[] sourceBuffer = new byte[Math.Abs(sourceStride) * height];
+                    byte[] grayBuffer = new byte[Math.Abs(grayStride) * height];
+
+                    Marshal.Copy(
+                        sourceData.Scan0,
+                        sourceBuffer,
+                        0,
+                        sourceBuffer.Length);
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        int sourceRow = y * Math.Abs(sourceStride);
+                        int grayRow = y * Math.Abs(grayStride);
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            int si = sourceRow + x * 4;
+                            int gi = grayRow + x * 4;
+
+                            byte b = sourceBuffer[si];
+                            byte gr = sourceBuffer[si + 1];
+                            byte r = sourceBuffer[si + 2];
+
+                            // 人間の視覚に合わせた輝度計算
+                            byte luminance = ClampByte(
+                                r * 0.299 +
+                                gr * 0.587 +
+                                b * 0.114);
+
+                            grayBuffer[gi] = luminance;
+                            grayBuffer[gi + 1] = luminance;
+                            grayBuffer[gi + 2] = luminance;
+                            grayBuffer[gi + 3] = sourceBuffer[si + 3];
+                        }
+                    }
+
+                    Marshal.Copy(
+                        grayBuffer,
+                        0,
+                        grayData.Scan0,
+                        grayBuffer.Length);
+                }
+                finally
+                {
+                    source.UnlockBits(sourceData);
+                    gray.UnlockBits(grayData);
+                }
+
+                // 2. グレースケール画像を反転(明るい部分を暗く、暗い部分を明るくする)
+                BitmapData grayReadData = gray.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData invertedData = inverted.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                try
+                {
+                    int grayStride = grayReadData.Stride;
+                    int invertedStride = invertedData.Stride;
+
+                    byte[] grayBuffer = new byte[Math.Abs(grayStride) * height];
+                    byte[] invertedBuffer = new byte[Math.Abs(invertedStride) * height];
+
+                    Marshal.Copy(
+                        grayReadData.Scan0,
+                        grayBuffer,
+                        0,
+                        grayBuffer.Length);
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        int grayRow = y * Math.Abs(grayStride);
+                        int invertedRow = y * Math.Abs(invertedStride);
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            int gi = grayRow + x * 4;
+                            int ii = invertedRow + x * 4;
+
+                            byte value = (byte)(255 - grayBuffer[gi]);
+
+                            invertedBuffer[ii] = value;
+                            invertedBuffer[ii + 1] = value;
+                            invertedBuffer[ii + 2] = value;
+                            invertedBuffer[ii + 3] = grayBuffer[gi + 3];
+                        }
+                    }
+
+                    Marshal.Copy(
+                        invertedBuffer,
+                        0,
+                        invertedData.Scan0,
+                        invertedBuffer.Length);
+                }
+                finally
+                {
+                    gray.UnlockBits(grayReadData);
+                    inverted.UnlockBits(invertedData);
+                }
+
+                // 3. 反転画像をガウスぼかし(輪郭や陰影を広げる)
+                // sigmaを大きくすると、鉛筆画の濃淡が広がる
+                double sigma = 8.0;
+
+                using Bitmap blurred = ApplyFastGaussianBlur(inverted, sigma);
+
+                // 4. カラードッジ合成
+                Bitmap sketch = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+                BitmapData graySketchData = gray.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData blurredData = blurred.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData sketchData = sketch.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                try
+                {
+                    int grayStride = graySketchData.Stride;
+                    int blurredStride = blurredData.Stride;
+                    int sketchStride = sketchData.Stride;
+
+                    byte[] grayBuffer = new byte[Math.Abs(grayStride) * height];
+                    byte[] blurredBuffer = new byte[Math.Abs(blurredStride) * height];
+                    byte[] sketchBuffer = new byte[Math.Abs(sketchStride) * height];
+
+                    Marshal.Copy(graySketchData.Scan0, grayBuffer, 0, grayBuffer.Length);
+                    Marshal.Copy(blurredData.Scan0, blurredBuffer, 0, blurredBuffer.Length);
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        int grayRow = y * Math.Abs(grayStride);
+                        int blurredRow = y * Math.Abs(blurredStride);
+                        int sketchRow = y * Math.Abs(sketchStride);
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            int gi = grayRow + x * 4;
+                            int bi = blurredRow + x * 4;
+                            int si = sketchRow + x * 4;
+
+                            int baseValue = grayBuffer[gi];
+                            int blendValue = blurredBuffer[bi];
+
+                            // カラードッジ(鉛筆で描いたような線と濃淡を作る)
+                            int result;
+
+                            if (blendValue >= 255)
+                            {
+                                result = 255;
+                            }
+                            else
+                            {
+                                result = Math.Min(
+                                    255,
+                                    (baseValue * 255) / (255 - blendValue));
+                            }
+
+                            byte value = (byte)result;
+
+                            sketchBuffer[si] = value;
+                            sketchBuffer[si + 1] = value;
+                            sketchBuffer[si + 2] = value;
+                            sketchBuffer[si + 3] = grayBuffer[gi + 3];
+                        }
+                    }
+
+                    Marshal.Copy(
+                        sketchBuffer,
+                        0,
+                        sketchData.Scan0,
+                        sketchBuffer.Length);
+                }
+                finally
+                {
+                    gray.UnlockBits(graySketchData);
+                    blurred.UnlockBits(blurredData);
+                    sketch.UnlockBits(sketchData);
+                }
+
+                // 5. 元画像と鉛筆画を合成(スライダーで効果の強さを調整する)
+                // strength 0～99を0.0～1.0に変換
+                double ratio = strength / 99.0;
+
+                Bitmap resultImage = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+                using (Graphics g = Graphics.FromImage(resultImage))
+                {
+                    g.DrawImage(source, 0, 0);
+                }
+
+                BitmapData originalData = source.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData sketchReadData = sketch.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                BitmapData resultData = resultImage.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                try
+                {
+                    int originalStride = originalData.Stride;
+                    int sketchStride = sketchReadData.Stride;
+                    int resultStride = resultData.Stride;
+
+                    byte[] originalBuffer = new byte[Math.Abs(originalStride) * height];
+                    byte[] sketchBuffer = new byte[Math.Abs(sketchStride) * height];
+                    byte[] resultBuffer = new byte[Math.Abs(resultStride) * height];
+
+                    Marshal.Copy(originalData.Scan0, originalBuffer, 0, originalBuffer.Length);
+                    Marshal.Copy(sketchReadData.Scan0, sketchBuffer, 0, sketchBuffer.Length);
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        int originalRow = y * Math.Abs(originalStride);
+                        int sketchRow = y * Math.Abs(sketchStride);
+                        int resultRow = y * Math.Abs(resultStride);
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            int oi = originalRow + x * 4;
+                            int si = sketchRow + x * 4;
+                            int ri = resultRow + x * 4;
+
+                            for (int c = 0; c < 3; c++)
+                            {
+                                double originalValue = originalBuffer[oi + c];
+                                double sketchValue = sketchBuffer[si + c];
+
+                                resultBuffer[ri + c] = ClampByte(
+                                    originalValue * (1.0 - ratio) +
+                                    sketchValue * ratio);
+                            }
+
+                            resultBuffer[ri + 3] = originalBuffer[oi + 3];
+                        }
+                    }
+
+                    Marshal.Copy(resultBuffer, 0, resultData.Scan0, resultBuffer.Length);
+                }
+                finally
+                {
+                    source.UnlockBits(originalData);
+                    sketch.UnlockBits(sketchReadData);
+                    resultImage.UnlockBits(resultData);
+                }
+
+                sketch.Dispose();
+
+                return resultImage;
+            }
+            finally
+            {
+                source.Dispose();
+                gray.Dispose();
+                inverted.Dispose();
+            }
+        }
+
+        // ============================================================
+        // 水彩画風の画像を作成する
+        // strength : 0～99
+        // ============================================================
+        private Bitmap ApplyWatercolor(Bitmap input, int strength)
+        {
+            strength = Math.Clamp(strength, 0, 255);
+
+            if (strength == 0)
+                return new Bitmap(input);
+
+            int width = input.Width;
+            int height = input.Height;
+
+            // --------------------------------------------------------
+            // 画像を32bit ARGB形式に統一する
+            // --------------------------------------------------------
+            using Bitmap source = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(source))
+            {
+                g.DrawImage(input, 0, 0, width, height);
+            }
+
+            double ratio = strength / 99.0;
+
+            // --------------------------------------------------------
+            // 基本パラメーター
+            // --------------------------------------------------------
+
+            // 基本のぼかし
+            double sigma = 0.5 + ratio * 2.5;
+
+            // 色の整理具合
+            int colorStep = 3 + (int)Math.Round(ratio * 21.0);
+
+            // にじみのぼかし量
+            double bleedSigma = 0.35 + ratio * 1.15;
+
+            // にじみの混合率
+            double bleedMix = 0.05 + ratio * 0.25;
+
+            // --------------------------------------------------------
+            // 基本のぼかし画像を作成
+            // --------------------------------------------------------
+            using Bitmap softened = ApplyFastGaussianBlur(source, sigma);
+
+            // --------------------------------------------------------
+            // にじみ画像を作成
+            // --------------------------------------------------------
+            using Bitmap bleed = ApplyFastGaussianBlur(
+                softened,
+                bleedSigma);
+
+            Bitmap result = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            Rectangle rect = new Rectangle(0, 0, width, height);
+
+            BitmapData? sourceData = null;
+            BitmapData? softenedData = null;
+            BitmapData? bleedData = null;
+            BitmapData? resultData = null;
+
+            try
+            {
+                try
+                {
+                    sourceData = source.LockBits(
+                        rect,
+                        ImageLockMode.ReadOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    softenedData = softened.LockBits(
+                        rect,
+                        ImageLockMode.ReadOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    bleedData = bleed.LockBits(
+                        rect,
+                        ImageLockMode.ReadOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    resultData = result.LockBits(
+                        rect,
+                        ImageLockMode.WriteOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    int sourceStride = sourceData.Stride;
+                    int softenedStride = softenedData.Stride;
+                    int bleedStride = bleedData.Stride;
+                    int resultStride = resultData.Stride;
+
+                    byte[] sourceRow = new byte[width * 4];
+                    byte[] softenedRow = new byte[width * 4];
+                    byte[] bleedRow = new byte[width * 4];
+                    byte[] resultRow = new byte[width * 4];
+
+                    byte[] previousRow = new byte[width * 4];
+                    byte[] currentRow = new byte[width * 4];
+                    byte[] nextRow = new byte[width * 4];
+
+                    // ------------------------------------------------
+                    // 輝度を取得
+                    // ------------------------------------------------
+                    double GetLuminance(byte[] row, int x)
+                    {
+                        int index = x * 4;
+
+                        double b = row[index];
+                        double g = row[index + 1];
+                        double r = row[index + 2];
+
+                        return 0.114 * b + 0.587 * g + 0.299 * r;
+                    }
+
+                    // ------------------------------------------------
+                    // 色を整理する
+                    // ------------------------------------------------
+                    byte QuantizeColor(double value)
+                    {
+                        int quantized =
+                            (int)Math.Round(value / colorStep) * colorStep;
+
+                        return (byte)Math.Clamp(quantized, 0, 255);
+                    }
+
+                    // ------------------------------------------------
+                    // 紙の粒状感を作るためのノイズ
+                    // 座標から計算するため毎回同じ模様になる
+                    // ------------------------------------------------
+                    double GetPaperGrain(int x, int y)
+                    {
+                        uint n = unchecked(
+                            (uint)(x * 374761393 + y * 668265263));
+
+                        n = unchecked(
+                            (n ^ (n >> 13)) * 1274126177);
+
+                        n ^= n >> 16;
+
+                        return (n & 0xFFFF) / 65535.0;
+                    }
+
+                    // ------------------------------------------------
+                    // 紙の緩やかな濃淡を事前計算
+                    // ------------------------------------------------
+                    double[] paperX = new double[width];
+
+                    for (int x = 0; x < width; x++)
+                    {
+                        paperX[x] =
+                            Math.Sin(x * 0.071) +
+                            0.35 * Math.Sin(x * 0.019 + 1.7);
+                    }
+
+                    // ------------------------------------------------
+                    // 画像処理
+                    // ------------------------------------------------
+                    for (int y = 0; y < height; y++)
+                    {
+                        // 元画像
+                        Marshal.Copy(
+                            IntPtr.Add(
+                                sourceData.Scan0,
+                                y * sourceStride),
+                            sourceRow,
+                            0,
+                            sourceRow.Length);
+
+                        // 基本のぼかし画像
+                        Marshal.Copy(
+                            IntPtr.Add(
+                                softenedData.Scan0,
+                                y * softenedStride),
+                            softenedRow,
+                            0,
+                            softenedRow.Length);
+
+                        // にじみ画像
+                        Marshal.Copy(
+                            IntPtr.Add(
+                                bleedData.Scan0,
+                                y * bleedStride),
+                            bleedRow,
+                            0,
+                            bleedRow.Length);
+
+                        // 輪郭検出用の上下の行
+                        int previousY = Math.Max(0, y - 1);
+                        int nextY = Math.Min(height - 1, y + 1);
+
+                        Marshal.Copy(
+                            IntPtr.Add(
+                                bleedData.Scan0,
+                                previousY * bleedStride),
+                            previousRow,
+                            0,
+                            previousRow.Length);
+
+                        Marshal.Copy(
+                            IntPtr.Add(
+                                bleedData.Scan0,
+                                nextY * bleedStride),
+                            nextRow,
+                            0,
+                            nextRow.Length);
+
+                        Array.Copy(
+                            bleedRow,
+                            currentRow,
+                            bleedRow.Length);
+
+                        // 紙の緩やかな濃淡
+                        double paperY =
+                            Math.Sin(y * 0.083 + 0.6) +
+                            0.35 * Math.Sin(y * 0.023 + 2.1);
+
+                        // --------------------------------------------
+                        // ピクセル単位の処理
+                        // --------------------------------------------
+                        for (int x = 0; x < width; x++)
+                        {
+                            int index = x * 4;
+
+                            // 基本のぼかし画像の色
+                            double b = softenedRow[index];
+                            double g = softenedRow[index + 1];
+                            double r = softenedRow[index + 2];
+
+                            // にじみ画像の色
+                            double bleedB = bleedRow[index];
+                            double bleedG = bleedRow[index + 1];
+                            double bleedR = bleedRow[index + 2];
+
+                            // ----------------------------------------
+                            // 1. 水彩のにじみ
+                            // ----------------------------------------
+                            double mixedB =
+                                b * (1.0 - bleedMix) +
+                                bleedB * bleedMix;
+
+                            double mixedG =
+                                g * (1.0 - bleedMix) +
+                                bleedG * bleedMix;
+
+                            double mixedR =
+                                r * (1.0 - bleedMix) +
+                                bleedR * bleedMix;
+
+                            // ----------------------------------------
+                            // 2. 色の整理
+                            // ----------------------------------------
+                            byte watercolorB = QuantizeColor(mixedB);
+                            byte watercolorG = QuantizeColor(mixedG);
+                            byte watercolorR = QuantizeColor(mixedR);
+
+                            // ----------------------------------------
+                            // 3. 輪郭の検出
+                            // ----------------------------------------
+                            int leftX = Math.Max(0, x - 1);
+                            int rightX = Math.Min(width - 1, x + 1);
+
+                            double left = GetLuminance(currentRow, leftX);
+                            double right = GetLuminance(currentRow, rightX);
+
+                            double top = GetLuminance(previousRow, x);
+                            double bottom = GetLuminance(nextRow, x);
+
+                            double gx = right - left;
+                            double gy = bottom - top;
+
+                            double edge = Math.Sqrt(gx * gx + gy * gy);
+
+                            // 輪郭部分を少し暗くする
+                            double edgeFactor =
+                                1.0 -
+                                Math.Min(1.0, edge / 180.0)
+                                * 0.18 * ratio;
+
+                            // ----------------------------------------
+                            // 4. 紙の質感
+                            // ----------------------------------------
+
+                            // 細かな粒状感
+                            double grain =
+                                (GetPaperGrain(x, y) - 0.5)
+                                * (1.5 + 3.5 * ratio)
+                                * ratio;
+
+                            // 紙の緩やかな濃淡
+                            double paperWave =
+                                (paperX[x] + paperY) * 0.5;
+
+                            double paperOffset =
+                                paperWave *
+                                (0.5 + ratio) *
+                                ratio;
+
+                            // 粒状感と濃淡を合成
+                            double paperTexture =
+                                grain + paperOffset;
+
+                            // ----------------------------------------
+                            // 5. 元画像と水彩画風画像を合成
+                            // ----------------------------------------
+
+                            double processedB =
+                                watercolorB * edgeFactor +
+                                paperTexture;
+
+                            double processedG =
+                                watercolorG * edgeFactor +
+                                paperTexture;
+
+                            double processedR =
+                                watercolorR * edgeFactor +
+                                paperTexture;
+
+                            double originalB = sourceRow[index];
+                            double originalG = sourceRow[index + 1];
+                            double originalR = sourceRow[index + 2];
+
+                            resultRow[index] = ClampByte(
+                                originalB * (1.0 - ratio) +
+                                processedB * ratio);
+
+                            resultRow[index + 1] = ClampByte(
+                                originalG * (1.0 - ratio) +
+                                processedG * ratio);
+
+                            resultRow[index + 2] = ClampByte(
+                                originalR * (1.0 - ratio) +
+                                processedR * ratio);
+
+                            // 透明度は元画像を維持
+                            resultRow[index + 3] = sourceRow[index + 3];
+                        }
+
+                        // 処理結果を書き込む
+                        Marshal.Copy(
+                            resultRow,
+                            0,
+                            IntPtr.Add(
+                                resultData.Scan0,
+                                y * resultStride),
+                            resultRow.Length);
+                    }
+                }
+                finally
+                {
+                    // LockBitsを必ず解除する
+                    if (sourceData != null)
+                        source.UnlockBits(sourceData);
+
+                    if (softenedData != null)
+                        softened.UnlockBits(softenedData);
+
+                    if (bleedData != null)
+                        bleed.UnlockBits(bleedData);
+
+                    if (resultData != null)
+                        result.UnlockBits(resultData);
+                }
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+
+        // ============================================================
+        // 油絵風の画像を作成する
+        // strength : 0～255
+        // ============================================================
+        private Bitmap Applyoilpainting(Bitmap input, int strength)
+        {
+            // 効果の強さを0～99に制限
+            strength = Math.Clamp(strength, 0, 255);
+
+            // 効果が0なら元画像のコピーを返す
+            if (strength == 0)
+                return new Bitmap(input);
+
+            int width = input.Width;
+            int height = input.Height;
+
+            // --------------------------------------------------------
+            // 画像を32bit ARGB形式に統一する
+            // --------------------------------------------------------
+            using Bitmap source = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(source))
+            {
+                g.DrawImage(input, 0, 0, width, height);
+            }
+
+            // --------------------------------------------------------
+            // 強さに応じたパラメーター
+            // --------------------------------------------------------
+
+            double ratio = strength / 99.0;
+
+            // 周囲を調べる間隔
+            // 強くするほど大きな範囲から色を取得する
+            int radius = 1 + (int)Math.Round(ratio * 3.0);
+
+            // 明るさの分類数
+            // 少なくするほど色のまとまりが大きくなる
+            int binCount = 16 - (int)Math.Round(ratio * 8.0);
+
+            binCount = Math.Clamp(binCount, 8, 16);
+
+            // --------------------------------------------------------
+            // 出力画像
+            // --------------------------------------------------------
+            Bitmap result = new Bitmap(
+                width,
+                height,
+                PixelFormat.Format32bppArgb);
+
+            Rectangle rect = new Rectangle(0, 0, width, height);
+
+            BitmapData? sourceData = null;
+            BitmapData? resultData = null;
+
+            try
+            {
+                sourceData = source.LockBits(
+                    rect,
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppArgb);
+
+                resultData = result.LockBits(
+                    rect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                int sourceStride = sourceData.Stride;
+                int resultStride = resultData.Stride;
+
+                int sourceRowSize = Math.Abs(sourceStride);
+                int resultRowSize = Math.Abs(resultStride);
+
+                byte[] sourceBytes =
+                    new byte[sourceRowSize * height];
+
+                byte[] resultBytes =
+                    new byte[resultRowSize * height];
+
+                // ----------------------------------------------------
+                // 元画像を配列にコピー
+                // ----------------------------------------------------
+                for (int y = 0; y < height; y++)
+                {
+                    Marshal.Copy(
+                        IntPtr.Add(sourceData.Scan0, y * sourceStride),
+                        sourceBytes,
+                        y * sourceRowSize,
+                        sourceRowSize);
+                }
+
+                // ----------------------------------------------------
+                // 明るさの分類ごとに集計する配列
+                // ----------------------------------------------------
+                int[] histogram = new int[16];
+
+                long[] sumB = new long[16];
+                long[] sumG = new long[16];
+                long[] sumR = new long[16];
+
+                // ----------------------------------------------------
+                // 画像処理
+                // ----------------------------------------------------
+                for (int y = 0; y < height; y++)
+                {
+                    int sourceRow = y * sourceRowSize;
+                    int resultRow = y * resultRowSize;
+
+                    for (int x = 0; x < width; x++)
+                    {
+                        // 分類用の集計配列を初期化
+                        Array.Clear(histogram);
+                        Array.Clear(sumB);
+                        Array.Clear(sumG);
+                        Array.Clear(sumR);
+
+                        // --------------------------------------------
+                        // 1. 周囲5×5画素の色を調べる
+                        // --------------------------------------------
+                        for (int ky = -2; ky <= 2; ky++)
+                        {
+                            int sampleY = Math.Clamp(
+                                y + ky * radius,
+                                0,
+                                height - 1);
+
+                            int sampleRow = sampleY * sourceRowSize;
+
+                            for (int kx = -2; kx <= 2; kx++)
+                            {
+                                int sampleX = Math.Clamp(
+                                    x + kx * radius,
+                                    0,
+                                    width - 1);
+
+                                int index = sampleRow + sampleX * 4;
+
+                                byte b = sourceBytes[index];
+                                byte g = sourceBytes[index + 1];
+                                byte r = sourceBytes[index + 2];
+
+                                // 輝度を計算
+                                double luminance =
+                                    0.114 * b +
+                                    0.587 * g +
+                                    0.299 * r;
+
+                                // 輝度を分類
+                                int bin = (int)(
+                                    luminance * binCount / 256.0);
+
+                                bin = Math.Clamp(bin, 0, binCount - 1);
+
+                                // 分類ごとに画素数と色を集計
+                                histogram[bin]++;
+
+                                sumB[bin] += b;
+                                sumG[bin] += g;
+                                sumR[bin] += r;
+                            }
+                        }
+
+                        // --------------------------------------------
+                        // 2. 最も多く集まった明るさのグループを探す
+                        // --------------------------------------------
+                        int dominantBin = 0;
+                        int maxCount = 0;
+
+                        for (int i = 0; i < binCount; i++)
+                        {
+                            if (histogram[i] > maxCount)
+                            {
+                                maxCount = histogram[i];
+                                dominantBin = i;
+                            }
+                        }
+
+                        // --------------------------------------------
+                        // 3. 選ばれたグループの平均色を計算
+                        // --------------------------------------------
+                        double oilB = sumB[dominantBin] /
+                                      (double)maxCount;
+
+                        double oilG = sumG[dominantBin] /
+                                      (double)maxCount;
+
+                        double oilR = sumR[dominantBin] /
+                                      (double)maxCount;
+
+                        // --------------------------------------------
+                        // 4. 元画像と油絵風画像を合成
+                        // --------------------------------------------
+                        int sourceIndex = sourceRow + x * 4;
+                        int resultIndex = resultRow + x * 4;
+
+                        double originalB = sourceBytes[sourceIndex];
+                        double originalG = sourceBytes[sourceIndex + 1];
+                        double originalR = sourceBytes[sourceIndex + 2];
+
+                        resultBytes[resultIndex] = ClampByte(
+                            originalB * (1.0 - ratio) +
+                            oilB * ratio);
+
+                        resultBytes[resultIndex + 1] = ClampByte(
+                            originalG * (1.0 - ratio) +
+                            oilG * ratio);
+
+                        resultBytes[resultIndex + 2] = ClampByte(
+                            originalR * (1.0 - ratio) +
+                            oilR * ratio);
+
+                        // 透明度は元画像を維持
+                        resultBytes[resultIndex + 3] =
+                            sourceBytes[sourceIndex + 3];
+                    }
+                }
+
+                // ----------------------------------------------------
+                // 結果をBitmapへコピー
+                // ----------------------------------------------------
+                for (int y = 0; y < height; y++)
+                {
+                    Marshal.Copy(
+                        resultBytes,
+                        y * resultRowSize,
+                        IntPtr.Add(resultData.Scan0, y * resultStride),
+                        resultRowSize);
+                }
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+            finally
+            {
+                if (sourceData != null)
+                    source.UnlockBits(sourceData);
+
+                if (resultData != null)
+                    result.UnlockBits(resultData);
+            }
+
+            return result;
+        }
+
+
+        // ============================================================
         // 数値入力を検証してTrackBarに反映する共通処理
         // ============================================================
         private void ApplyIntegerInput(TextBox textBox, TrackBar trackBar, Action updatePreview)
@@ -2027,10 +3160,7 @@ namespace MyView
             }
 
             // TrackBarの範囲内に制限
-            value = Math.Clamp(
-                value,
-                trackBar.Minimum,
-                trackBar.Maximum);
+            value = Math.Clamp(value, trackBar.Minimum, trackBar.Maximum);
 
             // スライダーに反映
             trackBar.Value = value;
@@ -2198,6 +3328,46 @@ namespace MyView
                 ApplyIntegerInput(
                     mosaicTxt,
                     mosaicBar,
+                    UpdateCorrectionPreview);
+            }
+            // ピクセル化
+            else if (textBox == pixelTxt)
+            {
+                ApplyIntegerInput(
+                    pixelTxt,
+                    pixelBar,
+                    UpdateCorrectionPreview);
+            }
+            // 周辺減光
+            else if (textBox == dimmingTxt)
+            {
+                ApplyIntegerInput(
+                    dimmingTxt,
+                    dimmingBar,
+                    UpdateCorrectionPreview);
+            }
+            // 鉛筆画風
+            else if (textBox == pencilTxt)
+            {
+                ApplyIntegerInput(
+                    pencilTxt,
+                    pencilBar,
+                    UpdateCorrectionPreview);
+            }
+            // 水彩画風
+            else if (textBox == watercolorTxt)
+            {
+                ApplyIntegerInput(
+                    watercolorTxt,
+                    watercolorBar,
+                    UpdateCorrectionPreview);
+            }
+            // 油絵風
+            else if (textBox == oilpaintingTxt)
+            {
+                ApplyIntegerInput(
+                    oilpaintingTxt,
+                    oilpaintingBar,
                     UpdateCorrectionPreview);
             }
 
@@ -2408,6 +3578,15 @@ namespace MyView
                             node.Checked = false;
                     }
                 }
+                // アート表現の子ノードは相互排他
+                else if (e.Node.Parent.Text == "アート表現" && e.Node.Checked)
+                {
+                    foreach (TreeNode node in e.Node.Parent.Nodes)
+                    {
+                        if (node != e.Node)
+                            node.Checked = false;
+                    }
+                }
             }
             finally
             {
@@ -2431,6 +3610,14 @@ namespace MyView
             else if (e.Node.Parent.Text == "輪郭・質感")
             {
                 ChangeOutline(e.Node);
+            }
+            else if (e.Node.Parent.Text == "加工・変形")
+            {
+                ChangeProcessing(e.Node);
+            }
+            else if (e.Node.Parent.Text == "光・レンズ")
+            {
+                ChangeLighting(e.Node);
             }
             else
             {
@@ -2482,11 +3669,22 @@ namespace MyView
             // いったんすべての設定パネルを非表示にする
             blurPanel.Visible = false;
             sharpPanel.Visible = false;
+            sepiaPanel.Visible = false;
+            grayscalePanel.Visible = false;
+            negaPosiAllPanel.Visible = false;
+            negaPosiRedPanel.Visible = false;
+            negaPosiGreenPanel.Visible = false;
+            negaPosiBluePanel.Visible = false;
             monochromePanel.Visible = false;
             embossPanel.Visible = false;
             noisePanel.Visible = false;
             ContourExPanel.Visible = false;
             mosaicPanel.Visible = false;
+            pixelPanel.Visible = false;
+            dimmingPanel.Visible = false;
+            pencilPanel.Visible = false;
+            watercolorPanel.Visible = false;
+            oilpaintingPanel.Visible = false;
 
 
             if (selectedNode == null)
@@ -2501,6 +3699,36 @@ namespace MyView
             else if (selectedNode.Text == "シャープ" && selectedNode.Checked)
             {
                 sharpPanel.Visible = true;
+            }
+            // セピア
+            else if (selectedNode.Text == "セピア" && selectedNode.Checked)
+            {
+                sepiaPanel.Visible = true;
+            }
+            // グレースケール
+            else if (selectedNode.Text == "グレースケール" && selectedNode.Checked)
+            {
+                grayscalePanel.Visible = true;
+            }
+            // ネガポジ反転(全チャンネル)
+            else if (selectedNode.Text == "ネガポジ反転(全チャンネル)" && selectedNode.Checked)
+            {
+                negaPosiAllPanel.Visible = true;
+            }
+            // ネガポジ反転(赤(R))
+            else if (selectedNode.Text == "ネガポジ反転(赤(R))" && selectedNode.Checked)
+            {
+                negaPosiRedPanel.Visible = true;
+            }
+            // ネガポジ反転(緑(G))
+            else if (selectedNode.Text == "ネガポジ反転(緑(G))" && selectedNode.Checked)
+            {
+                negaPosiGreenPanel.Visible = true;
+            }
+            // ネガポジ反転(青(B))
+            else if (selectedNode.Text == "ネガポジ反転(青(B))" && selectedNode.Checked)
+            {
+                negaPosiBluePanel.Visible = true;
             }
             // モノクロームが選択され、チェックされている場合
             else if (selectedNode.Text == "モノクローム" && selectedNode.Checked)
@@ -2527,6 +3755,31 @@ namespace MyView
             {
                 mosaicPanel.Visible = true;
             }
+            // ピクセル化が選択され、チェックされている場合
+            else if (selectedNode.Text == "ピクセル化" && selectedNode.Checked)
+            {
+                pixelPanel.Visible = true;
+            }
+            // 周辺減光が選択され、チェックされている場合
+            else if (selectedNode.Text == "周辺減光" && selectedNode.Checked)
+            {
+                dimmingPanel.Visible = true;
+            }
+            //鉛筆画風が選択され、チェックされている場合
+            else if (selectedNode.Text == "鉛筆画風" && selectedNode.Checked)
+            {
+                pencilPanel.Visible = true;
+            }
+            // 水彩画風が選択され、チェックされている場合
+            else if (selectedNode.Text == "水彩画風" && selectedNode.Checked)
+            {
+                watercolorPanel.Visible = true;
+            }
+            // 油絵風が選択され、チェックされている場合
+            else if (selectedNode.Text == "油絵風" && selectedNode.Checked)
+            {
+                oilpaintingPanel.Visible = true;
+            }
 
         }
 
@@ -2543,16 +3796,16 @@ namespace MyView
                     _currentImageEffect = ImageEffect.Blur;
 
                     // シャープの設定を初期化
-                    sharpBar.Value = 0;
-                    sharpTxt.Text = "0";
+                    sharpBar.Value = 99;
+                    sharpTxt.Text = "99";
                 }
                 else
                 {
                     _currentImageEffect = ImageEffect.None;
 
                     // ぼかしの設定を初期化
-                    blurBar.Value = 0;
-                    blurTxt.Text = "0";
+                    blurBar.Value = 10;
+                    blurTxt.Text = "10";
                 }
             }
 
@@ -2564,16 +3817,16 @@ namespace MyView
                     _currentImageEffect = ImageEffect.Sharpen;
 
                     // ぼかしの設定を初期化
-                    blurBar.Value = 0;
-                    blurTxt.Text = "0";
+                    blurBar.Value = 10;
+                    blurTxt.Text = "10";
                 }
                 else
                 {
                     _currentImageEffect = ImageEffect.None;
 
                     // シャープの設定を初期化
-                    sharpBar.Value = 0;
-                    sharpTxt.Text = "0";
+                    sharpBar.Value = 99;
+                    sharpTxt.Text = "99";
                 }
             }
 
@@ -2634,49 +3887,30 @@ namespace MyView
         // ============================================================
         private void ChangeOutline(TreeNode selectedNode)
         {
-            // エンボス
-            if (selectedNode.Text == "エンボス")
-            {
-                if (!selectedNode.Checked)
-                {
-                    // エンボスOFF
-                    embossBar.Value = 0;
-                    embossTxt.Text = "0";
-                    embossCheck.Checked = false;
-                }
-            }
-            // ノイズ
-            else if (selectedNode.Text == "ノイズ")
-            {
-                if (!selectedNode.Checked)
-                {
-                    // ノイズOFF
-                    noiseBar.Value = 0;
-                    noiseTxt.Text = "0";
-                }
-            }
-            //輪郭抽出
-            else if (selectedNode.Text == "輪郭抽出")
-            {
-                if (!selectedNode.Checked)
-                {
-                    // 輪郭抽出OFF
-                    ContourExBar.Value = 0;
-                    ContourExTxt.Text = "0";
-                }
-            }
-            // モザイク
-            else if (selectedNode.Text == "モザイク")
-            {
-                if (!selectedNode.Checked)
-                {
-                    // モザイクOFF
-                    mosaicBar.Value = 0;
-                    mosaicTxt.Text = "0";
-                }
+            // チェック状態だけを切り替える
+            // スライダーの値は保持する
+            UpdateCorrectionPreview();
 
-            }
+        }
 
+        // ============================================================
+        // TreeViewから加工・変形を切り替える
+        // ============================================================
+        private void ChangeProcessing(TreeNode selectedNode)
+        {
+            // チェック状態だけを切り替える
+            // スライダーの値は保持する
+            UpdateCorrectionPreview();
+
+        }
+
+        // ============================================================
+        // TreeViewから光・レンズを切り替える
+        // ============================================================
+        private void ChangeLighting(TreeNode selectedNode)
+        {
+            // チェック状態だけを切り替える
+            // スライダーの値は保持する
             UpdateCorrectionPreview();
 
         }
@@ -2712,6 +3946,80 @@ namespace MyView
         {
             // 数値表示を更新
             mosaicTxt.Text = mosaicBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // ピクセル化のスライダー
+        // ============================================================
+        private void pixelBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            pixelTxt.Text = pixelBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // 周辺減光のスライダー
+        // ============================================================
+        private void dimmingBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            dimmingTxt.Text = dimmingBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // 鉛筆画風のスライダー
+        // ============================================================
+        private void pencilBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            pencilTxt.Text = pencilBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // 水彩画風のスライダー
+        // ============================================================
+        private void watercolorBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            watercolorTxt.Text = watercolorBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // 油絵風のスライダー
+        // ============================================================
+        private void oilpaintingBar_Scroll(object sender, EventArgs e)
+        {
+            // 数値表示を更新
+            oilpaintingTxt.Text = oilpaintingBar.Value.ToString();
+
+            // プレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // セピアのスライダー
+        // ============================================================
+        private void sepiaBar_Scroll(object sender, EventArgs e)
+        {
+            _sepiaStrength = sepiaBar.Value;
+
+            // 数値表示を更新
+            sepiaTxt.Text = sepiaBar.Value.ToString();
 
             // プレビューを更新
             UpdateCorrectionPreview();
