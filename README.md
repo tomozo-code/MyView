@@ -30,29 +30,29 @@
 - 📖 画像ファイルのサムネイル表示(表示形式:jpg、jpeg、png、bmp、gif、tif、tiff、ico、wmf、emf)
 - 🎴 サムネイルを選択し、数字キーに割り当てられた各種コマンド(クリップボードへのコピー)の実行
 - 🖼 画像ファイルの単体表示(画像ビュー)
-- 🎞️ 画像ビューは、名前を付けて保存、コピー、貼り付け、拡大縮小、前の画像、次の画像、90°回転 が可能
+- 🎞️ 画像ビューは、名前を付けて保存、コピー、貼り付け、拡大縮小、前画像、次画像、90°回転、上下左右反転、画像補正 が可能
 - 🖨️ 画像印刷及びフォルダ内の画像を一覧印刷
 
 ---
 
 ## 🖼 スクリーンショット
 ### 📖 サムネイル表示
-<img width="986" height="754" alt="image001" src="https://github.com/user-attachments/assets/768e4f34-d28c-4ce8-bf38-cb5779147652" />
+<img width="986" height="716" alt="image001" src="https://github.com/user-attachments/assets/b5b7d534-3f05-437a-b2a9-8c6d0ca58903" />
 
 ---
 
 ### 🖼 画像ビュー
-<img width="940" height="735" alt="image002" src="https://github.com/user-attachments/assets/e17f2c84-9f13-461e-a7c4-6461b6bcd2bd" />
+<img width="786" height="623" alt="image002" src="https://github.com/user-attachments/assets/e3e4ea0e-95d2-46c3-9bce-220a6cba3039" />
 
 ---
 
 ### 🖨️ 画像印刷
-<img width="986" height="693" alt="image003" src="https://github.com/user-attachments/assets/8bc89dda-33aa-4cee-b8c9-9ed3bcf87be0" />
+<img width="986" height="693" alt="image003" src="https://github.com/user-attachments/assets/080a6dfa-dbf6-4aa4-814f-ec627879297c" />
 
 ---
 
 ### 🖨️ 一覧印刷
-<img width="986" height="693" alt="image004" src="https://github.com/user-attachments/assets/33811fd8-97a4-4cdd-9f76-850a71ba839c" />
+<img width="986" height="693" alt="image004" src="https://github.com/user-attachments/assets/4e0defa2-cf03-4cab-8d3f-a6414fe38865" />
 
 ---
 
@@ -92,11 +92,11 @@
 ---
 
 ## ⚠️ 注意事項
-- 本ソフトウェアは、終了時に開いていたフォルダパス、印刷設定を以下のフォルダに保存します。
+- 本ソフトウェアは、終了時に開いていたフォルダパス、印刷設定、フォルダ履歴を以下のフォルダに保存します。
 
    C:\Users\ユーザー名\AppData\Local\MyView\
 
-   ファイル名は LastFolder.txt、 PrintSettings.txt、 PrintSettings2.txt です。
+   ファイル名は LastFolder.txt、 PrintSettings.txt、 PrintSettings2.txt、RecentFolder.txt です。
 
 - AppDataフォルダは、標準の設定では隠し属性を付与して非表示となっています。
 
@@ -128,9 +128,9 @@
 https://www.nuget.org/packages/PhotoSauce.MagicScaler
 
 ### メニューアイコン
-メニューアイコンは、 ICOOON MONO にて配布されているアイコンを使用しています。
+メニューアイコンは、 Material Symbols & Icons - Google Fonts にて公開されているアイコンを使用しています。
 
-ICOOON MONOホームページ：https://icooon-mono.com/
+Material Symbols & Icons - Google Fonts(Apache License 2.0)：https://icooon-mono.com/
 
 ---
 
@@ -143,7 +143,6 @@ https://github.com/tomozo-code/MyView
 ---
 
 ## 🔮 今後の予定
-- サムネイル表示の改善
 - UI改善
 - 処理速度の最適化
 
