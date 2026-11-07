@@ -83,6 +83,12 @@ namespace MyView
         // セピア強度（0～99）
         private int _sepiaStrength = 99;
 
+        // リセット処理中かどうか
+        private bool _isResetting = false;
+
+        // スライダーをドラッグ中かどうか
+        private bool _isSliderOperating = false;
+
         // ============================================================
         // コンストラクタ
         // ============================================================
@@ -207,6 +213,9 @@ namespace MyView
 
             // 初期設定
             SetupComponents();
+
+            // スライダー共通イベントを登録
+            RegisterSliderEvents(this);
 
             //  EscキーをCancelボタンに割り当て
             this.CancelButton = CancelBtn;
@@ -358,9 +367,19 @@ namespace MyView
             if (parentNode == null)
                 return;
 
-            foreach (TreeNode node in parentNode.Nodes)
+            // チェック解除中のAfterCheckイベントを抑止
+            _isUpdatingTreeView = true;
+
+            try
             {
-                node.Checked = false;
+                foreach (TreeNode node in parentNode.Nodes)
+                {
+                    node.Checked = false;
+                }
+            }
+            finally
+            {
+                _isUpdatingTreeView = false;
             }
         }
 
@@ -369,11 +388,23 @@ namespace MyView
         // ============================================================
         private void colorCorrectionResetBtn_Click(object sender, EventArgs e)
         {
-            // 色彩補正を初期化(リセット)
-            ColorCorrectionReset();
+            // リセット中のフラグture
+            _isResetting = true;
 
-            // プレビューを更新
+            try
+            {
+                // 色彩補正を初期化
+                ColorCorrectionReset();
+            }
+            finally
+            {
+                // リセット中のフラグfalse
+                _isResetting = false;
+            }
+
+            // リセット完了後に1回だけプレビューを更新
             UpdateCorrectionPreview();
+
         }
 
         // ============================================================
@@ -419,14 +450,26 @@ namespace MyView
         // ============================================================
         private void colorFilterResetBtn_Click(object sender, EventArgs e)
         {
-            // 画像効果を初期化（リセット）
-            ResetAllEffects();
+            // リセット中のフラグture
+            _isResetting = true;
 
-            // 色調フィルターに応じてモノクローム設定を有効・無効にする
-            UpdateFilterSettings();
+            try
+            {
+                // 画像効果を初期化
+                ResetAllEffects();
 
-            // プレビューを更新
+                // 色調フィルターに応じた設定を更新
+                UpdateFilterSettings();
+            }
+            finally
+            {
+                // リセット中のフラグfalse
+                _isResetting = false;
+            }
+
+            // リセット完了後に1回だけプレビューを更新
             UpdateCorrectionPreview();
+
         }
 
         // ============================================================
@@ -519,8 +562,6 @@ namespace MyView
             // 設定パネルを更新
             UpdateFilterSettings();
 
-            // プレビューを更新
-            UpdateCorrectionPreview();
         }
 
 
@@ -552,10 +593,21 @@ namespace MyView
         // ============================================================
         private void ResetBtn_Click(object sender, EventArgs e)
         {
-            // 色彩補正と画像効果を初期状態に戻す
-            SetupComponents();
+            // リセット中のフラグture
+            _isResetting = true;
 
-            // プレビューを更新
+            try
+            {
+                // 色彩補正と画像効果を初期状態に戻す
+                SetupComponents();
+            }
+            finally
+            {
+                // リセット中のフラグfalse
+                _isResetting = false;
+            }
+
+            // すべてのリセットが終わってから1回だけ更新
             UpdateCorrectionPreview();
         }
 
@@ -655,6 +707,10 @@ namespace MyView
         // ============================================================
         private void UpdateCorrectionPreview()
         {
+            // リセット中、またはスライダー操作中は更新しない
+            if (_isResetting || _isSliderOperating)
+                return;
+
             if (_originalImage == null || _originalImage.Width <= 0)
                 return;
 
@@ -937,11 +993,22 @@ namespace MyView
             }
 
             // D. 画像効果
-            // 色彩補正・色調フィルター適用後の画像に効果を適用
-            Bitmap effectResult = ApplyImageEffect(result);
+            Bitmap effectResult;
 
-            // 画像効果適用前の画像を解放
-            result.Dispose();
+            if (HasActiveImageEffects())
+            {
+                // 有効な画像効果がある場合だけ適用
+                effectResult = ApplyImageEffect(result);
+
+                // 効果適用前の画像を解放
+                result.Dispose();
+            }
+            else
+            {
+                // 画像効果がなければ、そのまま使用
+                // 不要な画像コピーを避ける
+                effectResult = result;
+            }
 
             // E. プレビュー画像を更新
             Bitmap oldImage = _previewImage;
@@ -961,6 +1028,68 @@ namespace MyView
             return (byte)Math.Clamp((int)Math.Round(value), 0, 255);
         }
 
+        // ============================================================
+        // 有効になっている画像効果があるか確認
+        // ============================================================
+        private bool HasActiveImageEffects()
+        {
+            // ぼかし
+            if (_currentImageEffect == ImageEffect.Blur &&
+                blurBar.Value > 0)
+                return true;
+
+            // シャープ
+            if (_currentImageEffect == ImageEffect.Sharpen &&
+                sharpBar.Value > 0)
+                return true;
+
+            // エンボス
+            if (IsEffectEnabled("輪郭・質感", "エンボス") &&
+                embossBar.Value > 0)
+                return true;
+
+            // ノイズ
+            if (IsEffectEnabled("輪郭・質感", "ノイズ") &&
+                noiseBar.Value > 0)
+                return true;
+
+            // 輪郭抽出
+            if (IsEffectEnabled("輪郭・質感", "輪郭抽出") &&
+                ContourExBar.Value > 0)
+                return true;
+
+            // モザイク
+            if (IsEffectEnabled("加工・変形", "モザイク") &&
+                mosaicBar.Value > 0)
+                return true;
+
+            // ピクセル化
+            if (IsEffectEnabled("加工・変形", "ピクセル化") &&
+                pixelBar.Value > 0)
+                return true;
+
+            // 周辺減光
+            if (IsEffectEnabled("光・レンズ", "周辺減光") &&
+                dimmingBar.Value > 0)
+                return true;
+
+            // 鉛筆画風
+            if (IsEffectEnabled("アート表現", "鉛筆画風") &&
+                pencilBar.Value > 0)
+                return true;
+
+            // 水彩画風
+            if (IsEffectEnabled("アート表現", "水彩画風") &&
+                watercolorBar.Value > 0)
+                return true;
+
+            // 油絵風
+            if (IsEffectEnabled("アート表現", "油絵風") &&
+                oilpaintingBar.Value > 0)
+                return true;
+
+            return false;
+        }
 
         // ============================================================
         // 画像効果を適用する
@@ -3549,7 +3678,8 @@ namespace MyView
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
 
-            if (_isUpdatingTreeView)
+            // リセット中、またはチェック状態を一括変更中は何もしない
+            if (_isResetting || _isUpdatingTreeView)
                 return;
 
             if (e.Node?.Parent == null)
@@ -4023,6 +4153,76 @@ namespace MyView
 
             // プレビューを更新
             UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // すべてのTrackBarに共通イベントを登録
+        // ============================================================
+        private void RegisterSliderEvents(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is TrackBar trackBar)
+                {
+                    trackBar.MouseDown += Slider_MouseDown;
+                    trackBar.MouseUp += Slider_MouseUp;
+
+                    trackBar.KeyDown += Slider_KeyDown;
+                    trackBar.KeyUp += Slider_KeyUp;
+                }
+
+                // Panelなどの中にあるTrackBarも検索する
+                if (control.HasChildren)
+                {
+                    RegisterSliderEvents(control);
+                }
+            }
+        }
+
+        // ============================================================
+        // マウスによるスライダー操作開始
+        // ============================================================
+        private void Slider_MouseDown(object? sender, MouseEventArgs e)
+        {
+            _isSliderOperating = true;
+        }
+
+        // ============================================================
+        // マウスによるスライダー操作終了
+        // ============================================================
+        private void Slider_MouseUp(object? sender, MouseEventArgs e)
+        {
+            _isSliderOperating = false;
+
+            // 操作終了後に1回だけプレビューを更新
+            UpdateCorrectionPreview();
+        }
+
+        // ============================================================
+        // キーボードによるスライダー操作開始
+        // ============================================================
+        private void Slider_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right ||
+                e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                _isSliderOperating = true;
+            }
+        }
+
+        // ============================================================
+        // キーボードによるスライダー操作終了
+        // ============================================================
+        private void Slider_KeyUp(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right ||
+                e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                _isSliderOperating = false;
+
+                // キーを離したときに1回だけプレビューを更新
+                UpdateCorrectionPreview();
+            }
         }
     }
 }

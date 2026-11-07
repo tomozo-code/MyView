@@ -145,10 +145,10 @@ namespace MyView
 
                 case "画像ビュー":
                     UseTxtBox.Text = "サムネイルをダブルクリックすると画像単体が画像ビューに表示されます。" + Environment.NewLine +
-                        "・前の画像：上スクロール、↑キー、←キー、PageUpキー、backSpaceキー" + Environment.NewLine +
-                        "・次の画像：下スクロール、↓キー、→キー、PageDownキー、Spaceキー" + Environment.NewLine +
-                        "・拡大：Ctrl＋上スクロール、＋キー" + Environment.NewLine +
-                        "・縮小：Ctrl＋下スクロールで縮小、－キー" + Environment.NewLine +
+                        "・前画像：ホイール上スクロール、↑キー、←キー、PageUpキー、backSpaceキー" + Environment.NewLine +
+                        "・次画像：ホイール下スクロール、↓キー、→キー、PageDownキー、Spaceキー" + Environment.NewLine +
+                        "・拡大：Ctrl＋ホイール上スクロール、＋キー" + Environment.NewLine +
+                        "・縮小：Ctrl＋ホイール下スクロールで縮小、－キー" + Environment.NewLine +
                         "・画像内移動：右ドラッグ、Ctrl＋矢印キー(1pxずつ)、Ctrl＋Shift＋矢印キー(10pxずつ)" + Environment.NewLine +
                         "・左ドラッグで枠描画：" + Environment.NewLine +
                         "　　枠内クリックで拡大" + Environment.NewLine +
@@ -158,6 +158,7 @@ namespace MyView
                         "・画像に名前を付けて保存(Ctrl＋S)" + Environment.NewLine +
                         "・画像をコピー(Ctrl＋C)" + Environment.NewLine +
                         "・クリップボードの画像を貼り付け(Ctrl＋V)" + Environment.NewLine +
+                        "・画像補正(Ctrl＋I)" + Environment.NewLine +
                         "・左へ90°回転(L)" + Environment.NewLine +
                         "・右へ90°回転(R)" + Environment.NewLine +
                         "・上下反転(V)" + Environment.NewLine +
@@ -168,10 +169,10 @@ namespace MyView
                 case "画像一覧印刷":
                     UseTxtBox.Text = "選択中のフォルダ内の画像を一覧印刷(印刷プレビュー)します。" + Environment.NewLine +
                         "・メインウィンドウ(サムネイル)にてフォルダを選択し、「ファイル(F) - 一覧印刷(P)...」をクリックします。" + Environment.NewLine +
-                        "・前ページ：上スクロール" + Environment.NewLine + 
-                        "・次ページ：下スクロール" + Environment.NewLine +
-                        "・拡大：Ctrl＋上スクロール" + Environment.NewLine + 
-                        "・縮小：Ctrl＋下スクロール" + Environment.NewLine +
+                        "・前ページ：ホイール上スクロール" + Environment.NewLine +
+                        "・次ページ：ホイール下スクロール" + Environment.NewLine +
+                        "・拡大：Ctrl＋ホイール上スクロール" + Environment.NewLine +
+                        "・縮小：Ctrl＋ホイール下スクロール" + Environment.NewLine +
                         "・印刷プレビュー内移動：右ドラッグ";
                     break;
 
