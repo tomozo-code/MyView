@@ -44,6 +44,9 @@
             toolStripSeparator19 = new ToolStripSeparator();
             zoomInBtn2 = new ToolStripMenuItem();
             zoomOutBtn2 = new ToolStripMenuItem();
+            toolStripSeparator13 = new ToolStripSeparator();
+            prevBtn2 = new ToolStripMenuItem();
+            nextBtn2 = new ToolStripMenuItem();
             toolStripSeparator9 = new ToolStripSeparator();
             roolLeftBtn2 = new ToolStripMenuItem();
             roolRightBtn2 = new ToolStripMenuItem();
@@ -68,6 +71,9 @@
             zoomInBtn = new ToolStripButton();
             zoomOutBtn = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
+            prevBtn = new ToolStripButton();
+            nextBtn = new ToolStripButton();
+            toolStripSeparator22 = new ToolStripSeparator();
             roolLeftBtn = new ToolStripButton();
             roolRightBtn = new ToolStripButton();
             toolStripSeparator5 = new ToolStripSeparator();
@@ -79,26 +85,6 @@
             optionBtn = new ToolStripDropDownButton();
             iconLabelBtn = new ToolStripMenuItem();
             toolStripContainer1 = new ToolStripContainer();
-            menuStrip1 = new MenuStrip();
-            fileMenu = new ToolStripMenuItem();
-            saveasMenu = new ToolStripMenuItem();
-            printMenu = new ToolStripMenuItem();
-            toolStripSeparator13 = new ToolStripSeparator();
-            closeMenu = new ToolStripMenuItem();
-            editMenu = new ToolStripMenuItem();
-            copyMenu = new ToolStripMenuItem();
-            pasteMenu = new ToolStripMenuItem();
-            toolStripSeparator14 = new ToolStripSeparator();
-            imageEnhancementMenu = new ToolStripMenuItem();
-            toolStripSeparator20 = new ToolStripSeparator();
-            roolLeftMenu = new ToolStripMenuItem();
-            roolRightMenu = new ToolStripMenuItem();
-            toolStripSeparator15 = new ToolStripSeparator();
-            verticalMenu = new ToolStripMenuItem();
-            horizontalMenu = new ToolStripMenuItem();
-            viewMenu = new ToolStripMenuItem();
-            zoomInMenu = new ToolStripMenuItem();
-            zoomOutMenu = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             conTxtMenu1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -106,7 +92,6 @@
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
-            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
@@ -128,9 +113,9 @@
             // conTxtMenu1
             // 
             conTxtMenu1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator12, printBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, imageEnhancementBtn2, toolStripSeparator19, zoomInBtn2, zoomOutBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, flip_vBtn2, flip_hBtn2, toolStripSeparator21, closeBtn2 });
+            conTxtMenu1.Items.AddRange(new ToolStripItem[] { saveBtn2, toolStripSeparator12, printBtn2, toolStripSeparator6, copyBtn2, toolStripSeparator7, pasteBtn2, toolStripSeparator8, imageEnhancementBtn2, toolStripSeparator19, zoomInBtn2, zoomOutBtn2, toolStripSeparator13, prevBtn2, nextBtn2, toolStripSeparator9, roolLeftBtn2, roolRightBtn2, toolStripSeparator10, flip_vBtn2, flip_hBtn2, toolStripSeparator21, closeBtn2 });
             conTxtMenu1.Name = "conTxtMenu1";
-            conTxtMenu1.Size = new Size(223, 508);
+            conTxtMenu1.Size = new Size(223, 612);
             conTxtMenu1.Opening += conTxtMenu1_Opening;
             // 
             // saveBtn2
@@ -215,7 +200,7 @@
             zoomInBtn2.Name = "zoomInBtn2";
             zoomInBtn2.Size = new Size(222, 38);
             zoomInBtn2.Text = "拡大";
-            zoomInBtn2.ToolTipText = "拡大(Ctrl+上スクロール)";
+            zoomInBtn2.ToolTipText = "拡大(Ctrl+ホイール上スクロール)";
             zoomInBtn2.Click += zoomInBtn_Click;
             // 
             // zoomOutBtn2
@@ -225,8 +210,33 @@
             zoomOutBtn2.Name = "zoomOutBtn2";
             zoomOutBtn2.Size = new Size(222, 38);
             zoomOutBtn2.Text = "縮小";
-            zoomOutBtn2.ToolTipText = "縮小(Ctrl+下スクロール)";
+            zoomOutBtn2.ToolTipText = "縮小(Ctrl+ホイール下スクロール)";
             zoomOutBtn2.Click += zoomOutBtn_Click;
+            // 
+            // toolStripSeparator13
+            // 
+            toolStripSeparator13.Name = "toolStripSeparator13";
+            toolStripSeparator13.Size = new Size(219, 6);
+            // 
+            // prevBtn2
+            // 
+            prevBtn2.Image = (Image)resources.GetObject("prevBtn2.Image");
+            prevBtn2.ImageScaling = ToolStripItemImageScaling.None;
+            prevBtn2.Name = "prevBtn2";
+            prevBtn2.Size = new Size(222, 38);
+            prevBtn2.Text = "前画像";
+            prevBtn2.ToolTipText = "前画像(ホイール上スクロール)";
+            prevBtn2.Click += prevBtn_Click;
+            // 
+            // nextBtn2
+            // 
+            nextBtn2.Image = (Image)resources.GetObject("nextBtn2.Image");
+            nextBtn2.ImageScaling = ToolStripItemImageScaling.None;
+            nextBtn2.Name = "nextBtn2";
+            nextBtn2.Size = new Size(222, 38);
+            nextBtn2.Text = "次画像";
+            nextBtn2.ToolTipText = "次画像(ホイール下スクロール)";
+            nextBtn2.Click += nextBtn_Click;
             // 
             // toolStripSeparator9
             // 
@@ -315,10 +325,10 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator11, printBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, imageEnhancementBtn, toolStripSeparator18, zoomInBtn, zoomOutBtn, toolStripSeparator4, roolLeftBtn, roolRightBtn, toolStripSeparator5, flip_vBtn, flip_hBtn, toolStripSeparator16, closeBtn, toolStripSeparator17, optionBtn });
-            toolStrip1.Location = new Point(3, 29);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { saveBtn, toolStripSeparator11, printBtn, toolStripSeparator1, copyBtn, toolStripSeparator2, pasteBtn, toolStripSeparator3, imageEnhancementBtn, toolStripSeparator18, zoomInBtn, zoomOutBtn, toolStripSeparator4, prevBtn, nextBtn, toolStripSeparator22, roolLeftBtn, roolRightBtn, toolStripSeparator5, flip_vBtn, flip_hBtn, toolStripSeparator16, closeBtn, toolStripSeparator17, optionBtn });
+            toolStrip1.Location = new Point(3, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(543, 39);
+            toolStrip1.Size = new Size(621, 39);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -443,6 +453,37 @@
             toolStripSeparator4.Name = "toolStripSeparator4";
             toolStripSeparator4.Size = new Size(6, 39);
             // 
+            // prevBtn
+            // 
+            prevBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            prevBtn.Image = (Image)resources.GetObject("prevBtn.Image");
+            prevBtn.ImageScaling = ToolStripItemImageScaling.None;
+            prevBtn.ImageTransparentColor = Color.Magenta;
+            prevBtn.Name = "prevBtn";
+            prevBtn.Size = new Size(36, 36);
+            prevBtn.Tag = "前の画像を表示します。";
+            prevBtn.Text = "前画像";
+            prevBtn.ToolTipText = "前画像(ホイール上スクロール)";
+            prevBtn.Click += prevBtn_Click;
+            // 
+            // nextBtn
+            // 
+            nextBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            nextBtn.Image = (Image)resources.GetObject("nextBtn.Image");
+            nextBtn.ImageScaling = ToolStripItemImageScaling.None;
+            nextBtn.ImageTransparentColor = Color.Magenta;
+            nextBtn.Name = "nextBtn";
+            nextBtn.Size = new Size(36, 36);
+            nextBtn.Tag = "次の画像を表示します。";
+            nextBtn.Text = "次画像";
+            nextBtn.ToolTipText = "次画像(ホイール下スクロール)";
+            nextBtn.Click += nextBtn_Click;
+            // 
+            // toolStripSeparator22
+            // 
+            toolStripSeparator22.Name = "toolStripSeparator22";
+            toolStripSeparator22.Size = new Size(6, 39);
+            // 
             // roolLeftBtn
             // 
             roolLeftBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -549,7 +590,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(pictureBox1);
-            toolStripContainer1.ContentPanel.Size = new Size(795, 280);
+            toolStripContainer1.ContentPanel.Size = new Size(795, 309);
             toolStripContainer1.Location = new Point(9, 64);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(795, 348);
@@ -558,168 +599,7 @@
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            toolStripContainer1.TopToolStripPanel.Controls.Add(menuStrip1);
             toolStripContainer1.TopToolStripPanel.Controls.Add(toolStrip1);
-            // 
-            // menuStrip1
-            // 
-            menuStrip1.AutoSize = false;
-            menuStrip1.Dock = DockStyle.None;
-            menuStrip1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, editMenu, viewMenu });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(795, 29);
-            menuStrip1.TabIndex = 3;
-            menuStrip1.Text = "menuStrip1";
-            // 
-            // fileMenu
-            // 
-            fileMenu.DropDownItems.AddRange(new ToolStripItem[] { saveasMenu, printMenu, toolStripSeparator13, closeMenu });
-            fileMenu.Name = "fileMenu";
-            fileMenu.Size = new Size(85, 25);
-            fileMenu.Text = "ファイル(&F)";
-            // 
-            // saveasMenu
-            // 
-            saveasMenu.Image = (Image)resources.GetObject("saveasMenu.Image");
-            saveasMenu.ImageScaling = ToolStripItemImageScaling.None;
-            saveasMenu.Name = "saveasMenu";
-            saveasMenu.Size = new Size(241, 38);
-            saveasMenu.Text = "名前を付けて保存(&S)...";
-            saveasMenu.Click += saveBtn_Click;
-            // 
-            // printMenu
-            // 
-            printMenu.Image = (Image)resources.GetObject("printMenu.Image");
-            printMenu.ImageScaling = ToolStripItemImageScaling.None;
-            printMenu.Name = "printMenu";
-            printMenu.Size = new Size(241, 38);
-            printMenu.Text = "印刷(&P)...";
-            printMenu.Click += printBtn_Click;
-            // 
-            // toolStripSeparator13
-            // 
-            toolStripSeparator13.Name = "toolStripSeparator13";
-            toolStripSeparator13.Size = new Size(238, 6);
-            // 
-            // closeMenu
-            // 
-            closeMenu.Image = (Image)resources.GetObject("closeMenu.Image");
-            closeMenu.ImageScaling = ToolStripItemImageScaling.None;
-            closeMenu.Name = "closeMenu";
-            closeMenu.Size = new Size(241, 38);
-            closeMenu.Text = "閉じる(&X)";
-            closeMenu.Click += closeBtn_Click;
-            // 
-            // editMenu
-            // 
-            editMenu.DropDownItems.AddRange(new ToolStripItem[] { copyMenu, pasteMenu, toolStripSeparator14, imageEnhancementMenu, toolStripSeparator20, roolLeftMenu, roolRightMenu, toolStripSeparator15, verticalMenu, horizontalMenu });
-            editMenu.Name = "editMenu";
-            editMenu.Size = new Size(72, 25);
-            editMenu.Text = "編集(&E)";
-            // 
-            // copyMenu
-            // 
-            copyMenu.Image = (Image)resources.GetObject("copyMenu.Image");
-            copyMenu.ImageScaling = ToolStripItemImageScaling.None;
-            copyMenu.Name = "copyMenu";
-            copyMenu.Size = new Size(201, 38);
-            copyMenu.Text = "コピー(&C)";
-            copyMenu.Click += copyBtn_Click;
-            // 
-            // pasteMenu
-            // 
-            pasteMenu.Image = (Image)resources.GetObject("pasteMenu.Image");
-            pasteMenu.ImageScaling = ToolStripItemImageScaling.None;
-            pasteMenu.Name = "pasteMenu";
-            pasteMenu.Size = new Size(201, 38);
-            pasteMenu.Text = "貼り付け(&V)";
-            pasteMenu.Click += pasteBtn_Click;
-            // 
-            // toolStripSeparator14
-            // 
-            toolStripSeparator14.Name = "toolStripSeparator14";
-            toolStripSeparator14.Size = new Size(198, 6);
-            // 
-            // imageEnhancementMenu
-            // 
-            imageEnhancementMenu.Image = (Image)resources.GetObject("imageEnhancementMenu.Image");
-            imageEnhancementMenu.ImageScaling = ToolStripItemImageScaling.None;
-            imageEnhancementMenu.Name = "imageEnhancementMenu";
-            imageEnhancementMenu.Size = new Size(201, 38);
-            imageEnhancementMenu.Text = "画像補正";
-            // 
-            // toolStripSeparator20
-            // 
-            toolStripSeparator20.Name = "toolStripSeparator20";
-            toolStripSeparator20.Size = new Size(198, 6);
-            // 
-            // roolLeftMenu
-            // 
-            roolLeftMenu.Image = (Image)resources.GetObject("roolLeftMenu.Image");
-            roolLeftMenu.ImageScaling = ToolStripItemImageScaling.None;
-            roolLeftMenu.Name = "roolLeftMenu";
-            roolLeftMenu.Size = new Size(201, 38);
-            roolLeftMenu.Text = "左へ90°回転(&L)";
-            roolLeftMenu.Click += roolLeftBtn_Click;
-            // 
-            // roolRightMenu
-            // 
-            roolRightMenu.Image = (Image)resources.GetObject("roolRightMenu.Image");
-            roolRightMenu.ImageScaling = ToolStripItemImageScaling.None;
-            roolRightMenu.Name = "roolRightMenu";
-            roolRightMenu.Size = new Size(201, 38);
-            roolRightMenu.Text = "右へ90°回転(&R)";
-            roolRightMenu.Click += roolRightBtn_Click;
-            // 
-            // toolStripSeparator15
-            // 
-            toolStripSeparator15.Name = "toolStripSeparator15";
-            toolStripSeparator15.Size = new Size(198, 6);
-            // 
-            // verticalMenu
-            // 
-            verticalMenu.Image = (Image)resources.GetObject("verticalMenu.Image");
-            verticalMenu.ImageScaling = ToolStripItemImageScaling.None;
-            verticalMenu.Name = "verticalMenu";
-            verticalMenu.Size = new Size(201, 38);
-            verticalMenu.Text = "上下反転(&V)";
-            verticalMenu.Click += flip_vBtn_Click;
-            // 
-            // horizontalMenu
-            // 
-            horizontalMenu.Image = (Image)resources.GetObject("horizontalMenu.Image");
-            horizontalMenu.ImageScaling = ToolStripItemImageScaling.None;
-            horizontalMenu.Name = "horizontalMenu";
-            horizontalMenu.Size = new Size(201, 38);
-            horizontalMenu.Text = "左右反転(&H)";
-            horizontalMenu.Click += flip_hBtn_Click;
-            // 
-            // viewMenu
-            // 
-            viewMenu.DropDownItems.AddRange(new ToolStripItem[] { zoomInMenu, zoomOutMenu });
-            viewMenu.Name = "viewMenu";
-            viewMenu.Size = new Size(74, 25);
-            viewMenu.Text = "表示(&V)";
-            // 
-            // zoomInMenu
-            // 
-            zoomInMenu.Image = (Image)resources.GetObject("zoomInMenu.Image");
-            zoomInMenu.ImageScaling = ToolStripItemImageScaling.None;
-            zoomInMenu.Name = "zoomInMenu";
-            zoomInMenu.Size = new Size(128, 38);
-            zoomInMenu.Text = "拡大";
-            zoomInMenu.Click += zoomInBtn_Click;
-            // 
-            // zoomOutMenu
-            // 
-            zoomOutMenu.Image = (Image)resources.GetObject("zoomOutMenu.Image");
-            zoomOutMenu.ImageScaling = ToolStripItemImageScaling.None;
-            zoomOutMenu.Name = "zoomOutMenu";
-            zoomOutMenu.Size = new Size(128, 38);
-            zoomOutMenu.Text = "縮小";
-            zoomOutMenu.Click += zoomOutBtn_Click;
             // 
             // Form3
             // 
@@ -732,7 +612,6 @@
             Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
-            MainMenuStrip = menuStrip1;
             Name = "Form3";
             StartPosition = FormStartPosition.CenterParent;
             Text = "画像ファイル名表示";
@@ -749,8 +628,6 @@
             toolStripContainer1.TopToolStripPanel.PerformLayout();
             toolStripContainer1.ResumeLayout(false);
             toolStripContainer1.PerformLayout();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -794,24 +671,6 @@
         private ToolStripSeparator toolStripSeparator11;
         private ToolStripMenuItem printBtn2;
         private ToolStripSeparator toolStripSeparator12;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem fileMenu;
-        private ToolStripMenuItem saveasMenu;
-        private ToolStripMenuItem printMenu;
-        private ToolStripMenuItem editMenu;
-        private ToolStripMenuItem copyMenu;
-        private ToolStripMenuItem pasteMenu;
-        private ToolStripSeparator toolStripSeparator13;
-        private ToolStripMenuItem closeMenu;
-        private ToolStripSeparator toolStripSeparator14;
-        private ToolStripMenuItem roolLeftMenu;
-        private ToolStripMenuItem roolRightMenu;
-        private ToolStripMenuItem viewMenu;
-        private ToolStripMenuItem zoomInMenu;
-        private ToolStripMenuItem zoomOutMenu;
-        private ToolStripSeparator toolStripSeparator15;
-        private ToolStripMenuItem verticalMenu;
-        private ToolStripMenuItem horizontalMenu;
         private ToolStripButton flip_vBtn;
         private ToolStripButton flip_hBtn;
         private ToolStripSeparator toolStripSeparator16;
@@ -823,9 +682,13 @@
         private ToolStripMenuItem flip_vBtn2;
         private ToolStripMenuItem flip_hBtn2;
         private ToolStripMenuItem imageEnhancementBtn2;
-        private ToolStripSeparator toolStripSeparator20;
         private ToolStripButton imageEnhancementBtn;
-        private ToolStripMenuItem imageEnhancementMenu;
         private ToolStripSeparator toolStripSeparator21;
+        private ToolStripButton prevBtn;
+        private ToolStripButton nextBtn;
+        private ToolStripSeparator toolStripSeparator22;
+        private ToolStripSeparator toolStripSeparator13;
+        private ToolStripMenuItem prevBtn2;
+        private ToolStripMenuItem nextBtn2;
     }
 }

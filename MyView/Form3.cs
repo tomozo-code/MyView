@@ -154,8 +154,6 @@ namespace MyView
 
             toolStripContainer1.Dock = DockStyle.Fill;
 
-            menuStrip1.Visible = false;
-
             _imagePath = imagePath;
 
             // 同じフォルダにある画像を取得
@@ -1142,7 +1140,7 @@ namespace MyView
             {
                 // 画像補正
                 imageEnhancementBtn.PerformClick();
-                                
+
                 e.Handled = true;
                 e.SuppressKeyPress = true;
                 return;
@@ -1900,6 +1898,24 @@ namespace MyView
         }
 
         // ============================================================
+        // 前画像を押したとき
+        // ============================================================
+        private void prevBtn_Click(object sender, EventArgs e)
+        {
+            // 前画像を表示
+            ShowPreviousImage();
+        }
+
+        // ============================================================
+        // 次画像を押したとき
+        // ============================================================
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            // 次画像を表示
+            ShowNextImage();
+        }
+
+        // ============================================================
         // コンテキストメニューを表示する直前の処理
         // ============================================================
         private void conTxtMenu1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -2445,7 +2461,6 @@ namespace MyView
             // 変換結果を反映
             SetCurrentImage(resultImage);
         }
-
 
     }
 }

@@ -114,6 +114,22 @@ namespace MyView
                 "MyView",
                 "LastFolder.txt");
 
+        // 最近開いたフォルダの保存先
+        // C:\Users\ユーザー名\AppData\Local\MyView\RecentFolder.txt
+        private string RecentFolderFilePath =>
+            Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData),
+                "MyView",
+                "RecentFolder.txt");
+
+        // 最近開いたフォルダの一覧
+        private readonly List<string> _recentFolders = new List<string>();
+
+        // 履歴の最大保存件数
+        private const int MaxRecentFolders = 10;
+
+
         // ListViewの縦スクロールを先頭へ戻す
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -255,6 +271,9 @@ namespace MyView
             foldertreeMenu.ShortcutKeys = Keys.Control | Keys.F;
             //情報ボックス表示・非表示(ショートカットキー)
             infoboxMenu.ShortcutKeys = Keys.Control | Keys.I;
+
+            // 最近開いたフォルダの履歴を読み込む
+            LoadRecentFolders();
 
             // エクスプローラーから渡されたファイルパスを取得
             string[] args = Environment.GetCommandLineArgs();
@@ -575,6 +594,367 @@ namespace MyView
         }
 
         // ============================================================
+        // 最近開いたフォルダの履歴を読み込む
+        // ============================================================
+        private void LoadRecentFolders()
+        {
+            _recentFolders.Clear();
+
+            try
+            {
+                if (!File.Exists(RecentFolderFilePath))
+                {
+                    UpdateRecentFolderMenu();
+                    return;
+                }
+
+                foreach (string line in File.ReadAllLines(RecentFolderFilePath))
+                {
+                    string folderPath = line.Trim();
+
+                    if (string.IsNullOrWhiteSpace(folderPath))
+                        continue;
+
+                    if (!Directory.Exists(folderPath))
+                        continue;
+
+                    // 重複登録を防止
+                    if (_recentFolders.Any(path =>
+                        string.Equals(
+                            path,
+                            folderPath,
+                            StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    _recentFolders.Add(folderPath);
+
+                    if (_recentFolders.Count >= MaxRecentFolders)
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(
+                    "最近開いたフォルダの読み込みエラー: " + ex.Message);
+            }
+
+            // 不要な履歴を整理して保存
+            SaveRecentFolders();
+
+            UpdateRecentFolderMenu();
+        }
+
+        // ============================================================
+        // 最近開いたフォルダの履歴を保存
+        // ============================================================
+        private void SaveRecentFolders()
+        {
+            try
+            {
+                string? directory =
+                    Path.GetDirectoryName(RecentFolderFilePath);
+
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                File.WriteAllLines(
+                    RecentFolderFilePath,
+                    _recentFolders.Take(MaxRecentFolders));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(
+                    "最近開いたフォルダの保存エラー: " + ex.Message);
+            }
+        }
+
+        // ============================================================
+        // 最近開いたフォルダに追加
+        // ============================================================
+        private void AddRecentFolder(string folderPath)
+        {
+            if (string.IsNullOrWhiteSpace(folderPath))
+                return;
+
+            if (!Directory.Exists(folderPath))
+                return;
+
+            try
+            {
+                folderPath = Path.GetFullPath(folderPath);
+            }
+            catch
+            {
+                return;
+            }
+
+            // すでに登録されている場合は削除
+            _recentFolders.RemoveAll(path =>
+                string.Equals(
+                    path,
+                    folderPath,
+                    StringComparison.OrdinalIgnoreCase));
+
+            // 先頭に追加
+            _recentFolders.Insert(0, folderPath);
+
+            // 最大10件に制限
+            if (_recentFolders.Count > MaxRecentFolders)
+            {
+                _recentFolders.RemoveRange(
+                    MaxRecentFolders,
+                    _recentFolders.Count - MaxRecentFolders);
+            }
+
+            SaveRecentFolders();
+
+            UpdateRecentFolderMenu();
+        }
+
+        /*
+        // ============================================================
+        // 最近開いたフォルダのメニューを更新
+        // ============================================================
+        private void UpdateRecentFolderMenu()
+        {
+            recentfolderMenu.DropDownItems.Clear();
+
+            // 存在するフォルダだけ残す
+            _recentFolders.RemoveAll(path =>
+                !Directory.Exists(path));
+
+            // 履歴がない場合
+            if (_recentFolders.Count == 0)
+            {
+                var emptyItem = new ToolStripMenuItem("履歴はありません")
+                {
+                    Enabled = false
+                };
+
+                recentfolderMenu.DropDownItems.Add(emptyItem);
+                return;
+            }
+
+            // 履歴をメニューに追加
+            for (int i = 0; i < _recentFolders.Count; i++)
+            {
+                string folderPath = _recentFolders[i];
+
+                var item = new ToolStripMenuItem(folderPath)
+                {
+                    Tag = folderPath,
+                    ToolTipText = folderPath
+                };
+
+                item.Click += RecentFolderMenuItem_Click;
+
+                recentfolderMenu.DropDownItems.Add(item);
+            }
+
+            // 区切り線
+            recentfolderMenu.DropDownItems.Add(new ToolStripSeparator());
+
+            // 履歴をすべてクリア
+            var clearItem = new ToolStripMenuItem("履歴をすべてクリア");
+
+            clearItem.Click += (sender, e) =>
+            {
+                ClearRecentFolder();
+            };
+
+            recentfolderMenu.DropDownItems.Add(clearItem);
+
+            // 整理した履歴を保存
+            SaveRecentFolders();
+        }
+        */
+
+        // ============================================================
+        // 最近開いたフォルダのメニューを更新
+        // ============================================================
+        private void UpdateRecentFolderMenu()
+        {
+            recentfolderMenu.DropDownItems.Clear();
+
+            // 存在するフォルダだけ残す
+            _recentFolders.RemoveAll(path =>
+                !Directory.Exists(path));
+
+            // 履歴がない場合
+            if (_recentFolders.Count == 0)
+            {
+                var emptyItem = new ToolStripMenuItem("履歴はありません")
+                {
+                    Enabled = false
+                };
+
+                recentfolderMenu.DropDownItems.Add(emptyItem);
+                return;
+            }
+
+            // パスの表示文字数
+            const int maxPathLength = 40;
+
+            // 履歴をメニューに追加
+            for (int i = 0; i < _recentFolders.Count; i++)
+            {
+                string folderPath = _recentFolders[i];
+
+                // 表示用パスを作成
+                string displayPath = folderPath;
+
+                if (displayPath.Length > maxPathLength)
+                {
+                    // 先頭と末尾を残して中央を省略
+                    int startLength = 25;
+                    int endLength = maxPathLength - startLength - 3;
+
+                    displayPath =
+                        displayPath.Substring(0, startLength)
+                        + "..."
+                        + displayPath.Substring(
+                            displayPath.Length - endLength);
+                }
+
+                // 番号を付ける
+                string menuText = $"{i + 1}. {displayPath}";
+
+                var item = new ToolStripMenuItem(menuText)
+                {
+                    Tag = folderPath,
+
+                    // マウスを乗せたときに完全なパスを表示
+                    ToolTipText = folderPath,
+                    AutoToolTip = true
+                };
+
+                item.Click += RecentFolderMenuItem_Click;
+
+                recentfolderMenu.DropDownItems.Add(item);
+            }
+
+            // 区切り線
+            recentfolderMenu.DropDownItems.Add(new ToolStripSeparator());
+
+            // 履歴をすべてクリア
+            var clearItem = new ToolStripMenuItem("履歴をすべてクリア");
+
+            clearItem.Click += (sender, e) =>
+            {
+                ClearRecentFolder();
+            };
+
+            recentfolderMenu.DropDownItems.Add(clearItem);
+
+            // 整理した履歴を保存
+            SaveRecentFolders();
+        }
+
+        // ============================================================
+        // 最近開いたフォルダのメニューをクリック
+        // ============================================================
+        private async void RecentFolderMenuItem_Click(object? sender, EventArgs e)
+        {
+            if (sender is not ToolStripMenuItem item)
+                return;
+
+            string? folderPath = item.Tag?.ToString();
+
+            if (string.IsNullOrWhiteSpace(folderPath))
+                return;
+
+            if (!Directory.Exists(folderPath))
+            {
+                MessageBox.Show(
+                    "指定されたフォルダは存在しません。",
+                    "フォルダが見つかりません",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                LoadRecentFolders();
+                return;
+            }
+
+            // フォルダーツリーで対象フォルダを探す
+            TreeNode? node = FindAndExpandTreeNode(folderPath);
+
+            if (node != null)
+            {
+                // TreeViewの選択変更による二重読み込みを防止
+                _suppressTreeSelectionLoad = true;
+
+                try
+                {
+                    treeViewFolders.SelectedNode = node;
+                    node.EnsureVisible();
+                    pathTxt.Text = folderPath;
+                }
+                finally
+                {
+                    _suppressTreeSelectionLoad = false;
+                }
+            }
+            else
+            {
+                pathTxt.Text = folderPath;
+            }
+
+            // フォルダの画像一覧を読み込む
+            await LoadFolderAsync(folderPath);
+        }
+
+        // ============================================================
+        // 履歴をすべてクリア
+        // ============================================================
+        private void ClearRecentFolder()
+        {
+            var result = MessageBox.Show(
+                "最近開いたフォルダの履歴をすべて削除しますか？",
+                "履歴のクリア",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            try
+            {
+                // メモリ上の履歴をクリア
+                _recentFolders.Clear();
+
+                // 保存している履歴ファイルを削除
+                if (File.Exists(RecentFolderFilePath))
+                {
+                    File.Delete(RecentFolderFilePath);
+                }
+
+                // メニューを更新
+                UpdateRecentFolderMenu();
+
+                /*
+                MessageBox.Show(
+                    "最近開いたフォルダの履歴を削除しました。",
+                    "履歴のクリア",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                */
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"履歴の削除中にエラーが発生しました。\n\n{ex.Message}",
+                    "エラー",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+        }
+
+        // ============================================================
         // フォルダ選択
         // ============================================================
         private async void TreeViewFolders_AfterSelect(object sender, TreeViewEventArgs e)
@@ -616,6 +996,9 @@ namespace MyView
                 printMenu.Enabled = false;
                 return;
             }
+
+            // 最近開いたフォルダに追加
+            AddRecentFolder(folderPath);
 
             StatusLabel1.Text = "画像ファイルを検索中...";
 
