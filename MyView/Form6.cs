@@ -4184,6 +4184,7 @@ namespace MyView
         // ============================================================
         private void Slider_MouseDown(object? sender, MouseEventArgs e)
         {
+            // スライダーをドラッグ中フラグ
             _isSliderOperating = true;
         }
 
@@ -4192,6 +4193,7 @@ namespace MyView
         // ============================================================
         private void Slider_MouseUp(object? sender, MouseEventArgs e)
         {
+            // スライダーをドラッグ中フラグ
             _isSliderOperating = false;
 
             // 操作終了後に1回だけプレビューを更新
@@ -4206,6 +4208,7 @@ namespace MyView
             if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right ||
                 e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
             {
+                // スライダーをドラッグ中フラグ
                 _isSliderOperating = true;
             }
         }
@@ -4218,6 +4221,7 @@ namespace MyView
             if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right ||
                 e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
             {
+                // スライダーをドラッグ中フラグ
                 _isSliderOperating = false;
 
                 // キーを離したときに1回だけプレビューを更新
